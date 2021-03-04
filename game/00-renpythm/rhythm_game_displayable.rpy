@@ -31,6 +31,9 @@ init python:
             self.is_playing = False
             self.onset_times = self.get_onset_times(os.path.join(renpy.config.gamedir, filepath)) # seconds, same unit as st
             self.onset_idx = 0 # index into onset_times
+            self.onset_drawable = Image(os.path.join(THIS_PATH, 'images', 'circle.png'))
+            self.onset_xpos = renpy.random.randint(200, 1000)
+            self.onset_ypos = renpy.random.randint(200, 500)
 
         def render(self, width, height, st, at):
             render = renpy.Render(width, height)
@@ -43,8 +46,13 @@ init python:
                     diff = st - self.st_cache - val
                     if -0.02 < diff < 1:
                         render.place(Text('Onset' + str(self.onset_idx), color='#fff', size=50), x=400, y=10)
+                        render.place(self.onset_drawable, x=self.onset_xpos, y=self.onset_ypos)
                     elif diff >= 1:
                         self.onset_idx += 1 # move on to the next onset
+                        # regenerate random pos
+                        self.onset_xpos = renpy.random.randint(200, 1000)
+                        self.onset_ypos = renpy.random.randint(200, 500)
+
                 render.place(Text('Timer' + str(st - self.st_cache), color='#fff', size=50), x=800, y=10)
 
             renpy.redraw(self, 0)
