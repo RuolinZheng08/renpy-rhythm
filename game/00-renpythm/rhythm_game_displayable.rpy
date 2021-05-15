@@ -1,6 +1,29 @@
 define THIS_PATH = '00-renpythm/'
-define AUDIO_PATH = 'audio/'
 
+define IMG_DIR = 'images'
+define TRACK_BAR_IMG = 'track_bar.png'
+define HORIZONTAL_BAR_IMG = 'horizontal_bar.png'
+define IMG_UP = 'arrow_up.png'
+define IMG_LEFT = 'arrow_left.png'
+define IMG_RIGHT = 'arrow_right.png'
+define IMG_DOWN = 'arrow_down.png'
+
+# number of track bars on which notes appear, up, left, right, down
+define NUM_TRACK_BARS = 4
+
+define SCREEN_WIDTH = 1280
+define SCREEN_HEIGHT = 720
+# leave some offset from the left side of the screen
+define X_OFFSET = 400
+
+define TRACK_BAR_HEIGHT = 700 # height of the track bar image
+define TRACK_BAR_WIDTH = 12 # width of the track bar image
+define HORIZONTAL_BAR_WIDTH = 700 # width of the horizontal bar image
+define NOTE_WIDTH = 50 # width of the arrow note image
+
+define NOTE_XOFFSET = (TRACK_BAR_WIDTH - NOTE_WIDTH) / 2
+
+# screen definition
 screen rhythm_game(filepath):
     # filepath: file path relative to renpy.config.gamedir
     default rhythm_game_displayable = RhythmGameDisplayable(filepath)
@@ -10,7 +33,6 @@ screen rhythm_game(filepath):
 
     vbox xalign 0.5 yalign 0.5:
         textbutton 'play' action [
-        ToggleField(rhythm_game_displayable, 'is_playing'),
         Function(rhythm_game_displayable.play_music)
         ]
 
@@ -19,76 +41,109 @@ init python:
     import_dir = os.path.join(renpy.config.gamedir, THIS_PATH, 'python-packages')
     sys.path.append(import_dir)
 
-    from aubio import source, onset
+    from collections import deque
+
     import pygame
+    from aubio import source, onset
 
     class RhythmGameDisplayable(renpy.Displayable):
 
         def __init__(self, filepath):
             super(RhythmGameDisplayable, self).__init__()
+
             self.filepath = filepath
-            self.st_cache = None
             self.is_playing = False
-            self.onset_times = self.get_onset_times(os.path.join(renpy.config.gamedir, filepath)) # seconds, same unit as st
-            self.onset_idx = 0 # index into onset_times
-            self.onset_drawable = Image(os.path.join(THIS_PATH, 'images', 'circle.png'))
-            self.highlight_drawable = Image(os.path.join(THIS_PATH, 'images', 'circle_highlight.png'))
+            # an offset is necessary because there might be a delay between when the
+            # displayable first appears on screen and the time the music starts playing
+            self.time_offset = None
+            # seconds, same unit as st, shown time
+            file = os.path.join(renpy.config.gamedir, filepath)
+            self.onset_times = deque(self.get_onset_times(file))
+            # assign tracks randomly in advance since generating on the fly is too slow
+            self.random_track_indices = [
+            renpy.random.randint(0, NUM_TRACK_BARS - 1) for _ in range(len(self.onset_times))
+            ]
 
-            self.onset_xpos = renpy.random.randint(200, 1000)
-            self.onset_ypos = renpy.random.randint(200, 500)
-            self.onset_drawable_diameter = 200
-            self.has_hit = False
+            # note appear on the tracks prior to the actual onset
+            # which is also the note's entire lifetime to travel the track
+            self.note_offset = 2.0 # seconds
+            self.note_speed = TRACK_BAR_HEIGHT / self.note_offset
 
+            # track active notes, a list of time stamps in seconds
+            self.active_notes = []
+
+            # track number of hits for scoring
             self.num_hits = 0
 
-        def render(self, width, height, st, at):
-            render = renpy.Render(width, height)
-            if self.is_playing and self.st_cache is None:
-                self.st_cache = st
-            if self.st_cache is not None:
-                if self.onset_idx < len(self.onset_times):
-                    # print(self.onset_idx, self.onset_times[self.onset_idx])
-                    val = self.onset_times[self.onset_idx]
-                    diff = st - self.st_cache - val
-                    if -0.02 < diff < 1:
-                        render.place(Text('Onset' + str(self.onset_idx), color='#fff', size=50), x=400, y=10)
-                        if not self.has_hit:
-                            render.place(self.onset_drawable, x=self.onset_xpos, y=self.onset_ypos)
-                        else:
-                            render.place(Text('GOOD!', color='#fff', size=50), x=650, y=40)
-                            render.place(self.highlight_drawable, x=self.onset_xpos, y=self.onset_ypos)
-                            
-                    elif diff >= 1:
-                        self.has_hit = False
-                        self.onset_idx += 1 # move on to the next onset
-                        # regenerate random pos
-                        self.onset_xpos = renpy.random.randint(200, 1000)
-                        self.onset_ypos = renpy.random.randint(200, 500)
+            # the threshold for declaring a note as active when computing onset - (st - self.time_offset)
+            self.time_difference_threshold = 0.01
 
-                render.place(Text('Timer ' + str(st - self.st_cache), color='#fff', size=50), x=800, y=10)
-                render.place(Text('Num hits: ' + str(self.num_hits), color='#fff', size=50), x=20, y=10)
+            # drawables
+            img_dir = os.path.join(THIS_PATH, IMG_DIR)
+            self.track_bar_drawable = Image(os.path.join(img_dir, TRACK_BAR_IMG))
+            self.horizontal_bar_drawable = Image(os.path.join(img_dir, HORIZONTAL_BAR_IMG))
+            self.note_drawables = {
+            0: Image(os.path.join(img_dir, IMG_UP)),
+            1: Image(os.path.join(img_dir, IMG_LEFT)),
+            2: Image(os.path.join(img_dir, IMG_RIGHT)),
+            3: Image(os.path.join(img_dir, IMG_DOWN)),
+            }
+
+            # variables for drawing positions
+            self.track_bar_spacing = (SCREEN_WIDTH - X_OFFSET * 2) / (NUM_TRACK_BARS - 1)
+            self.horizontal_bar_xoffset = (SCREEN_WIDTH - HORIZONTAL_BAR_WIDTH) / 2
+            
+        def render(self, width, height, st, at):
+            # cache the shown time offset
+            if self.is_playing and self.time_offset is None:
+                self.time_offset = st
+
+            render = renpy.Render(width, height)
+            # draw the tracks
+            for track_idx in range(NUM_TRACK_BARS):
+                x_offset = X_OFFSET + track_idx * self.track_bar_spacing
+                render.place(self.track_bar_drawable, x=x_offset, y=0)
+            # place a horizontal bar to indicate where the tracks end
+            render.place(self.horizontal_bar_drawable, 
+                x=self.horizontal_bar_xoffset, y=TRACK_BAR_HEIGHT)
+
+            # draw the notes
+            if self.is_playing:
+                active_notes = self.get_active_notes(st)
+                for note_timestamp, track_idx in active_notes:
+                    x_offset = X_OFFSET + track_idx * self.track_bar_spacing + NOTE_XOFFSET
+                    y_offset = TRACK_BAR_HEIGHT - note_timestamp * self.note_speed
+                    arrow_drawable = self.note_drawables[track_idx]
+                    render.place(arrow_drawable, x=x_offset, y=y_offset)
 
             renpy.redraw(self, 0)
             return render
 
         def event(self, ev, x, y, st):
-            # check if player is clicking on the right position
-            # print(x, self.onset_xpos, y, self.onset_ypos)
-            if ev.type == pygame.MOUSEBUTTONDOWN and ev.button == 1:
-                if -10 <= x - self.onset_xpos <= self.onset_drawable_diameter and \
-                -10 <= y - self.onset_ypos <= self.onset_drawable_diameter:
-                    self.has_hit = True
-                    self.num_hits += 1
-                else:
-                    self.has_hit = False
-                    
-            renpy.redraw(self, 0)
+            return
 
         def visit(self):
             return []
 
         def play_music(self):
+            self.is_playing = True
             renpy.music.play(self.filepath)
+
+        def get_active_notes(self, st):
+            active_notes = []
+            for onset, track_idx in zip(self.onset_times, self.random_track_indices):
+                # determine if this note is active
+                time_before_appearance = onset - (st - self.time_offset)
+                if time_before_appearance < 0: # already outside the screen
+                    continue
+                elif time_before_appearance <= self.note_offset: # should be on screen already
+                    active_notes.append((time_before_appearance, track_idx))
+                elif time_before_appearance - self.note_offset < self.time_difference_threshold:
+                    active_notes.append((time_before_appearance, track_idx))
+                elif time_before_appearance > self.note_offset: # still time before it should appear
+                    break
+
+            return active_notes
 
         # https://aubio.org/doc/latest/onset_2test-onset_8c-example.html
         # https://github.com/aubio/aubio/blob/master/python/demos/demo_onset.py
@@ -108,5 +163,5 @@ init python:
                     onset_times.append(onset_func.get_last_s())
                 if num_frames_read < hop_size:
                     break
-            print(onset_times)
+
             return onset_times

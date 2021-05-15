@@ -26,8 +26,23 @@ label start:
 
     e "You've created a new Ren'Py game."
 
-    $ f = '00-renpythm/audio/omori_duet.mp3'
+    window hide
+    $ quick_menu = False
+
+    # avoid rolling back and losing chess game state
+    $ renpy.block_rollback()
+
+    $ f = 'audio/nitw_die_anywhere_else.mp3'
     call screen rhythm_game(f)
+
+    # avoid rolling back and entering the chess game again
+    $ renpy.block_rollback()
+
+    # restore rollback from this point on
+    $ renpy.checkpoint()
+
+    $ quick_menu = True
+    window show
 
     e "Once you add a story, pictures, and music, you can release it to the world!"
 
