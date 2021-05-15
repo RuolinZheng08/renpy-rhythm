@@ -41,7 +41,7 @@ init python:
     import_dir = os.path.join(renpy.config.gamedir, THIS_PATH, 'python-packages')
     sys.path.append(import_dir)
 
-    from collections import deque
+    from collections import defaultdict
 
     import pygame
     from aubio import source, onset
@@ -58,7 +58,7 @@ init python:
             self.time_offset = None
             # seconds, same unit as st, shown time
             file = os.path.join(renpy.config.gamedir, filepath)
-            self.onset_times = deque(self.get_onset_times(file))
+            self.onset_times = self.get_onset_times(file)
             # assign tracks randomly in advance since generating on the fly is too slow
             self.random_track_indices = [
             renpy.random.randint(0, NUM_TRACK_BARS - 1) for _ in range(len(self.onset_times))
@@ -69,14 +69,22 @@ init python:
             self.note_offset = 2.0 # seconds
             self.note_speed = TRACK_BAR_HEIGHT / self.note_offset
 
-            # track active notes, a list of time stamps in seconds
-            self.active_notes = []
+            # a list active note timestamps on each track
+            self.active_notes_per_track = {}
 
             # track number of hits for scoring
             self.num_hits = 0
 
             # the threshold for declaring a note as active when computing onset - (st - self.time_offset)
             self.time_difference_threshold = 0.01
+
+            # map pygame key code to track idx
+            self.keycode_to_track_idx = {
+            pygame.K_UP: 0,
+            pygame.K_LEFT: 1,
+            pygame.K_RIGHT: 2,
+            pygame.K_DOWN: 3
+            }
 
             # drawables
             img_dir = os.path.join(THIS_PATH, IMG_DIR)
@@ -110,17 +118,21 @@ init python:
             # draw the notes
             if self.is_playing:
                 active_notes = self.get_active_notes(st)
-                for note_timestamp, track_idx in active_notes:
+                for track_idx in active_notes:
+                    note_drawable = self.note_drawables[track_idx]
                     x_offset = X_OFFSET + track_idx * self.track_bar_spacing + NOTE_XOFFSET
-                    y_offset = TRACK_BAR_HEIGHT - note_timestamp * self.note_speed
-                    arrow_drawable = self.note_drawables[track_idx]
-                    render.place(arrow_drawable, x=x_offset, y=y_offset)
+                    for note_timestamp in active_notes[track_idx]:
+                        y_offset = TRACK_BAR_HEIGHT - note_timestamp * self.note_speed
+                        render.place(note_drawable, x=x_offset, y=y_offset)
 
             renpy.redraw(self, 0)
             return render
 
         def event(self, ev, x, y, st):
-            return
+            if ev.type == pygame.KEYDOWN:
+                if not ev.key in self.keycode_to_track_idx:
+                    return
+                track_idx = self.keycode_to_track_idx[ev.key]
 
         def visit(self):
             return []
@@ -130,16 +142,16 @@ init python:
             renpy.music.play(self.filepath)
 
         def get_active_notes(self, st):
-            active_notes = []
+            active_notes = defaultdict(list)
             for onset, track_idx in zip(self.onset_times, self.random_track_indices):
                 # determine if this note is active
                 time_before_appearance = onset - (st - self.time_offset)
                 if time_before_appearance < 0: # already outside the screen
                     continue
                 elif time_before_appearance <= self.note_offset: # should be on screen already
-                    active_notes.append((time_before_appearance, track_idx))
+                    active_notes[track_idx].append(time_before_appearance)
                 elif time_before_appearance - self.note_offset < self.time_difference_threshold:
-                    active_notes.append((time_before_appearance, track_idx))
+                    active_notes[track_idx].append(time_before_appearance)
                 elif time_before_appearance > self.note_offset: # still time before it should appear
                     break
 
