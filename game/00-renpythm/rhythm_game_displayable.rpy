@@ -59,8 +59,11 @@ init python:
             self.time_offset = None
             # seconds, same unit as st, shown time
             file = os.path.join(renpy.config.gamedir, filepath)
-            # self.onset_times = self.get_onset_times(file)
-            self.onset_times = [5, 10, 15, 18]
+
+            # onset timestamps in the given audio file
+            self.onset_times = self.get_onset_times(file)
+            # whether an onset been hit determines whether it will be rendered
+            self.onset_hits = {onset: False for onset in self.onset_times}
             # assign tracks randomly in advance since generating on the fly is too slow
             self.random_track_indices = [
             renpy.random.randint(0, NUM_TRACK_BARS - 1) for _ in range(len(self.onset_times))
@@ -126,9 +129,10 @@ init python:
                     note_drawable = self.note_drawables[track_idx]
                     x_offset = X_OFFSET + track_idx * self.track_bar_spacing + NOTE_XOFFSET
 
-                    for _, note_timestamp in self.active_notes_per_track[track_idx]:
-                        y_offset = TRACK_BAR_HEIGHT - note_timestamp * self.note_speed
-                        render.place(note_drawable, x=x_offset, y=y_offset)
+                    for onset, note_timestamp in self.active_notes_per_track[track_idx]:
+                        if self.onset_hits[onset] is False: # hasn't been hit, render
+                            y_offset = TRACK_BAR_HEIGHT - note_timestamp * self.note_speed
+                            render.place(note_drawable, x=x_offset, y=y_offset)
 
             renpy.redraw(self, 0)
             return render
@@ -139,15 +143,14 @@ init python:
                     return
                 track_idx = self.keycode_to_track_idx[ev.key]
                 active_notes_on_track = self.active_notes_per_track[track_idx]
-                # create a copy of active_notes_on_track so achieve removal while iterating 
-                for note in active_notes_on_track[:]:
+
+                for note in active_notes_on_track:
                     onset, _ = note
                     # time when player attempts to hit the note
                     curr_time = st - self.time_offset
                     # difference between the time the note is hittable and actually hit
                     if onset - self.hit_threshold <= curr_time <= onset + self.hit_threshold:
-                        # the note has been hit, remove it from active
-                        self.active_notes_per_track[track_idx].remove(note)
+                        self.onset_hits[onset] = True
                         self.num_hits += 1
                         renpy.redraw(self, 0)
                         renpy.restart_interaction() # force refresh the screen for score to show
