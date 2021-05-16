@@ -30,20 +30,19 @@ screen rhythm_game(filepath):
 
     add Solid('#000')
     add rhythm_game_displayable
-
-    fixed xpos 50 ypos 50 spacing 100:
-        vbox:
-            text 'Hits: ' + str(rhythm_game_displayable.num_hits):
-                 color '#fff'
-            textbutton 'play' action [
-            Function(rhythm_game_displayable.play_music)
-            ]        
+        
+    showif rhythm_game_displayable.is_playing:
+        fixed xpos 50 ypos 50 spacing 100:
+            vbox:
+                text 'Hits: ' + str(rhythm_game_displayable.num_hits):
+                     color '#fff'
 
 init python:
     import sys
     import_dir = os.path.join(renpy.config.gamedir, THIS_PATH, 'python-packages')
     sys.path.append(import_dir)
 
+    import random
     import pygame
     from aubio import source, onset
 
@@ -53,26 +52,41 @@ init python:
             super(RhythmGameDisplayable, self).__init__()
 
             self.filepath = filepath
+
             self.is_playing = False
+
+            # note appear on the tracks prior to the actual onset
+            # which is also the note's entire lifetime to travel the track
+            self.note_offset = 3.0 # seconds
+            self.note_speed = TRACK_BAR_HEIGHT / self.note_offset
+
+            # silence before the music plays
+            self.silence_offset = 3.0
+            self.silence = '<silence %s>' % str(self.silence_offset)
+
             # an offset is necessary because there might be a delay between when the
             # displayable first appears on screen and the time the music starts playing
-            self.time_offset = None
             # seconds, same unit as st, shown time
-            file = os.path.join(renpy.config.gamedir, filepath)
+            self.time_offset = None
 
+            # limit the number of notes
+            self.num_notes_threshold = 300
+
+            file = os.path.join(renpy.config.gamedir, filepath)
             # onset timestamps in the given audio file
-            self.onset_times = self.get_onset_times(file)
+            onset_times = self.get_onset_times(file)
+            if len(onset_times) > self.num_notes_threshold:
+                onset_times = random.sample(onset_times, self.num_notes_threshold)
+                onset_times.sort()
+            # increment by the silence time
+            self.onset_times = [self.silence_offset + onset for onset in onset_times]
+
             # whether an onset been hit determines whether it will be rendered
             self.onset_hits = {onset: False for onset in self.onset_times}
             # assign tracks randomly in advance since generating on the fly is too slow
             self.random_track_indices = [
             renpy.random.randint(0, NUM_TRACK_BARS - 1) for _ in range(len(self.onset_times))
             ]
-
-            # note appear on the tracks prior to the actual onset
-            # which is also the note's entire lifetime to travel the track
-            self.note_offset = 2.0 # seconds
-            self.note_speed = TRACK_BAR_HEIGHT / self.note_offset
 
             # a list active note timestamps on each track
             self.active_notes_per_track = {track_idx: [] for track_idx in range(NUM_TRACK_BARS)}
@@ -107,13 +121,30 @@ init python:
             # variables for drawing positions
             self.track_bar_spacing = (SCREEN_WIDTH - X_OFFSET * 2) / (NUM_TRACK_BARS - 1)
             self.horizontal_bar_xoffset = (SCREEN_WIDTH - HORIZONTAL_BAR_WIDTH) / 2
+
+            # start playing music
+            self.play_music()
             
         def render(self, width, height, st, at):
             # cache the shown time offset
             if self.is_playing and self.time_offset is None:
-                self.time_offset = st
+                self.time_offset = self.silence_offset + st
 
             render = renpy.Render(width, height)
+
+            # count down silence_offset, 3 seconds, while silence
+            countdown = None
+            time_before_music = self.silence_offset - st
+            if time_before_music > 2.0:
+                countdown = '3'
+            elif time_before_music > 1.0:
+                countdown = '2'
+            elif time_before_music > 0.0:
+                countdown = '1'
+            if countdown is not None:
+                render.place(Text(countdown, color='#fff', size=48),
+                    x=config.screen_width / 2, y=config.screen_height / 2)
+
             # draw the tracks
             for track_idx in range(NUM_TRACK_BARS):
                 x_offset = X_OFFSET + track_idx * self.track_bar_spacing
@@ -159,7 +190,7 @@ init python:
             return []
 
         def play_music(self):
-            renpy.music.play(self.filepath)
+            renpy.music.queue([self.silence, self.filepath])
             self.is_playing = True
 
         def get_active_notes(self, st):
