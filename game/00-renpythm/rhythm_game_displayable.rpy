@@ -31,17 +31,18 @@ screen rhythm_game(filepath):
     add Solid('#000')
     add rhythm_game_displayable
 
-    vbox xalign 0.5 yalign 0.5:
-        textbutton 'play' action [
-        Function(rhythm_game_displayable.play_music)
-        ]
+    fixed xpos 50 ypos 50 spacing 100:
+        vbox:
+            text 'Hits: ' + str(rhythm_game_displayable.num_hits):
+                 color '#fff'
+            textbutton 'play' action [
+            Function(rhythm_game_displayable.play_music)
+            ]        
 
 init python:
     import sys
     import_dir = os.path.join(renpy.config.gamedir, THIS_PATH, 'python-packages')
     sys.path.append(import_dir)
-
-    from collections import defaultdict
 
     import pygame
     from aubio import source, onset
@@ -58,7 +59,8 @@ init python:
             self.time_offset = None
             # seconds, same unit as st, shown time
             file = os.path.join(renpy.config.gamedir, filepath)
-            self.onset_times = self.get_onset_times(file)
+            # self.onset_times = self.get_onset_times(file)
+            self.onset_times = [5, 10, 15, 18]
             # assign tracks randomly in advance since generating on the fly is too slow
             self.random_track_indices = [
             renpy.random.randint(0, NUM_TRACK_BARS - 1) for _ in range(len(self.onset_times))
@@ -70,13 +72,15 @@ init python:
             self.note_speed = TRACK_BAR_HEIGHT / self.note_offset
 
             # a list active note timestamps on each track
-            self.active_notes_per_track = {}
+            self.active_notes_per_track = {track_idx: [] for track_idx in range(NUM_TRACK_BARS)}
 
             # track number of hits for scoring
             self.num_hits = 0
 
             # the threshold for declaring a note as active when computing onset - (st - self.time_offset)
             self.time_difference_threshold = 0.01
+            # the threshold for considering a note as hit
+            self.hit_threshold = 0.2
 
             # map pygame key code to track idx
             self.keycode_to_track_idx = {
@@ -117,11 +121,12 @@ init python:
 
             # draw the notes
             if self.is_playing:
-                active_notes = self.get_active_notes(st)
-                for track_idx in active_notes:
+                self.active_notes_per_track = self.get_active_notes(st)
+                for track_idx in self.active_notes_per_track:
                     note_drawable = self.note_drawables[track_idx]
                     x_offset = X_OFFSET + track_idx * self.track_bar_spacing + NOTE_XOFFSET
-                    for note_timestamp in active_notes[track_idx]:
+
+                    for _, note_timestamp in self.active_notes_per_track[track_idx]:
                         y_offset = TRACK_BAR_HEIGHT - note_timestamp * self.note_speed
                         render.place(note_drawable, x=x_offset, y=y_offset)
 
@@ -133,25 +138,38 @@ init python:
                 if not ev.key in self.keycode_to_track_idx:
                     return
                 track_idx = self.keycode_to_track_idx[ev.key]
+                active_notes_on_track = self.active_notes_per_track[track_idx]
+                # create a copy of active_notes_on_track so achieve removal while iterating 
+                for note in active_notes_on_track[:]:
+                    onset, _ = note
+                    # time when player attempts to hit the note
+                    curr_time = st - self.time_offset
+                    # difference between the time the note is hittable and actually hit
+                    if onset - self.hit_threshold <= curr_time <= onset + self.hit_threshold:
+                        # the note has been hit, remove it from active
+                        self.active_notes_per_track[track_idx].remove(note)
+                        self.num_hits += 1
+                        renpy.redraw(self, 0)
+                        renpy.restart_interaction() # force refresh the screen for score to show
 
         def visit(self):
             return []
 
         def play_music(self):
-            self.is_playing = True
             renpy.music.play(self.filepath)
+            self.is_playing = True
 
         def get_active_notes(self, st):
-            active_notes = defaultdict(list)
+            active_notes = {track_idx: [] for track_idx in range(NUM_TRACK_BARS)}
             for onset, track_idx in zip(self.onset_times, self.random_track_indices):
                 # determine if this note is active
                 time_before_appearance = onset - (st - self.time_offset)
                 if time_before_appearance < 0: # already outside the screen
                     continue
                 elif time_before_appearance <= self.note_offset: # should be on screen already
-                    active_notes[track_idx].append(time_before_appearance)
+                    active_notes[track_idx].append((onset, time_before_appearance))
                 elif time_before_appearance - self.note_offset < self.time_difference_threshold:
-                    active_notes[track_idx].append(time_before_appearance)
+                    active_notes[track_idx].append((onset, time_before_appearance))
                 elif time_before_appearance > self.note_offset: # still time before it should appear
                     break
 
