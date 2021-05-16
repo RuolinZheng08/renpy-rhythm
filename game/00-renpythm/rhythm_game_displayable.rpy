@@ -3,10 +3,10 @@ define THIS_PATH = '00-renpythm/'
 define IMG_DIR = 'images'
 define TRACK_BAR_IMG = 'track_bar.png'
 define HORIZONTAL_BAR_IMG = 'horizontal_bar.png'
-define IMG_UP = 'arrow_up.png'
-define IMG_LEFT = 'arrow_left.png'
-define IMG_RIGHT = 'arrow_right.png'
-define IMG_DOWN = 'arrow_down.png'
+define IMG_UP = 'up.png'
+define IMG_LEFT = 'left.png'
+define IMG_RIGHT = 'right.png'
+define IMG_DOWN = 'down.png'
 
 # number of track bars on which notes appear, up, left, right, down
 define NUM_TRACK_BARS = 4
@@ -100,7 +100,7 @@ init python:
             self.zoom_scale = 1.2
 
             # offset for rendering
-            self.note_width = 50 # width of the arrow note image
+            self.note_width = 50 # width of the note image
             self.note_xoffset = (TRACK_BAR_WIDTH - self.note_width) / 2
             self.note_xoffset_large = (TRACK_BAR_WIDTH - self.note_width * self.zoom_scale) / 2
 
