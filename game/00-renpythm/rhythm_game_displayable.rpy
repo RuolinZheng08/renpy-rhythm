@@ -1,24 +1,10 @@
 define THIS_PATH = '00-renpythm/'
 
 define IMG_DIR = 'images'
-define TRACK_BAR_IMG = 'track_bar.png'
-define HORIZONTAL_BAR_IMG = 'horizontal_bar.png'
 define IMG_UP = 'up.png'
 define IMG_LEFT = 'left.png'
 define IMG_RIGHT = 'right.png'
 define IMG_DOWN = 'down.png'
-
-# number of track bars on which notes appear, up, left, right, down
-define NUM_TRACK_BARS = 4
-
-define SCREEN_WIDTH = 1280
-define SCREEN_HEIGHT = 720
-# leave some offset from the left side of the screen
-define X_OFFSET = 400
-
-define TRACK_BAR_HEIGHT = 700 # height of the track bar image
-define TRACK_BAR_WIDTH = 12 # width of the track bar image
-define HORIZONTAL_BAR_WIDTH = 700 # width of the horizontal bar image
 
 # screen definition
 screen rhythm_game(filepath):
@@ -52,10 +38,23 @@ init python:
 
             self.is_playing = False
 
+            # zoom the note when it is within the hit threshold
+            self.zoom_scale = 1.2
+
+            # offset for rendering
+            # leave some offset from the left side of the screen
+            self.x_offset = 400
+            self.track_bar_height = int(config.screen_height * 0.9)
+            self.track_bar_width = 12
+            self.horizontal_bar_height = 12
+            self.note_width = 50 # width of the note image
+            self.note_xoffset = (self.track_bar_width - self.note_width) / 2
+            self.note_xoffset_large = (self.track_bar_width - self.note_width * self.zoom_scale) / 2
+
             # note appear on the tracks prior to the actual onset
             # which is also the note's entire lifetime to travel the track
             self.note_offset = 3.0 # seconds
-            self.note_speed = TRACK_BAR_HEIGHT / self.note_offset
+            self.note_speed = self.track_bar_height / self.note_offset
 
             # silence before the music plays
             self.silence_offset = 3.0
@@ -68,6 +67,9 @@ init python:
 
             # limit the number of notes
             self.num_notes_threshold = 300
+
+            # number of track bars
+            self.num_track_bars = 4
 
             file = os.path.join(renpy.config.gamedir, filepath)
             # onset timestamps in the given audio file
@@ -82,11 +84,11 @@ init python:
             self.onset_hits = {onset: False for onset in self.onset_times}
             # assign tracks randomly in advance since generating on the fly is too slow
             self.random_track_indices = [
-            renpy.random.randint(0, NUM_TRACK_BARS - 1) for _ in range(len(self.onset_times))
+            renpy.random.randint(0, self.num_track_bars - 1) for _ in range(len(self.onset_times))
             ]
 
             # a list active note timestamps on each track
-            self.active_notes_per_track = {track_idx: [] for track_idx in range(NUM_TRACK_BARS)}
+            self.active_notes_per_track = {track_idx: [] for track_idx in range(self.num_track_bars)}
 
             # track number of hits for scoring
             self.num_hits = 0
@@ -95,14 +97,6 @@ init python:
             self.time_difference_threshold = 0.01
             # the threshold for considering a note as hit
             self.hit_threshold = 0.2
-
-            # zoom the note when it is within the hit threshold
-            self.zoom_scale = 1.2
-
-            # offset for rendering
-            self.note_width = 50 # width of the note image
-            self.note_xoffset = (TRACK_BAR_WIDTH - self.note_width) / 2
-            self.note_xoffset_large = (TRACK_BAR_WIDTH - self.note_width * self.zoom_scale) / 2
 
             # map pygame key code to track idx
             self.keycode_to_track_idx = {
@@ -114,8 +108,8 @@ init python:
 
             # drawables
             img_dir = os.path.join(THIS_PATH, IMG_DIR)
-            self.track_bar_drawable = Image(os.path.join(img_dir, TRACK_BAR_IMG))
-            self.horizontal_bar_drawable = Image(os.path.join(img_dir, HORIZONTAL_BAR_IMG))
+            self.track_bar_drawable = Solid('#fff', xsize=self.track_bar_width, ysize=self.track_bar_height)
+            self.horizontal_bar_drawable = Solid('#fff', xsize=config.screen_width, ysize=self.horizontal_bar_height)
 
             self.note_drawables = {
             0: Image(os.path.join(img_dir, IMG_UP)),
@@ -132,8 +126,7 @@ init python:
             }
 
             # variables for drawing positions
-            self.track_bar_spacing = (SCREEN_WIDTH - X_OFFSET * 2) / (NUM_TRACK_BARS - 1)
-            self.horizontal_bar_xoffset = (SCREEN_WIDTH - HORIZONTAL_BAR_WIDTH) / 2
+            self.track_bar_spacing = (config.screen_width - self.x_offset * 2) / (self.num_track_bars - 1)
 
             # start playing music
             self.play_music()
@@ -159,19 +152,18 @@ init python:
                     x=config.screen_width / 2, y=config.screen_height / 2)
 
             # draw the tracks
-            for track_idx in range(NUM_TRACK_BARS):
-                x_offset = X_OFFSET + track_idx * self.track_bar_spacing
+            for track_idx in range(self.num_track_bars):
+                x_offset = self.x_offset + track_idx * self.track_bar_spacing
                 render.place(self.track_bar_drawable, x=x_offset, y=0)
             # place a horizontal bar to indicate where the tracks end
-            render.place(self.horizontal_bar_drawable, 
-                x=self.horizontal_bar_xoffset, y=TRACK_BAR_HEIGHT)
+            render.place(self.horizontal_bar_drawable, x=0, y=self.track_bar_height)
 
             # draw the notes
             curr_time = st - self.time_offset
             if self.is_playing:
                 self.active_notes_per_track = self.get_active_notes(st)
                 for track_idx in self.active_notes_per_track:
-                    x_offset = X_OFFSET + track_idx * self.track_bar_spacing
+                    x_offset = self.x_offset + track_idx * self.track_bar_spacing
 
                     for onset, note_timestamp in self.active_notes_per_track[track_idx]:
                         if self.onset_hits[onset] is False: # hasn't been hit, render
@@ -183,7 +175,7 @@ init python:
                                 note_drawable = self.note_drawables[track_idx]
                                 note_xoffset = x_offset + self.note_xoffset 
 
-                            y_offset = TRACK_BAR_HEIGHT - note_timestamp * self.note_speed
+                            y_offset = self.track_bar_height - note_timestamp * self.note_speed
                             render.place(note_drawable, x=note_xoffset, y=y_offset)
 
             renpy.redraw(self, 0)
@@ -215,7 +207,7 @@ init python:
             self.is_playing = True
 
         def get_active_notes(self, st):
-            active_notes = {track_idx: [] for track_idx in range(NUM_TRACK_BARS)}
+            active_notes = {track_idx: [] for track_idx in range(self.num_track_bars)}
             for onset, track_idx in zip(self.onset_times, self.random_track_indices):
                 # determine if this note is active
                 time_before_appearance = onset - (st - self.time_offset)
