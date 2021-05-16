@@ -19,9 +19,6 @@ define X_OFFSET = 400
 define TRACK_BAR_HEIGHT = 700 # height of the track bar image
 define TRACK_BAR_WIDTH = 12 # width of the track bar image
 define HORIZONTAL_BAR_WIDTH = 700 # width of the horizontal bar image
-define NOTE_WIDTH = 50 # width of the arrow note image
-
-define NOTE_XOFFSET = (TRACK_BAR_WIDTH - NOTE_WIDTH) / 2
 
 # screen definition
 screen rhythm_game(filepath):
@@ -99,6 +96,14 @@ init python:
             # the threshold for considering a note as hit
             self.hit_threshold = 0.2
 
+            # zoom the note when it is within the hit threshold
+            self.zoom_scale = 1.2
+
+            # offset for rendering
+            self.note_width = 50 # width of the arrow note image
+            self.note_xoffset = (TRACK_BAR_WIDTH - self.note_width) / 2
+            self.note_xoffset_large = (TRACK_BAR_WIDTH - self.note_width * self.zoom_scale) / 2
+
             # map pygame key code to track idx
             self.keycode_to_track_idx = {
             pygame.K_UP: 0,
@@ -111,11 +116,19 @@ init python:
             img_dir = os.path.join(THIS_PATH, IMG_DIR)
             self.track_bar_drawable = Image(os.path.join(img_dir, TRACK_BAR_IMG))
             self.horizontal_bar_drawable = Image(os.path.join(img_dir, HORIZONTAL_BAR_IMG))
+
             self.note_drawables = {
             0: Image(os.path.join(img_dir, IMG_UP)),
             1: Image(os.path.join(img_dir, IMG_LEFT)),
             2: Image(os.path.join(img_dir, IMG_RIGHT)),
             3: Image(os.path.join(img_dir, IMG_DOWN)),
+            }
+
+            self.note_drawables_large = {
+            0: Transform(self.note_drawables[0], zoom=self.zoom_scale),
+            1: Transform(self.note_drawables[1], zoom=self.zoom_scale),
+            2: Transform(self.note_drawables[2], zoom=self.zoom_scale),
+            3: Transform(self.note_drawables[3], zoom=self.zoom_scale),
             }
 
             # variables for drawing positions
@@ -154,16 +167,24 @@ init python:
                 x=self.horizontal_bar_xoffset, y=TRACK_BAR_HEIGHT)
 
             # draw the notes
+            curr_time = st - self.time_offset
             if self.is_playing:
                 self.active_notes_per_track = self.get_active_notes(st)
                 for track_idx in self.active_notes_per_track:
-                    note_drawable = self.note_drawables[track_idx]
-                    x_offset = X_OFFSET + track_idx * self.track_bar_spacing + NOTE_XOFFSET
+                    x_offset = X_OFFSET + track_idx * self.track_bar_spacing
 
                     for onset, note_timestamp in self.active_notes_per_track[track_idx]:
                         if self.onset_hits[onset] is False: # hasn't been hit, render
+                            # enlarge the note if it is now within the hit threshold
+                            if onset - self.hit_threshold <= curr_time <= onset + self.hit_threshold:
+                                note_drawable = self.note_drawables_large[track_idx]
+                                note_xoffset = x_offset + self.note_xoffset_large 
+                            else:
+                                note_drawable = self.note_drawables[track_idx]
+                                note_xoffset = x_offset + self.note_xoffset 
+
                             y_offset = TRACK_BAR_HEIGHT - note_timestamp * self.note_speed
-                            render.place(note_drawable, x=x_offset, y=y_offset)
+                            render.place(note_drawable, x=note_xoffset, y=y_offset)
 
             renpy.redraw(self, 0)
             return render
@@ -172,13 +193,13 @@ init python:
             if ev.type == pygame.KEYDOWN:
                 if not ev.key in self.keycode_to_track_idx:
                     return
+                curr_time = st - self.time_offset
                 track_idx = self.keycode_to_track_idx[ev.key]
                 active_notes_on_track = self.active_notes_per_track[track_idx]
 
                 for note in active_notes_on_track:
                     onset, _ = note
                     # time when player attempts to hit the note
-                    curr_time = st - self.time_offset
                     # difference between the time the note is hittable and actually hit
                     if onset - self.hit_threshold <= curr_time <= onset + self.hit_threshold:
                         self.onset_hits[onset] = True
@@ -200,8 +221,10 @@ init python:
                 time_before_appearance = onset - (st - self.time_offset)
                 if time_before_appearance < 0: # already outside the screen
                     continue
-                elif time_before_appearance <= self.note_offset: # should be on screen already
+                # should be on screen already
+                elif time_before_appearance <= self.note_offset:
                     active_notes[track_idx].append((onset, time_before_appearance))
+                # within threshold
                 elif time_before_appearance - self.note_offset < self.time_difference_threshold:
                     active_notes[track_idx].append((onset, time_before_appearance))
                 elif time_before_appearance > self.note_offset: # still time before it should appear
