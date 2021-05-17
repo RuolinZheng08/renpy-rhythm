@@ -6,6 +6,8 @@
 
 You can use this project as a standalone playable or integrate it as a minigame into a Ren'Py visual novel project, using any music you like and have the beat map automatically generated for you. Read the [guide for integration](https://github.com/RuolinZheng08/renpy-rhythm#guide-for-integrating-into-a-renpy-project) below.
 
+The music files in `game/audio` are for demonstration purpose only. The author of this repo has no right over them.
+
 ## Compatibility
 
 This chess engine is built with **Ren'Py SDK >= 7.4.0** and has not been tested on **Ren'Py SDK <= 7.3.5**.
