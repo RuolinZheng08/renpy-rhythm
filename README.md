@@ -1,6 +1,6 @@
 # Renpythm: A Rhythm Game Engine for Ren'Py
 
-**Play it now on [itch.io](https://r3dhummingbird.itch.io/renpy-rhythm-game)**
+**Play it now on [itch.io](https://r3dhummingbird.itch.io/renpy-rhythm-game) or watch a demo on [YouTube](https://youtu.be/7fMig9BmDzY)**
 
 ## About
 
