@@ -59,8 +59,10 @@ init python:
             self.note_speed = config.screen_height / self.note_offset
 
             # silence before the music plays
-            self.silence_offset = 3.0
+            self.silence_offset = 4.5
             self.silence = '<silence %s>' % str(self.silence_offset)
+
+            self.countdown = 3.0
 
             # an offset is necessary because there might be a delay between when the
             # displayable first appears on screen and the time the music starts playing
@@ -80,8 +82,7 @@ init python:
             if self.num_notes_threshold is not None and len(onset_times) > self.num_notes_threshold:
                 onset_times = random.sample(onset_times, self.num_notes_threshold)
                 onset_times.sort()
-            # increment by the silence time
-            self.onset_times = [self.silence_offset + onset for onset in onset_times]
+            self.onset_times = onset_times
 
             # whether an onset been hit determines whether it will be rendered
             self.onset_hits = {onset: False for onset in self.onset_times}
@@ -144,16 +145,16 @@ init python:
             render = renpy.Render(width, height)
 
             # count down silence_offset, 3 seconds, while silence
-            countdown = None
-            time_before_music = self.silence_offset - st
+            countdown_text = None
+            time_before_music = self.countdown - st
             if time_before_music > 2.0:
-                countdown = '3'
+                countdown_text = '3'
             elif time_before_music > 1.0:
-                countdown = '2'
+                countdown_text = '2'
             elif time_before_music > 0.0:
-                countdown = '1'
-            if countdown is not None:
-                render.place(Text(countdown, color='#fff', size=48),
+                countdown_text = '1'
+            if countdown_text is not None:
+                render.place(Text(countdown_text, color='#fff', size=48),
                     x=config.screen_width / 2, y=config.screen_height / 2)
 
             # draw the tracks
