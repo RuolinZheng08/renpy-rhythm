@@ -7,9 +7,9 @@ define IMG_RIGHT = 'right.png'
 define IMG_DOWN = 'down.png'
 
 # screen definition
-screen rhythm_game(filepath):
-    # filepath: file path relative to renpy.config.gamedir
-    default rhythm_game_displayable = RhythmGameDisplayable(filepath)
+screen rhythm_game(file_path):
+    # file_path: file path relative to renpy.config.gamedir
+    default rhythm_game_displayable = RhythmGameDisplayable(file_path)
 
     add Solid('#000')
     add rhythm_game_displayable
@@ -34,10 +34,10 @@ init python:
 
     class RhythmGameDisplayable(renpy.Displayable):
 
-        def __init__(self, filepath, num_notes_threshold=250):
+        def __init__(self, file_path):
             super(RhythmGameDisplayable, self).__init__()
 
-            self.filepath = filepath
+            self.file_path = file_path
 
             self.has_started = False
             self.has_ended = False
@@ -73,20 +73,15 @@ init python:
             # seconds, same unit as st, shown time
             self.time_offset = None
 
-            # limit the number of notes
-            self.num_notes_threshold = num_notes_threshold
-
             # number of track bars
             self.num_track_bars = 4
 
-            file = os.path.join(renpy.config.gamedir, filepath)
+            file = os.path.join(renpy.config.gamedir, file_path)
             # onset timestamps in the given audio file
             onset_times = self.get_onset_times(file)
-            # don't subsample if the threshold is None
-            if self.num_notes_threshold is not None and len(onset_times) > self.num_notes_threshold:
-                onset_times = random.sample(onset_times, self.num_notes_threshold)
-                onset_times.sort()
-            self.onset_times = onset_times
+            # use about a half of the notes so that the tracks don't get too crowded
+            # XXX: manually truncate last 10 in case song has finished but notes are still showing
+            self.onset_times = onset_times[:-10][::2]
 
             # whether an onset been hit determines whether it will be rendered
             self.onset_hits = {onset: False for onset in self.onset_times}
@@ -104,14 +99,14 @@ init python:
             # the threshold for declaring a note as active when computing onset - (st - self.time_offset)
             self.time_difference_threshold = 0.01
             # the threshold for considering a note as hit
-            self.hit_threshold = 0.2
+            self.hit_threshold = 0.3
 
             # map pygame key code to track idx
             self.keycode_to_track_idx = {
-            pygame.K_UP: 0,
-            pygame.K_LEFT: 1,
-            pygame.K_RIGHT: 2,
-            pygame.K_DOWN: 3
+            pygame.K_LEFT: 0,
+            pygame.K_UP: 1,
+            pygame.K_DOWN: 2,
+            pygame.K_RIGHT: 3
             }
 
             # drawables
@@ -122,10 +117,10 @@ init python:
             self.horizontal_bar_drawable = Solid('#fff', xsize=config.screen_width, ysize=self.horizontal_bar_height)
 
             self.note_drawables = {
-            0: Image(os.path.join(img_dir, IMG_UP)),
-            1: Image(os.path.join(img_dir, IMG_LEFT)),
-            2: Image(os.path.join(img_dir, IMG_RIGHT)),
-            3: Image(os.path.join(img_dir, IMG_DOWN)),
+            0: Image(os.path.join(img_dir, IMG_LEFT)),
+            1: Image(os.path.join(img_dir, IMG_UP)),
+            2: Image(os.path.join(img_dir, IMG_DOWN)),
+            3: Image(os.path.join(img_dir, IMG_RIGHT)),
             }
 
             self.note_drawables_large = {
@@ -236,7 +231,7 @@ init python:
             return self.drawables
 
         def play_music(self):
-            renpy.music.queue([self.silence, self.filepath], loop=False)
+            renpy.music.queue([self.silence, self.file_path], loop=False)
             self.has_started = True
 
         def get_active_notes(self, st):
@@ -259,12 +254,12 @@ init python:
 
         # https://aubio.org/doc/latest/onset_2test-onset_8c-example.html
         # https://github.com/aubio/aubio/blob/master/python/demos/demo_onset.py
-        def get_onset_times(self, filepath_abs):
+        def get_onset_times(self, file_path_absolute):
             window_size = 1024 # FFT size
             hop_size = window_size // 4
 
             sample_rate = 0
-            src_func = source(filepath_abs, sample_rate, hop_size)
+            src_func = source(file_path_absolute, sample_rate, hop_size)
             sample_rate = src_func.samplerate
             onset_func = onset('default', window_size, hop_size)
             
