@@ -16,6 +16,10 @@ This chess engine is built with **Ren'Py SDK >= 7.4.0** and has not been tested 
 
 <img src="https://github.com/RuolinZheng08/renpy-rhythm/blob/master/demo.gif" alt="Gameplay Example" width=600>
 
+## Automatic Generation of Beat Map for Any Song
+
+This project leverages the onset detection feature in [Aubio's Python module](https://github.com/aubio/aubio/tree/master/python) to automatically generate beat map for any audio file. Read the [guide for integration](https://github.com/RuolinZheng08/renpy-rhythm#guide-for-integrating-into-a-renpy-project) below if you'd like to manually specify the beat map.
+
 ## Guide for Integrating into a Ren'Py Project
 
 All of the files essential to the chess engine are in `game/00-renpythm`. Therefore, you only need to copy the entire `00-renpythm`directory into your Ren'Py `game` directory.
@@ -54,6 +58,10 @@ window show
 $ num_hits, num_notes = _return
 "You hit [num_hits] notes out of [num_notes]. Good work!"
 ```
+
+### Manually Specifying a Beat Map
+
+The automatically generated beat map is stored as a list of timestamps in seconds in `RhythmGameDisplayable.onset_times`. You may overwrite this list with your own list of timestamps, and make adjustment to some other `RhythmGameDisplayable` class attributes that depend on `RhythmGameDisplayable.onset_times`.
 
 ## Continuous Development and Contribution
 The project is under active maintenance and development. Please feel free to submit a GitHub issue for bugs and feature requests. Please also feel free to contribute by submitting GitHub issues and PRs. 
