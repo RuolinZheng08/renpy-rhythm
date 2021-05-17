@@ -5,27 +5,14 @@
 
 define e = Character("Eileen")
 
-
-# The game starts here.
+screen choose_song():
+    add Solid('#000')
 
 label start:
-
-    # Show a background. This uses a placeholder by default, but you can
-    # add a file (named either "bg room.png" or "bg room.jpg") to the
-    # images directory to show it.
-
     scene bg room
+    e "Welcome to the Ren'Py Rhythm Game! Choose a song you'd like to play."
 
-    # This shows a character sprite. A placeholder is used, but you can
-    # replace it by adding a file named "eileen happy.png" to the images
-    # directory.
-
-    show eileen happy
-
-    # These display lines of dialogue.
-
-    e "You've created a new Ren'Py game."
-
+    # start the rhythm game
     window hide
     $ quick_menu = False
 
@@ -44,8 +31,7 @@ label start:
     $ quick_menu = True
     window show
 
-    e "Once you add a story, pictures, and music, you can release it to the world!"
-
-    # This ends the game.
+    $ hits = _return
+    e "You hit [hits] notes. Good work!"
 
     return

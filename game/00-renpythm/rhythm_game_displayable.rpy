@@ -13,8 +13,11 @@ screen rhythm_game(filepath):
 
     add Solid('#000')
     add rhythm_game_displayable
+    if rhythm_game_displayable.has_ended:
+        # use a timer so the player can see the screen once again
+        timer 2.0 action [Return(rhythm_game_displayable.num_hits)]
         
-    showif rhythm_game_displayable.is_playing:
+    showif rhythm_game_displayable.has_started:
         fixed xpos 50 ypos 50 spacing 100:
             vbox:
                 text 'Hits: ' + str(rhythm_game_displayable.num_hits):
@@ -36,7 +39,8 @@ init python:
 
             self.filepath = filepath
 
-            self.is_playing = False
+            self.has_started = False
+            self.has_ended = False
 
             # zoom the note when it is within the hit threshold
             self.zoom_scale = 1.2
@@ -131,6 +135,15 @@ init python:
             3: Transform(self.note_drawables[3], zoom=self.zoom_scale),
             }
 
+            # for self.visit method
+            self.drawables = [
+            self.hit_text_drawable, 
+            self.track_bar_drawable, 
+            self.horizontal_bar_drawable
+            ]
+            self.drawables.extend(list(self.note_drawables.values()))
+            self.drawables.extend(list(self.note_drawables_large.values()))
+
             # variables for drawing positions
             self.track_bar_spacing = (config.screen_width - self.x_offset * 2) / (self.num_track_bars - 1)
 
@@ -139,7 +152,7 @@ init python:
             
         def render(self, width, height, st, at):
             # cache the shown time offset
-            if self.is_playing and self.time_offset is None:
+            if self.has_started and self.time_offset is None:
                 self.time_offset = self.silence_offset + st
 
             render = renpy.Render(width, height)
@@ -164,9 +177,17 @@ init python:
             # place a horizontal bar to indicate where the tracks end
             render.place(self.horizontal_bar_drawable, x=0, y=self.track_bar_height)
 
-            # draw the notes
-            curr_time = st - self.time_offset
-            if self.is_playing:
+            if self.has_started:
+                # if song has ended, return
+                if renpy.music.get_playing() is None:
+                    self.has_ended = True
+                    renpy.timeout(0) # raise event
+                    # no need to draw notes
+                    renpy.redraw(self, 0)
+                    return render
+
+                # draw notes
+                curr_time = st - self.time_offset
                 self.active_notes_per_track = self.get_active_notes(st)
                 for track_idx in self.active_notes_per_track:
                     x_offset = self.x_offset + track_idx * self.track_bar_spacing
@@ -190,6 +211,9 @@ init python:
             return render
 
         def event(self, ev, x, y, st):
+            if self.has_ended: # no need to handle more events
+                renpy.restart_interaction() # force refresh the screen to detect end game
+                return
             if ev.type == pygame.KEYDOWN:
                 if not ev.key in self.keycode_to_track_idx:
                     return
@@ -208,11 +232,12 @@ init python:
                         renpy.restart_interaction() # force refresh the screen for score to show
 
         def visit(self):
-            return []
+            # visit all drawables
+            return self.drawables
 
         def play_music(self):
             renpy.music.queue([self.silence, self.filepath], loop=False)
-            self.is_playing = True
+            self.has_started = True
 
         def get_active_notes(self, st):
             active_notes = {track_idx: [] for track_idx in range(self.num_track_bars)}
