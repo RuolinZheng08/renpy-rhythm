@@ -32,7 +32,7 @@ label start:
     # avoid rolling back and losing chess game state
     $ renpy.block_rollback()
 
-    $ f = 'audio/small.mp3'
+    $ f = 'audio/nitw_die_anywhere_else.mp3'
     call screen rhythm_game(f)
 
     # avoid rolling back and entering the chess game again

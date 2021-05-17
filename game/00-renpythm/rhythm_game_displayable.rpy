@@ -31,7 +31,7 @@ init python:
 
     class RhythmGameDisplayable(renpy.Displayable):
 
-        def __init__(self, filepath):
+        def __init__(self, filepath, num_notes_threshold=250):
             super(RhythmGameDisplayable, self).__init__()
 
             self.filepath = filepath
@@ -44,17 +44,19 @@ init python:
             # offset for rendering
             # leave some offset from the left side of the screen
             self.x_offset = 400
-            self.track_bar_height = int(config.screen_height * 0.9)
+            self.track_bar_height = int(config.screen_height * 0.85)
             self.track_bar_width = 12
-            self.horizontal_bar_height = 12
+            self.horizontal_bar_height = 8
             self.note_width = 50 # width of the note image
             self.note_xoffset = (self.track_bar_width - self.note_width) / 2
             self.note_xoffset_large = (self.track_bar_width - self.note_width * self.zoom_scale) / 2
+            # place the hit text some spacing from the end of the track bar
+            self.hit_text_yoffset = 30
 
             # note appear on the tracks prior to the actual onset
-            # which is also the note's entire lifetime to travel the track
+            # which is also the note's entire lifetime to travel the entire screen
             self.note_offset = 3.0 # seconds
-            self.note_speed = self.track_bar_height / self.note_offset
+            self.note_speed = config.screen_height / self.note_offset
 
             # silence before the music plays
             self.silence_offset = 3.0
@@ -66,7 +68,7 @@ init python:
             self.time_offset = None
 
             # limit the number of notes
-            self.num_notes_threshold = 300
+            self.num_notes_threshold = num_notes_threshold
 
             # number of track bars
             self.num_track_bars = 4
@@ -74,7 +76,8 @@ init python:
             file = os.path.join(renpy.config.gamedir, filepath)
             # onset timestamps in the given audio file
             onset_times = self.get_onset_times(file)
-            if len(onset_times) > self.num_notes_threshold:
+            # don't subsample if the threshold is None
+            if self.num_notes_threshold is not None and len(onset_times) > self.num_notes_threshold:
                 onset_times = random.sample(onset_times, self.num_notes_threshold)
                 onset_times.sort()
             # increment by the silence time
@@ -107,6 +110,8 @@ init python:
             }
 
             # drawables
+            self.hit_text_drawable = Text('Hit!', color='#fff')
+
             img_dir = os.path.join(THIS_PATH, IMG_DIR)
             self.track_bar_drawable = Solid('#fff', xsize=self.track_bar_width, ysize=self.track_bar_height)
             self.horizontal_bar_drawable = Solid('#fff', xsize=config.screen_width, ysize=self.horizontal_bar_height)
@@ -168,7 +173,7 @@ init python:
                     for onset, note_timestamp in self.active_notes_per_track[track_idx]:
                         if self.onset_hits[onset] is False: # hasn't been hit, render
                             # enlarge the note if it is now within the hit threshold
-                            if onset - self.hit_threshold <= curr_time <= onset + self.hit_threshold:
+                            if abs(curr_time - onset) <= self.hit_threshold:
                                 note_drawable = self.note_drawables_large[track_idx]
                                 note_xoffset = x_offset + self.note_xoffset_large 
                             else:
@@ -177,6 +182,8 @@ init python:
 
                             y_offset = self.track_bar_height - note_timestamp * self.note_speed
                             render.place(note_drawable, x=note_xoffset, y=y_offset)
+                        else: # show hit text
+                            render.place(self.hit_text_drawable, x=x_offset, y=self.track_bar_height + self.hit_text_yoffset)
 
             renpy.redraw(self, 0)
             return render
@@ -193,7 +200,7 @@ init python:
                     onset, _ = note
                     # time when player attempts to hit the note
                     # difference between the time the note is hittable and actually hit
-                    if onset - self.hit_threshold <= curr_time <= onset + self.hit_threshold:
+                    if abs(curr_time - onset) <= self.hit_threshold:
                         self.onset_hits[onset] = True
                         self.num_hits += 1
                         renpy.redraw(self, 0)
@@ -203,7 +210,7 @@ init python:
             return []
 
         def play_music(self):
-            renpy.music.queue([self.silence, self.filepath])
+            renpy.music.queue([self.silence, self.filepath], loop=False)
             self.is_playing = True
 
         def get_active_notes(self, st):
@@ -217,7 +224,7 @@ init python:
                 elif time_before_appearance <= self.note_offset:
                     active_notes[track_idx].append((onset, time_before_appearance))
                 # within threshold
-                elif time_before_appearance - self.note_offset < self.time_difference_threshold:
+                elif abs(time_before_appearance - self.note_offset) < self.time_difference_threshold:
                     active_notes[track_idx].append((onset, time_before_appearance))
                 elif time_before_appearance > self.note_offset: # still time before it should appear
                     break
