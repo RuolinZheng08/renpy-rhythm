@@ -15,7 +15,10 @@ screen rhythm_game(file_path):
     add rhythm_game_displayable
     if rhythm_game_displayable.has_ended:
         # use a timer so the player can see the screen once again
-        timer 2.0 action [Return(rhythm_game_displayable.num_hits)]
+        timer 2.0 action [Return(
+            (rhythm_game_displayable.num_hits, 
+                rhythm_game_displayable.num_notes)
+            )]
         
     showif rhythm_game_displayable.has_started:
         fixed xpos 50 ypos 50 spacing 100:
@@ -62,12 +65,6 @@ init python:
             self.note_offset = 3.0 # seconds
             self.note_speed = config.screen_height / self.note_offset
 
-            # silence before the music plays
-            self.silence_offset = 4.5
-            self.silence = '<silence %s>' % str(self.silence_offset)
-
-            self.countdown = 3.0
-
             # an offset is necessary because there might be a delay between when the
             # displayable first appears on screen and the time the music starts playing
             # seconds, same unit as st, shown time
@@ -76,18 +73,24 @@ init python:
             # number of track bars
             self.num_track_bars = 4
 
+            # silence before the music plays
+            self.silence_offset_start = 4.5
+            self.silence_start = '<silence %s>' % str(self.silence_offset_start)
+            # count down before the music plays
+            self.countdown = 3.0
+
             file = os.path.join(renpy.config.gamedir, file_path)
             # onset timestamps in the given audio file
             onset_times = self.get_onset_times(file)
-            # use about a half of the notes so that the tracks don't get too crowded
-            # XXX: manually truncate last 10 in case song has finished but notes are still showing
-            self.onset_times = onset_times[:-10][::2]
+            # use half of the notes so that the tracks don't get too crowded
+            self.onset_times = onset_times[::2]
 
             # whether an onset been hit determines whether it will be rendered
             self.onset_hits = {onset: False for onset in self.onset_times}
+            self.num_notes = len(self.onset_times)
             # assign tracks randomly in advance since generating on the fly is too slow
             self.random_track_indices = [
-            renpy.random.randint(0, self.num_track_bars - 1) for _ in range(len(self.onset_times))
+            renpy.random.randint(0, self.num_track_bars - 1) for _ in range(self.num_notes)
             ]
 
             # a list active note timestamps on each track
@@ -148,11 +151,11 @@ init python:
         def render(self, width, height, st, at):
             # cache the shown time offset
             if self.has_started and self.time_offset is None:
-                self.time_offset = self.silence_offset + st
+                self.time_offset = self.silence_offset_start + st
 
             render = renpy.Render(width, height)
 
-            # count down silence_offset, 3 seconds, while silence
+            # count down silence_offset_start, 3 seconds, while silence
             countdown_text = None
             time_before_music = self.countdown - st
             if time_before_music > 2.0:
@@ -231,7 +234,7 @@ init python:
             return self.drawables
 
         def play_music(self):
-            renpy.music.queue([self.silence, self.file_path], loop=False)
+            renpy.music.queue([self.silence_start, self.file_path], loop=False)
             self.has_started = True
 
         def get_active_notes(self, st):
@@ -254,6 +257,7 @@ init python:
 
         # https://aubio.org/doc/latest/onset_2test-onset_8c-example.html
         # https://github.com/aubio/aubio/blob/master/python/demos/demo_onset.py
+        # https://aubio.org/manual/latest/py_io.html
         def get_onset_times(self, file_path_absolute):
             window_size = 1024 # FFT size
             hop_size = window_size // 4
@@ -263,12 +267,18 @@ init python:
             sample_rate = src_func.samplerate
             onset_func = onset('default', window_size, hop_size)
             
+            duration = float(src_func.duration) / src_func.samplerate
+
             onset_times = [] # seconds
             while True: # read frames
                 samples, num_frames_read = src_func()
                 if onset_func(samples):
-                    onset_times.append(onset_func.get_last_s())
+                    onset_time = onset_func.get_last_s()
+                    if onset_time < duration:
+                        onset_times.append(onset_time)
+                    else:
+                        break
                 if num_frames_read < hop_size:
                     break
-
+            
             return onset_times
