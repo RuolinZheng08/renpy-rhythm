@@ -1,10 +1,10 @@
-# Renpythm: A Rhythm Game Engine for Ren'Py
+# Ren'Py Rhythm: A Rhythm Game Engine for Ren'Py
 
 **Play it now on [itch.io](https://r3dhummingbird.itch.io/renpy-rhythm-game) or watch a demo on [YouTube](https://youtu.be/7fMig9BmDzY)**
 
 ## About
 
-**Renpythm** (combining the words Ren'Py and rhythm) is a rhythm game engine built with the [Ren'Py](http://renpy.org/) Visual Novel Engine and [Aubio](https://aubio.org/), a libraray for audio labeling. Aubio is used to automatically generate beat map for any custom audio file.
+**Ren'Py Rhythm** is a rhythm game engine built with the [Ren'Py](http://renpy.org/) Visual Novel Engine and [Aubio](https://aubio.org/), a libraray for audio labeling. Aubio is used to automatically generate beat map for any custom audio file.
 
 You can use this project as a standalone playable or integrate it as a minigame into a Ren'Py visual novel project, using any music you like and have the beat map automatically generated for you. Read the [guide for integration](https://github.com/RuolinZheng08/renpy-rhythm#guide-for-integrating-into-a-renpy-project) below.
 
