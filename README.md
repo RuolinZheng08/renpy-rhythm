@@ -87,6 +87,10 @@ The script can also be run on an entire directory, `python generate_beatmap.py a
 2.7948
 ```
 
+### Manually Specifying a Beat Map
+
+You may also manually create your beat map text file, as long as it adheres to the format shown above.
+
 ### Adjust Difficulty Levels
 
 If you are looking for ways to implement different difficulty levels. The following variables may be of interes:
