@@ -12,17 +12,13 @@ The music files in `game/audio` are for demonstration purpose only. The author o
 
 ## Compatibility
 
-This project is built with **Ren'Py SDK >= 7.4.0** and has not been tested on **Ren'Py SDK <= 7.3.5**.
+This project is built with **Ren'Py SDK >= 7.4.0** and is also compatible with **Ren'Py SDK <= 7.3.5**.
 
 ## Gameplay Demo
 
 Use the four arrow keys on your keyboard to play the game. 
 
 <img src="https://github.com/RuolinZheng08/renpy-rhythm/blob/master/demo.gif" alt="Gameplay Example" width=600>
-
-## Automatic Generation of Beat Map for Any Song
-
-This project leverages the onset detection feature in [Aubio's Python module](https://github.com/aubio/aubio/tree/master/python) to automatically generate beat map for any audio file. Read the [guide for integration](https://github.com/RuolinZheng08/renpy-rhythm#guide-for-integrating-into-a-renpy-project) below if you'd like to manually specify the beat map.
 
 ## Guide for Integrating into a Ren'Py Project
 
@@ -33,13 +29,14 @@ All of the files essential to the chess engine are in `game/00-renpythm`. Theref
 ```
 00-renpythm/
     - images                        # music note images
-    - python-packages               # Python libraries
     - rhythm_game_displayable.rpy   # core GUI class
 ```
 
-The core GUI class is a [Ren'Py Creator-Defined Displayable](https://www.renpy.org/doc/html/udd.html) named `RhythmGameDisplayable` inside `00-renpythm/rhythm_game_displayable.rpy`.
+The core GUI class is a [Ren'Py Creator-Defined Displayable](https://www.renpy.org/doc/html/udd.html) named `RhythmGameDisplayable` inside `rhythm_game_displayable.rpy`.
 
-To call the rhythm game displayable screen, all you need is a file name, for example, a file in `game/audio` named `my_music.mp3`. Its full path is `audio/my_music.mp3`, which you need to pass to the `rhythm_game` screen. (Also see the `game/script.rpy` file in this repo for more examples.)
+To call the rhythm game displayable screen, all you need is a audio file and its corresponding beat map text file. The utilities to automatically generate beat map files is included in `00-renpythm-utils` and the procedure is described below in details.
+
+Take for example a file in `game/audio` named `my_music.mp3`. Its full path is `audio/my_music.mp3`  which you need to pass to the `rhythm_game` screen. (Also see the `game/script.rpy` file in this repo for more examples.)
 
 ```renpy
 window hide
@@ -48,7 +45,7 @@ $ quick_menu = False
 # avoid rolling back and losing chess game state
 $ renpy.block_rollback()
 
-call screen rhythm_game('audio/my_music.mp3')
+call screen rhythm_game('audio/my_music.mp3', 'audio/my_music.beatmap.txt')
 
 # avoid rolling back and entering the chess game again
 $ renpy.block_rollback()
@@ -63,9 +60,39 @@ $ num_hits, num_notes = _return
 "You hit [num_hits] notes out of [num_notes]. Good work!"
 ```
 
-### Manually Specifying a Beat Map
+### Automatic Generation of Beat Map Files
 
-The automatically generated beat map is stored as a list of timestamps in seconds in `RhythmGameDisplayable.onset_times`. You may overwrite this list with your own list of timestamps, and make adjustment to some other `RhythmGameDisplayable` class attributes that depend on `RhythmGameDisplayable.onset_times`.
+This project leverages the onset detection feature in [Aubio's Python module](https://github.com/aubio/aubio/tree/master/python) to automatically generate beat map for any audio file. The script to generate a beat map is `00-renpythm-utils/generate_beatmap.py`.
+
+You will need to install Python to run this script. This script is developed using MacOS's default Python 2.7.16.
+
+```bash
+Usage: python generate_beatmap.py [input]
+```
+
+As an example, `python generate_beatmap.py audio/my_music.mp3` will generate `audio/my_music.beatmap.txt`.
+
+The script can also be run on an entire directory, `python generate_beatmap.py audio/` will take all valid audio files and generate their beat maps.
+
+`beatmap.txt` is really just a text file with floating point numbers separated by newlines, each denoting when a note should appear. It's usually a couple hundred lines long, meaning that the song has a couple hundred notes. It may look like below, where the first note appears `0.0259` second into the song and the last note shown appears `2.7948` seconds into the song.
+
+```
+0.0259
+0.4201
+0.8147
+1.2137
+1.6092
+2.0036
+2.3981
+2.7948
+```
+
+### Adjust Difficulty Levels
+
+If you are looking for ways to implement different difficulty levels. The following variables may be of interes:
+
+- `RhythmGameDisplayable.note_offset` which affects `RhythmGameDisplayable.note_speed` computed as `note_speed = config.screen_height / note_offset`. `note_offset` is the total time in seconds it takes for a note to scroll vertically across the screen. Hence, a smaller `note_offest` results in a larger `note_speed` - faster moving notes - and increases the game's difficulty.
+- The `beatmap_stride` passed to the constructor of `RhythmGameDisplayable`. This must be a non-negative integer and defaults to 2. A smaller `beatmap_stride` like 1 will result in drastically more notes appearing on the screen, increasing the game's difficulty.
 
 ## Continuous Development and Contribution
 The project is under active maintenance and development. Please feel free to submit a GitHub issue for bugs and feature requests. Please also feel free to contribute by submitting GitHub issues and PRs. 
