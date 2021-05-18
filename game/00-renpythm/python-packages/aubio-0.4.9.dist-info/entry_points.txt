@@ -1,4 +1,0 @@
-[console_scripts]
-aubio = aubio.cmd:main
-aubiocut = aubio.cut:main
-

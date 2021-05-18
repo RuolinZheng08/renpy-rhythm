@@ -1,3 +1,5 @@
+# Note: the terms onset and beatmap are used interchangeably in this script
+
 define THIS_PATH = '00-renpythm/'
 
 define IMG_DIR = 'images'
@@ -7,9 +9,10 @@ define IMG_RIGHT = 'right.png'
 define IMG_DOWN = 'down.png'
 
 # screen definition
-screen rhythm_game(file_path):
-    # file_path: file path relative to renpy.config.gamedir
-    default rhythm_game_displayable = RhythmGameDisplayable(file_path)
+screen rhythm_game(audio_path, beatmap_path, beatmap_stride=None):
+    # audio_path (str): file path relative to renpy.config.gamedir
+    default rhythm_game_displayable = RhythmGameDisplayable(
+        audio_path, beatmap_path, beatmap_stride=beatmap_stride)
 
     add Solid('#000')
     add rhythm_game_displayable
@@ -27,20 +30,18 @@ screen rhythm_game(file_path):
                      color '#fff'
 
 init python:
-    import sys
-    import_dir = os.path.join(renpy.config.gamedir, THIS_PATH, 'python-packages')
-    sys.path.append(import_dir)
-
     import random
     import pygame
-    from aubio import source, onset
 
     class RhythmGameDisplayable(renpy.Displayable):
 
-        def __init__(self, file_path):
+        def __init__(self, audio_path, beatmap_path, beatmap_stride=None):
+            """
+            beatmap_stride (int): Default to 2. Use onset_times[::beatmap_stride] so that the tracks don't get too crowded. Can be used to set difficulty level
+            """
             super(RhythmGameDisplayable, self).__init__()
 
-            self.file_path = file_path
+            self.audio_path = audio_path
 
             self.has_started = False
             self.has_ended = False
@@ -62,6 +63,7 @@ init python:
 
             # note appear on the tracks prior to the actual onset
             # which is also the note's entire lifetime to travel the entire screen
+            # can be used to set difficulty level of the game
             self.note_offset = 3.0 # seconds
             self.note_speed = config.screen_height / self.note_offset
 
@@ -79,11 +81,12 @@ init python:
             # count down before the music plays
             self.countdown = 3.0
 
-            file = os.path.join(renpy.config.gamedir, file_path)
-            # onset timestamps in the given audio file
-            onset_times = self.get_onset_times(file)
-            # use half of the notes so that the tracks don't get too crowded
-            self.onset_times = onset_times[::2]
+            # onset timestamps in the beatmap file given audio file
+            onset_times = self.read_beatmap_file(beatmap_path)
+            # take strides throught onset_times so that the tracks don't get too crowded
+            if beatmap_stride is None:
+                beatmap_stride = 2
+            self.onset_times = onset_times[::beatmap_stride]
 
             # whether an onset been hit determines whether it will be rendered
             self.onset_hits = {onset: False for onset in self.onset_times}
@@ -234,7 +237,7 @@ init python:
             return self.drawables
 
         def play_music(self):
-            renpy.music.queue([self.silence_start, self.file_path], loop=False)
+            renpy.music.queue([self.silence_start, self.audio_path], loop=False)
             self.has_started = True
 
         def get_active_notes(self, st):
@@ -255,30 +258,10 @@ init python:
 
             return active_notes
 
-        # https://aubio.org/doc/latest/onset_2test-onset_8c-example.html
-        # https://github.com/aubio/aubio/blob/master/python/demos/demo_onset.py
-        # https://aubio.org/manual/latest/py_io.html
-        def get_onset_times(self, file_path_absolute):
-            window_size = 1024 # FFT size
-            hop_size = window_size // 4
-
-            sample_rate = 0
-            src_func = source(file_path_absolute, sample_rate, hop_size)
-            sample_rate = src_func.samplerate
-            onset_func = onset('default', window_size, hop_size)
-            
-            duration = float(src_func.duration) / src_func.samplerate
-
-            onset_times = [] # seconds
-            while True: # read frames
-                samples, num_frames_read = src_func()
-                if onset_func(samples):
-                    onset_time = onset_func.get_last_s()
-                    if onset_time < duration:
-                        onset_times.append(onset_time)
-                    else:
-                        break
-                if num_frames_read < hop_size:
-                    break
-            
+        def read_beatmap_file(self, beatmap_path):
+            # read newline separated floats
+            beatmap_path_full = os.path.join(config.gamedir, beatmap_path)
+            with open(beatmap_path_full, 'rt') as f:
+                text = f.read()
+            onset_times = [float(string) for string in text.split('\n') if string != '']
             return onset_times
