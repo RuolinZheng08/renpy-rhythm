@@ -74,7 +74,7 @@ As an example, `python generate_beatmap.py audio/my_music.mp3` will generate `au
 
 The script can also be run on an entire directory, `python generate_beatmap.py audio/` will take all valid audio files and generate their beat maps.
 
-`beatmap.txt` is really just a text file with floating point numbers separated by newlines, each denoting when a note should appear. It's usually a couple hundred lines long, meaning that the song has a couple hundred notes. It may look like below, where the first note appears `0.0259` second into the song and the last note shown appears `2.7948` seconds into the song.
+`beatmap.txt` is really just a text file with floating point numbers separated by newlines, each denoting when a note should appear. It's usually a couple hundred lines long, meaning that the song has a couple hundred notes. It may look like below, where the first note appears `0.0259` second into the song and the last note shown appears `2.7948` seconds into the song. See those `game/audio/*.beatmap.txt` for more information.
 
 ```
 0.0259
