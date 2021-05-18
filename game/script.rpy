@@ -12,12 +12,30 @@ label start:
                 'audio/nitw_die_anywhere_else.mp3',
                 'audio/nitw_die_anywhere_else.beatmap.txt'
                 ),
-            # 'Night in the Woods - Possum Springs': os.path.join(audio_directory, 'nitw_possum_springs.mp3'),
-            # 'OMORI - Duet': os.path.join(audio_directory, 'omori_duet.mp3'),
-            # 'OMORI - Stardust Diving': os.path.join(audio_directory, 'omori_stardust_diving.mp3'),
-            # 'Deltarune - Chill Buster': os.path.join(audio_directory, 'deltarune_chill_buster.mp3'),
-            # 'Doki Doki Literature Club - Your Reality': os.path.join(audio_directory, 'ddlc_your_reality.mp3'),
-            # "Pokemon Dungeon - Dialga's Fight to the Finish": os.path.join(audio_directory, 'pokemon_dialga.mp3')
+            'Night in the Woods - Possum Springs': (
+                'audio/nitw_possum_springs.mp3',
+                'audio/nitw_possum_springs.beatmap.txt'
+                ),
+            'OMORI - Duet': (
+                'audio/omori_duet.mp3',
+                'audio/omori_duet.beatmap.txt'
+                ),
+            'OMORI - Stardust Diving': (
+                'audio/omori_stardust_diving.mp3',
+                'audio/omori_stardust_diving.beatmap.txt'
+                ),
+            'Deltarune - Chill Buster': (
+                'audio/deltarune_chill_buster.mp3',
+                'audio/deltarune_chill_buster.beatmap.txt'
+                ),
+            'Doki Doki Literature Club - Your Reality': (
+                'audio/ddlc_your_reality.mp3',
+                'audio/ddlc_your_reality.beatmap.txt'
+                ),
+            "Pokemon Dungeon - Dialga's Fight to the Finish": (
+                'audio/pokemon_dialga.mp3',
+                'audio/pokemon_dialga.beatmap.txt'
+                )
         }
         # use a menu
         choice = renpy.display_menu(list(audio_map.items()))
