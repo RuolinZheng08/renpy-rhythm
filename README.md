@@ -8,8 +8,6 @@
 
 You can use this project as a standalone playable or integrate it as a minigame into a Ren'Py visual novel project, using any music you like and have the beat map automatically generated for you. Read the [guide for integration](https://github.com/RuolinZheng08/renpy-rhythm#guide-for-integrating-into-a-renpy-project) below.
 
-The music files in `game/audio` are for demonstration purpose only. The author of this repo has no right over them.
-
 ## Compatibility
 
 This project is built with **Ren'Py SDK >= 7.4.0** and is also compatible with **Ren'Py SDK <= 7.3.5**.
@@ -100,3 +98,12 @@ If you are looking for ways to implement different difficulty levels. The follow
 
 ## Continuous Development and Contribution
 The project is under active maintenance and development. Please feel free to submit a GitHub issue for bugs and feature requests. Please also feel free to contribute by submitting GitHub issues and PRs. 
+
+## Music File Credit
+
+All music files are copyright free ones found on SoundCloud.
+
+- [Positivity](https://soundcloud.com/nocopyrightlofi/no-copyright-chill-lofi-hiphop-positivity-by-envy)
+- [Isolation](https://soundcloud.com/nocopyrightlofi/no-copyright-chill-lofi-hiphop)
+- [Thoughts](https://soundcloud.com/nocopyrightlofi/no-copyright-chill-lofi-hip)
+- [Pearlescent](https://soundcloud.com/nocopyrightlofi/no-copyright-chill-lofi-hiphop-purlecent-by-matxete-prod)

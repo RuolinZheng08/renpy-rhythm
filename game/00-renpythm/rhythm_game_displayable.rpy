@@ -2,11 +2,11 @@
 
 define THIS_PATH = '00-renpythm/'
 
-define IMG_DIR = 'images'
-define IMG_UP = 'up.png'
-define IMG_LEFT = 'left.png'
-define IMG_RIGHT = 'right.png'
-define IMG_DOWN = 'down.png'
+define IMG_DIR = 'images/'
+define IMG_UP = THIS_PATH + IMG_DIR + 'up.png'
+define IMG_LEFT = THIS_PATH + IMG_DIR + 'left.png'
+define IMG_RIGHT = THIS_PATH + IMG_DIR + 'right.png'
+define IMG_DOWN = THIS_PATH + IMG_DIR + 'down.png'
 
 # screen definition
 screen rhythm_game(audio_path, beatmap_path, beatmap_stride=None):
@@ -118,15 +118,14 @@ init python:
             # drawables
             self.hit_text_drawable = Text('Hit!', color='#fff')
 
-            img_dir = os.path.join(THIS_PATH, IMG_DIR)
             self.track_bar_drawable = Solid('#fff', xsize=self.track_bar_width, ysize=self.track_bar_height)
             self.horizontal_bar_drawable = Solid('#fff', xsize=config.screen_width, ysize=self.horizontal_bar_height)
 
             self.note_drawables = {
-            0: Image(os.path.join(img_dir, IMG_LEFT)),
-            1: Image(os.path.join(img_dir, IMG_UP)),
-            2: Image(os.path.join(img_dir, IMG_DOWN)),
-            3: Image(os.path.join(img_dir, IMG_RIGHT)),
+            0: Image(IMG_LEFT),
+            1: Image(IMG_UP),
+            2: Image(IMG_DOWN),
+            3: Image(IMG_RIGHT),
             }
 
             self.note_drawables_large = {

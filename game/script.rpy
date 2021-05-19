@@ -2,39 +2,28 @@
 
 label start:
     scene bg room
-    e "Welcome to the Ren'Py Rhythm Game! Choose a song you'd like to play."
+    e "Welcome to the Ren'Py Rhythm Game! Choose a lofi song you'd like to play."
+    window hide
 
     # define the song titles and their files
     python:
         import os
         audio_map = {
-            'Night in the Woods - Die Anywhere Else': (
-                'audio/nitw_die_anywhere_else.mp3',
-                'audio/nitw_die_anywhere_else.beatmap.txt'
+            'Isolation': (
+                'audio/Isolation.mp3',
+                'audio/Isolation.beatmap.txt'
                 ),
-            'Night in the Woods - Possum Springs': (
-                'audio/nitw_possum_springs.mp3',
-                'audio/nitw_possum_springs.beatmap.txt'
+            'Positivity': (
+                'audio/Positivity.mp3',
+                'audio/Positivity.beatmap.txt'
                 ),
-            'OMORI - Duet': (
-                'audio/omori_duet.mp3',
-                'audio/omori_duet.beatmap.txt'
+            'Pearlescent': (
+                'audio/Pearlescent.mp3',
+                'audio/Pearlescent.beatmap.txt'
                 ),
-            'OMORI - Stardust Diving': (
-                'audio/omori_stardust_diving.mp3',
-                'audio/omori_stardust_diving.beatmap.txt'
-                ),
-            'Deltarune - Chill Buster': (
-                'audio/deltarune_chill_buster.mp3',
-                'audio/deltarune_chill_buster.beatmap.txt'
-                ),
-            'Doki Doki Literature Club - Your Reality': (
-                'audio/ddlc_your_reality.mp3',
-                'audio/ddlc_your_reality.beatmap.txt'
-                ),
-            "Pokemon Dungeon - Dialga's Fight to the Finish": (
-                'audio/pokemon_dialga.mp3',
-                'audio/pokemon_dialga.beatmap.txt'
+            'Thoughts': (
+                'audio/Thoughts.mp3',
+                'audio/Thoughts.beatmap.txt'
                 )
         }
         # use a menu
