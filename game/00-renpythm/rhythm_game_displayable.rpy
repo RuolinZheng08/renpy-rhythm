@@ -2,6 +2,7 @@
 
 define THIS_PATH = '00-renpythm/'
 
+# XXX: using os.path.join here will actually break because Ren'Py somehow doesn't recognize it
 define IMG_DIR = 'images/'
 define IMG_UP = THIS_PATH + IMG_DIR + 'up.png'
 define IMG_LEFT = THIS_PATH + IMG_DIR + 'left.png'
