@@ -43,7 +43,7 @@ $ quick_menu = False
 # avoid rolling back and losing chess game state
 $ renpy.block_rollback()
 
-call screen rhythm_game('audio/my_music.mp3', 'audio/my_music.beatmap.txt')
+call screen rhythm_game('audio/my_music.mp3', 'audio/my_music.beatmap.txt', beatmap_stride=2)
 
 # avoid rolling back and entering the chess game again
 $ renpy.block_rollback()
@@ -91,7 +91,7 @@ You may also manually create your beat map text file, as long as it adheres to t
 
 ### Adjust Difficulty Levels
 
-If you are looking for ways to implement different difficulty levels. The following variables may be of interes:
+If you are looking for ways to implement different difficulty levels. The following variables may be of interest:
 
 - `RhythmGameDisplayable.note_offset` which affects `RhythmGameDisplayable.note_speed` computed as `note_speed = config.screen_height / note_offset`. `note_offset` is the total time in seconds it takes for a note to scroll vertically across the screen. Hence, a smaller `note_offest` results in a larger `note_speed` - faster moving notes - and increases the game's difficulty.
 - The `beatmap_stride` passed to the constructor of `RhythmGameDisplayable`. This must be a non-negative integer and defaults to 2. A smaller `beatmap_stride` like 1 will result in drastically more notes appearing on the screen, increasing the game's difficulty.
