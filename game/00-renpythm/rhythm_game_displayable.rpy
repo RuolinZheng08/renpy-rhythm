@@ -31,7 +31,6 @@ screen rhythm_game(audio_path, beatmap_path, beatmap_stride=None):
                      color '#fff'
 
 init python:
-    import random
     import pygame
 
     class RhythmGameDisplayable(renpy.Displayable):
@@ -147,6 +146,11 @@ init python:
 
             # variables for drawing positions
             self.track_bar_spacing = (config.screen_width - self.x_offset * 2) / (self.num_track_bars - 1)
+            # cache computation for looking up on the fly for better performance
+            self.track_xoffsets = {
+            track_idx: self.x_offset + track_idx * self.track_bar_spacing
+            for track_idx in range(self.num_track_bars)
+            }
 
             # start playing music
             self.play_music()
@@ -173,7 +177,7 @@ init python:
 
             # draw the tracks
             for track_idx in range(self.num_track_bars):
-                x_offset = self.x_offset + track_idx * self.track_bar_spacing
+                x_offset = self.track_xoffsets[track_idx] # look up to save computation
                 render.place(self.track_bar_drawable, x=x_offset, y=0)
             # place a horizontal bar to indicate where the tracks end
             render.place(self.horizontal_bar_drawable, x=0, y=self.track_bar_height)
@@ -191,7 +195,7 @@ init python:
                 curr_time = st - self.time_offset
                 self.active_notes_per_track = self.get_active_notes(st)
                 for track_idx in self.active_notes_per_track:
-                    x_offset = self.x_offset + track_idx * self.track_bar_spacing
+                    x_offset = self.track_xoffsets[track_idx] # look up to save computation
 
                     for onset, note_timestamp in self.active_notes_per_track[track_idx]:
                         if self.onset_hits[onset] is False: # hasn't been hit, render

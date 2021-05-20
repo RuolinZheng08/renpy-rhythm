@@ -182,6 +182,8 @@ init python:
     build.classify('**/.**', None)
     build.classify('**/#**', None)
     build.classify('**/thumbs.db', None)
+    build.classify('demo.gif', None)
+    build.classify('00-renpythm-utils', None)
 
     ## To archive files, classify them as 'archive'.
 
