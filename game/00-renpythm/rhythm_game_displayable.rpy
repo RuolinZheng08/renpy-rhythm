@@ -9,33 +9,72 @@ define IMG_LEFT = THIS_PATH + IMG_DIR + 'left.png'
 define IMG_RIGHT = THIS_PATH + IMG_DIR + 'right.png'
 define IMG_DOWN = THIS_PATH + IMG_DIR + 'down.png'
 
-# screen definition
-screen rhythm_game(audio_path, beatmap_path, beatmap_stride=None):
-    # audio_path (str): file path relative to renpy.config.gamedir
-    default rhythm_game_displayable = RhythmGameDisplayable(
-        audio_path, beatmap_path, beatmap_stride=beatmap_stride)
+# music channel for renpy.play
+define CHANNEL_RHYTHM_GAME = 'CHANNEL_RHYTHM_GAME'
+
+screen rhythm_game(audio_path, beatmap_path, beatmap_stride=1):
+    # disable the arrow keys from activating the Quit button
+    # https://www.renpy.org/doc/html/screens.html#key
+    key 'K_LEFT' action NullAction()
+    key 'K_UP' action NullAction()
+    key 'K_DOWN' action NullAction()
+    key 'K_RIGHT' action NullAction()
+
+    default rhythm_game_displayable = RhythmGameDisplayable(audio_path, beatmap_path, beatmap_stride=beatmap_stride)
 
     add Solid('#000')
     add rhythm_game_displayable
+
+    vbox:
+        xpos 50
+        ypos 50
+        spacing 20
+
+        textbutton 'Quit' action [
+        Confirm('Would you like to quit the rhythm game?',
+            yes=[
+            Stop(CHANNEL_RHYTHM_GAME), # stop the music on this channel
+            Return(
+                (rhythm_game_displayable.num_hits, rhythm_game_displayable.num_notes)
+                )
+            ])]:
+            # force the button text to be white when hovered
+            text_hover_color '#fff'
+
+        # can also use has_music_started so this won't show during the silence
+        showif rhythm_game_displayable.has_game_started:
+            text 'Hits: ' + str(rhythm_game_displayable.num_hits):
+                color '#fff'
+                size 40
+
+    # use has_music_started, do not use has_game_started, b/c we are still in silence
+    showif rhythm_game_displayable.has_music_started:
+        bar:
+            xalign 0.5
+            ypos 20
+            xsize 740
+            value AudioPositionValue(channel=CHANNEL_RHYTHM_GAME)
+
+    # return the number of hits and total number of notes to the main game
     if rhythm_game_displayable.has_ended:
-        # use a timer so the player can see the screen once again
-        timer 2.0 action [Return(
-            (rhythm_game_displayable.num_hits, 
-                rhythm_game_displayable.num_notes)
-            )]
-        
-    showif rhythm_game_displayable.has_started:
-        fixed xpos 50 ypos 50 spacing 100:
-            vbox:
-                text 'Hits: ' + str(rhythm_game_displayable.num_hits):
-                     color '#fff'
+        # use a timer so the player can see the screen before it returns
+        timer 2.0 action Return(
+            (rhythm_game_displayable.num_hits, rhythm_game_displayable.num_notes)
+            )
+
+## end screen definition
 
 init python:
-    import pygame
 
+    # register channel
+    renpy.music.register_channel(CHANNEL_RHYTHM_GAME)
+
+    import os
+    import pygame
+    
     class RhythmGameDisplayable(renpy.Displayable):
 
-        def __init__(self, audio_path, beatmap_path, beatmap_stride=None):
+        def __init__(self, audio_path, beatmap_path, beatmap_stride=1):
             """
             beatmap_stride (int): Default to 2. Use onset_times[::beatmap_stride] so that the tracks don't get too crowded. Can be used to set difficulty level
             """
@@ -43,69 +82,87 @@ init python:
 
             self.audio_path = audio_path
 
-            self.has_started = False
+            self.has_game_started = False
+            self.has_music_started = False # this happens after `self.silence_offset_start`
             self.has_ended = False
-
-            # zoom the note when it is within the hit threshold
-            self.zoom_scale = 1.2
-
-            # offset for rendering
-            # leave some offset from the left side of the screen
-            self.x_offset = 400
-            self.track_bar_height = int(config.screen_height * 0.85)
-            self.track_bar_width = 12
-            self.horizontal_bar_height = 8
-            self.note_width = 50 # width of the note image
-            self.note_xoffset = (self.track_bar_width - self.note_width) / 2
-            self.note_xoffset_large = (self.track_bar_width - self.note_width * self.zoom_scale) / 2
-            # place the hit text some spacing from the end of the track bar
-            self.hit_text_yoffset = 30
-
-            # note appear on the tracks prior to the actual onset
-            # which is also the note's entire lifetime to travel the entire screen
-            # can be used to set difficulty level of the game
-            self.note_offset = 3.0 # seconds
-            self.note_speed = config.screen_height / self.note_offset
-
+            # the first st
             # an offset is necessary because there might be a delay between when the
             # displayable first appears on screen and the time the music starts playing
             # seconds, same unit as st, shown time
             self.time_offset = None
 
-            # number of track bars
-            self.num_track_bars = 4
-
-            # silence before the music plays
+            # silence before the music plays, in seconds
             self.silence_offset_start = 4.5
             self.silence_start = '<silence %s>' % str(self.silence_offset_start)
-            # count down before the music plays
+            # count down before the music plays, in seconds
             self.countdown = 3.0
 
-            # onset timestamps in the beatmap file given audio file
-            onset_times = self.read_beatmap_file(beatmap_path)
-            # take strides throught onset_times so that the tracks don't get too crowded
-            if beatmap_stride is None:
-                beatmap_stride = 2
-            self.onset_times = onset_times[::beatmap_stride]
+            # define some values for offsets, height and width
+            # of each element on screen
 
-            # whether an onset been hit determines whether it will be rendered
-            self.onset_hits = {onset: False for onset in self.onset_times}
+            # offset from the left of the screen
+            self.x_offset = 400
+            self.track_bar_height = int(config.screen_height * 0.85)
+            self.track_bar_width = 12
+            self.horizontal_bar_height = 8
+
+            self.note_width = 50 # width of the note image
+            # zoom in on the note when it is hittable
+            self.zoom_scale = 1.2
+            # offset the note to the right so it shows at the center of the track
+            self.note_xoffset = (self.track_bar_width - self.note_width) / 2
+            self.note_xoffset_large = (self.track_bar_width - self.note_width * self.zoom_scale) / 2
+            # place the hit text some spacing from the end of the track bar
+            self.hit_text_yoffset = 30
+
+            # since the notes are scrolling from the screen top to bottom
+            # they appear on the tracks prior to the onset time
+            # this scroll time is also the note's entire lifespan time before it's either
+            # hit or considered a miss
+            # the note now takes 3 seconds to travel the screen
+            # can be used to set difficulty level of the game
+            self.note_offset = 3.0
+            # speed = distance / time
+            self.note_speed = config.screen_height / self.note_offset
+
+            # number of track bars
+            self.num_track_bars = 4
+            # drawing position
+            self.track_bar_spacing = (config.screen_width - self.x_offset * 2) / (self.num_track_bars - 1)
+            # the xoffset of each track bar
+            self.track_xoffsets = {
+            track_idx: self.x_offset + track_idx * self.track_bar_spacing
+            for track_idx in range(self.num_track_bars)
+            }
+
+            # define the notes' onset times
+            self.onset_times = self.read_beatmap_file(beatmap_path)
+            # can skip onsets to adjust difficulty level
+            # skip every other onset so the display is less dense
+            self.onset_times = self.onset_times[::beatmap_stride]
+
             self.num_notes = len(self.onset_times)
-            # assign tracks randomly in advance since generating on the fly is too slow
+            # assign notes to tracks, same length as self.onset_times
+            # renpy.random.randint is upper-inclusive
             self.random_track_indices = [
             renpy.random.randint(0, self.num_track_bars - 1) for _ in range(self.num_notes)
             ]
 
-            # a list active note timestamps on each track
-            self.active_notes_per_track = {track_idx: [] for track_idx in range(self.num_track_bars)}
+            # map track_idx to a list of active note timestamps
+            self.active_notes_per_track = {
+            track_idx: [] for track_idx in range(self.num_track_bars)
+            }
 
-            # track number of hits for scoring
+            # detect and record hits
+            # map onset timestamp to whether it has been hit, initialized to False
+            self.onset_hits = {
+            onset: False for onset in self.onset_times
+            }
             self.num_hits = 0
-
-            # the threshold for declaring a note as active when computing onset - (st - self.time_offset)
-            self.time_difference_threshold = 0.01
-            # the threshold for considering a note as hit
-            self.hit_threshold = 0.3
+            # if the note is hit within 0.3 seconds of its actual onset time
+            # we consider it a hit
+            # can set different threshold for Good, Great hit scoring
+            self.hit_threshold = 0.3 # seconds
 
             # map pygame key code to track idx
             self.keycode_to_track_idx = {
@@ -115,19 +172,17 @@ init python:
             pygame.K_RIGHT: 3
             }
 
-            # drawables
+            # define the drawables
             self.hit_text_drawable = Text('Hit!', color='#fff')
-
             self.track_bar_drawable = Solid('#fff', xsize=self.track_bar_width, ysize=self.track_bar_height)
             self.horizontal_bar_drawable = Solid('#fff', xsize=config.screen_width, ysize=self.horizontal_bar_height)
-
+            # map track_idx to the note drawable
             self.note_drawables = {
             0: Image(IMG_LEFT),
             1: Image(IMG_UP),
             2: Image(IMG_DOWN),
             3: Image(IMG_RIGHT),
             }
-
             self.note_drawables_large = {
             0: Transform(self.note_drawables[0], zoom=self.zoom_scale),
             1: Transform(self.note_drawables[1], zoom=self.zoom_scale),
@@ -135,129 +190,165 @@ init python:
             3: Transform(self.note_drawables[3], zoom=self.zoom_scale),
             }
 
-            # for self.visit method
+            # record all the drawables for self.visit
             self.drawables = [
-            self.hit_text_drawable, 
-            self.track_bar_drawable, 
-            self.horizontal_bar_drawable
+            self.hit_text_drawable,
+            self.track_bar_drawable,
+            self.horizontal_bar_drawable,
             ]
             self.drawables.extend(list(self.note_drawables.values()))
             self.drawables.extend(list(self.note_drawables_large.values()))
 
-            # variables for drawing positions
-            self.track_bar_spacing = (config.screen_width - self.x_offset * 2) / (self.num_track_bars - 1)
-            # cache computation for looking up on the fly for better performance
-            self.track_xoffsets = {
-            track_idx: self.x_offset + track_idx * self.track_bar_spacing
-            for track_idx in range(self.num_track_bars)
-            }
-
-            # start playing music
+            ## after all intializations are done, start playing music
             self.play_music()
-            
+
         def render(self, width, height, st, at):
-            # cache the shown time offset
-            if self.has_started and self.time_offset is None:
+            """
+            st: A float, the shown timebase, in seconds. 
+            The shown timebase begins when this displayable is first shown on the screen.
+            """
+            # cache the first st, when this displayable is first shown on the screen
+            # this allows us to compute subsequent times when the notes should appear
+            if self.has_game_started and self.time_offset is None:
                 self.time_offset = self.silence_offset_start + st
 
             render = renpy.Render(width, height)
 
+            # draw the countdown if we are still in the silent phase before the music starts
             # count down silence_offset_start, 3 seconds, while silence
-            countdown_text = None
-            time_before_music = self.countdown - st
-            if time_before_music > 2.0:
-                countdown_text = '3'
-            elif time_before_music > 1.0:
-                countdown_text = '2'
-            elif time_before_music > 0.0:
-                countdown_text = '1'
-            if countdown_text is not None:
-                render.place(Text(countdown_text, color='#fff', size=48),
-                    x=config.screen_width / 2, y=config.screen_height / 2)
+            if not self.has_music_started:
+                countdown_text = None
+                time_before_music = self.countdown - st
+                if time_before_music > 2.0:
+                    countdown_text = '3'
+                elif time_before_music > 1.0:
+                    countdown_text = '2'
+                elif time_before_music > 0.0:
+                    countdown_text = '1'
+                else: # no longer in countdown mode
+                    self.has_music_started = True
+                    renpy.restart_interaction() # force refresh the screen to display the progress bar
+                    
+                if countdown_text is not None:
+                    render.place(Text(countdown_text, color='#fff', size=48),
+                        x=config.screen_width / 2, y=config.screen_height / 2)
 
-            # draw the tracks
+            # draw the rhythm game if we are playing the music
+            # draw the vertical tracks
             for track_idx in range(self.num_track_bars):
-                x_offset = self.track_xoffsets[track_idx] # look up to save computation
+                # look up the offset for drawing
+                x_offset = self.track_xoffsets[track_idx]
+                # y = 0 starts from the top
                 render.place(self.track_bar_drawable, x=x_offset, y=0)
-            # place a horizontal bar to indicate where the tracks end
+
+            # draw the horizontal bar to indicate where the track ends
+            # x = 0 starts from the left
             render.place(self.horizontal_bar_drawable, x=0, y=self.track_bar_height)
 
-            if self.has_started:
-                # if song has ended, return
-                if renpy.music.get_playing() is None:
+            # draw the notes
+            if self.has_game_started:
+                # self.time_offset cannot be None down here b/c it has been set above
+                # check if the song has ended
+                if renpy.music.get_playing(channel=CHANNEL_RHYTHM_GAME) is None:
                     self.has_ended = True
-                    renpy.timeout(0) # raise event
-                    # no need to draw notes
-                    renpy.redraw(self, 0)
+                    renpy.timeout(0) # raise an event
                     return render
 
-                # draw notes
+                # the number of seconds the song has been playing
+                # is the difference between the current shown time and the cached first st
                 curr_time = st - self.time_offset
-                self.active_notes_per_track = self.get_active_notes(st)
-                for track_idx in self.active_notes_per_track:
-                    x_offset = self.track_xoffsets[track_idx] # look up to save computation
 
+                # update self.active_notes_per_track
+                self.active_notes_per_track = self.get_active_notes_per_track(curr_time)
+
+                # render notes on each track
+                for track_idx in self.active_notes_per_track:
+                    # look up track xoffset
+                    x_offset = self.track_xoffsets[track_idx]
+
+                    # loop through active notes
                     for onset, note_timestamp in self.active_notes_per_track[track_idx]:
-                        if self.onset_hits[onset] is False: # hasn't been hit, render
-                            # enlarge the note if it is now within the hit threshold
+                        # render the notes that are active and haven't been hit
+                        if self.onset_hits[onset] is False:
+                            # zoom in on the note if it is within the hit threshold
                             if abs(curr_time - onset) <= self.hit_threshold:
                                 note_drawable = self.note_drawables_large[track_idx]
                                 note_xoffset = x_offset + self.note_xoffset_large 
                             else:
                                 note_drawable = self.note_drawables[track_idx]
-                                note_xoffset = x_offset + self.note_xoffset 
+                                note_xoffset = x_offset + self.note_xoffset
 
-                            y_offset = self.track_bar_height - note_timestamp * self.note_speed
+                            # compute where on the vertical axes the note is
+                            # the vertical distance from the top that the note has already traveled
+                            # is given by time * speed
+                            note_distance_from_top = note_timestamp * self.note_speed
+                            y_offset = self.track_bar_height - note_distance_from_top
                             render.place(note_drawable, x=note_xoffset, y=y_offset)
-                        else: # show hit text
+                        else:
+                            # show hit text
                             render.place(self.hit_text_drawable, x=x_offset, y=self.track_bar_height + self.hit_text_yoffset)
 
             renpy.redraw(self, 0)
             return render
 
         def event(self, ev, x, y, st):
-            if self.has_ended: # no need to handle more events
-                renpy.restart_interaction() # force refresh the screen to detect end game
+            if self.has_ended:
+                # refresh the screen
+                renpy.restart_interaction()
                 return
+
+            # no need to process the event
+            if not self.has_game_started or self.time_offset is None:
+                return
+
+            # check if some keys have been pressed
             if ev.type == pygame.KEYDOWN:
+                # only handle the four keys we defined
                 if not ev.key in self.keycode_to_track_idx:
                     return
-                curr_time = st - self.time_offset
+                # look up the track that correponds to the key pressed
                 track_idx = self.keycode_to_track_idx[ev.key]
-                active_notes_on_track = self.active_notes_per_track[track_idx]
 
-                for note in active_notes_on_track:
-                    onset, _ = note
-                    # time when player attempts to hit the note
-                    # difference between the time the note is hittable and actually hit
+                active_notes_on_track = self.active_notes_per_track[track_idx]
+                curr_time = st - self.time_offset
+
+                # loop over active notes to check if one is hit
+                for onset, _ in active_notes_on_track:
+                    # compute the time difference between when the key is pressed
+                    # and when we consider the note hittable as defined by self.hit_threshold
                     if abs(curr_time - onset) <= self.hit_threshold:
                         self.onset_hits[onset] = True
                         self.num_hits += 1
+                        # redraw immediately because now the note should disappear from screen
                         renpy.redraw(self, 0)
-                        renpy.restart_interaction() # force refresh the screen for score to show
+                        # refresh the screen
+                        renpy.restart_interaction()
 
         def visit(self):
-            # visit all drawables
             return self.drawables
 
         def play_music(self):
-            renpy.music.queue([self.silence_start, self.audio_path], loop=False)
-            self.has_started = True
+            # play slience first, followed by music
+            renpy.music.queue([self.silence_start, self.audio_path], channel=CHANNEL_RHYTHM_GAME, loop=False)
+            self.has_game_started = True
 
-        def get_active_notes(self, st):
-            active_notes = {track_idx: [] for track_idx in range(self.num_track_bars)}
+        def get_active_notes_per_track(self, current_time):
+            active_notes = {
+            track_idx: [] for track_idx in range(self.num_track_bars)
+            }
+
             for onset, track_idx in zip(self.onset_times, self.random_track_indices):
-                # determine if this note is active
-                time_before_appearance = onset - (st - self.time_offset)
-                if time_before_appearance < 0: # already outside the screen
+                # determine if this note should appear on the track
+                time_before_appearance = onset - current_time
+                if time_before_appearance < 0: # already below the bottom of the screen
                     continue
-                # should be on screen already
+                # should be on screen
+                # recall that self.note_offset is 3 seconds, the note's lifespan
                 elif time_before_appearance <= self.note_offset:
                     active_notes[track_idx].append((onset, time_before_appearance))
-                # within threshold
-                elif abs(time_before_appearance - self.note_offset) < self.time_difference_threshold:
-                    active_notes[track_idx].append((onset, time_before_appearance))
-                elif time_before_appearance > self.note_offset: # still time before it should appear
+                # there is still time before the next note should show
+                # break out of the loop so we don't process subsequent notes that are even later
+                elif time_before_appearance > self.note_offset:
                     break
 
             return active_notes

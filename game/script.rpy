@@ -33,14 +33,14 @@ label start:
     # window hide
     $ quick_menu = False
 
-    # avoid rolling back and losing chess game state
+    # avoid rolling back and losing game state
     $ renpy.block_rollback()
 
     # unpack the file paths associated with the chosen song
     $ audio_path, beatmap_path = choice
     call screen rhythm_game(audio_path, beatmap_path, beatmap_stride=2)
 
-    # avoid rolling back and entering the chess game again
+    # avoid rolling back and entering the game again
     $ renpy.block_rollback()
 
     # restore rollback from this point on
