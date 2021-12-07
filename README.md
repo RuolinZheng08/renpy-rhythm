@@ -14,9 +14,13 @@ This project is built with **Ren'Py SDK >= 7.4.0** and is also compatible with *
 
 ## Gameplay Demo
 
-Use the four arrow keys on your keyboard to play the game. 
+Use the four arrow keys on your keyboard to play the game. A `Good` hit scores 60, and a `Perfect` hit scores 100. Hitting the note too early results in a `Miss`.
 
 <img src="https://github.com/RuolinZheng08/renpy-rhythm/blob/master/demo.gif" alt="Gameplay Example" width=600>
+
+The game also supports a high-score system stored in Ren'Py's `persistent` object store.
+
+<img src="https://github.com/RuolinZheng08/renpy-rhythm/blob/master/highscore.gif" alt="High Score System" width=600>
 
 ## Guide for Integrating into a Ren'Py Project
 
