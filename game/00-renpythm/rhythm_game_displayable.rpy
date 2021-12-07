@@ -41,16 +41,16 @@ screen choose_song_screen(songs):
                     label 'Highest Score'
                     label 'All Perfect Hits'
 
-            grid 3 len(songs):
-                xspacing 100
-                for song in songs:
-                    textbutton song.name action [
-                    SetVariable('selected_song', song),
-                    Call('rhythm_game_entry_label')
-                    ]
-                    $ highest_score, highest_percent = persistent.rhythm_game_high_scores[song.name]
-                    text str(highest_score)
-                    text '([highest_percent]%)'
+                grid 3 len(songs):
+                    xspacing 100
+                    for song in songs:
+                        textbutton song.name action [
+                        SetVariable('selected_song', song),
+                        Call('rhythm_game_entry_label')
+                        ]
+                        $ highest_score, highest_percent = persistent.rhythm_game_high_scores[song.name]
+                        text str(highest_score)
+                        text '([highest_percent]%)'
 
             textbutton 'Close screen' action Hide('choose_song_screen') xalign 0.5
 
