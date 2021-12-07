@@ -20,7 +20,7 @@ Use the four arrow keys on your keyboard to play the game. A `Good` hit scores 6
 
 The game also supports a high-score system stored in Ren'Py's `persistent` object store.
 
-<img src="https://github.com/RuolinZheng08/renpy-rhythm/blob/master/highscore.gif" alt="High Score System" width=600>
+<img src="https://github.com/RuolinZheng08/renpy-rhythm/blob/master/high_score.gif" alt="High Score System" width=600>
 
 ## Guide for Integrating into a Ren'Py Project
 
