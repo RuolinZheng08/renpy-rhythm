@@ -469,8 +469,6 @@ init python:
 
 label rhythm_game_entry_label:
 
-    # $ quick_menu = False
-
     # avoid rolling back and losing game state
     $ renpy.block_rollback()
 
@@ -496,7 +494,5 @@ label rhythm_game_entry_label:
 
     # restore rollback from this point on
     $ renpy.checkpoint()
-
-    $ quick_menu = True
 
     return
