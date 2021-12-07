@@ -16,37 +16,48 @@ define CHANNEL_RHYTHM_GAME = 'CHANNEL_RHYTHM_GAME'
 define SCORE_GOOD = 60
 define SCORE_PERFECT = 100
 
+# the song that the player chooses to play, set in `choose_song_screen` below
+default selected_song = None
+
 screen choose_song_screen(songs):
-    default selected_song = None
 
-    if selected_song is None:
-        frame:
-            xalign 0.5
-            yalign 0.5
-            xpadding 30
-            ypadding 30
+    # prevent the player from clicking on the textbox to proceed with the story without closing this screen first
+    modal True
 
-            vbox:
-                spacing 20
+    frame:
+        xalign 0.5
+        yalign 0.5
+        xpadding 30
+        ypadding 30
 
-                label "Click on a song to play" xalign 0.5
+        vbox:
+            spacing 20
 
-                vbox spacing 10:
-                    hbox spacing 80:
-                        label 'Song Name'
-                        label 'Highest Score'
-                        label 'Percentage'
+            label "Click on a song to play" xalign 0.5
 
-                    grid 3 len(songs):
-                        xspacing 100
-                        for song in songs:
-                            textbutton song.name action SetScreenVariable('selected_song', song)
-                            text str(song.highest_score)
-                            text '([song.highest_percent]%)'
-    else:
-        use rhythm_game(selected_song)
+            vbox spacing 10:
+                hbox spacing 80:
+                    label 'Song Name'
+                    label 'Highest Score'
+                    label 'All Perfect Hits'
+
+            grid 3 len(songs):
+                xspacing 100
+                for song in songs:
+                    textbutton song.name action [
+                    SetVariable('selected_song', song),
+                    Call('rhythm_game_entry_label')
+                    ]
+                    $ highest_score, highest_percent = persistent.rhythm_game_high_scores[song.name]
+                    text str(highest_score)
+                    text '([highest_percent]%)'
+
+            textbutton 'Close screen' action Hide('choose_song_screen') xalign 0.5
 
 screen rhythm_game(song):
+
+    zorder 100 # always on top, covering textbox, quick_menuR
+
     # disable the arrow keys from activating the Quit button
     # https://www.renpy.org/doc/html/screens.html#key
     key 'K_LEFT' action NullAction()
@@ -100,6 +111,7 @@ init python:
     renpy.music.register_channel(CHANNEL_RHYTHM_GAME)
 
     import os
+    import math
     import pygame
 
     # util func
@@ -122,15 +134,9 @@ init python:
             # skip every other onset so the display is less dense
             self.onset_times = read_beatmap_file(beatmap_path)[::beatmap_stride]
             self.max_score = len(self.onset_times) * SCORE_PERFECT
-            self.highest_score = 0
-            self.highest_percent = 0
 
-        def reset_highest_score(self, score):
-            # returns a boolean indicating whether a new high score has been achieved
-            if score > self.highest_score:
-                self.highest_score = score
-                # also set highest percent
-                self.highest_percent = score / float(self.max_score)
+        def compute_percent(self, score):
+            return math.ceil(score / float(self.max_score))
     
     class RhythmGameDisplayable(renpy.Displayable):
 
@@ -386,6 +392,9 @@ init python:
 
                 # loop over active notes to check if one is hit
                 for onset, _ in active_notes_on_track:
+                    if self.onset_hits[onset] is not None: # status already determined, one of miss, good, perfect
+                        continue
+
                     # compute the time difference between when the key is pressed
                     # and when we consider the note hittable as defined by self.hit_threshold
 
@@ -397,14 +406,16 @@ init python:
                     time_delta = curr_time - onset
 
                     ## any of the events below makes the note disappear from the screen
-                    # miss
-                    if (-self.prehit_miss_threshold <= time_delta < -self.prehit_miss_threshold):
-                        self.onset_hits[onset] = 'miss'
-                        # no change to score
-                        # redraw immediately because now the note should disappear from screen
-                        renpy.redraw(self, 0)
-                        # refresh the screen
-                        renpy.restart_interaction()
+                    # from narrowest range to widest range
+
+                    # perfect
+                    if -self.perfect_threshold <= time_delta <= self.perfect_threshold:
+                                            self.onset_hits[onset] = 'perfect'
+                                            self.score += SCORE_PERFECT
+                                            # redraw immediately because now the note should disappear from screen
+                                            renpy.redraw(self, 0)
+                                            # refresh the screen
+                                            renpy.restart_interaction()
 
                     # good
                     elif (-self.hit_threshold <= time_delta < self.perfect_threshold) or \
@@ -416,14 +427,15 @@ init python:
                         # refresh the screen
                         renpy.restart_interaction()
 
-                    # perfect
-                    elif -self.perfect_threshold <= time_delta <= self.perfect_threshold:
-                        self.onset_hits[onset] = 'perfect'
-                        self.score += SCORE_PERFECT
+                    # miss
+                    elif (-self.prehit_miss_threshold <= time_delta < -self.hit_threshold):
+                        self.onset_hits[onset] = 'miss'
+                        # no change to score
                         # redraw immediately because now the note should disappear from screen
                         renpy.redraw(self, 0)
                         # refresh the screen
                         renpy.restart_interaction()
+
 
         def visit(self):
             return self.drawables
@@ -454,3 +466,37 @@ init python:
                     break
 
             return active_notes
+
+label rhythm_game_entry_label:
+
+    # $ quick_menu = False
+
+    # avoid rolling back and losing game state
+    $ renpy.block_rollback()
+
+    # disable Esc key menu to prevent the player from saving the game
+    $ _game_menu_screen = None
+
+    # the screen is responsible for writing data into selected_song
+    # XXX: for some reason, `call screen rhythm_game(song)` throws a syntax error
+    python:
+        new_score = renpy.call_screen(_screen_name='rhythm_game', song=selected_song)
+        old_score, _ = persistent.rhythm_game_high_scores[selected_song.name]
+        if new_score > old_score:
+            renpy.notify('New high score!')
+            # compute new percent
+            new_percent = selected_song.compute_percent(new_score)
+            persistent.rhythm_game_high_scores[selected_song.name] = (new_score, new_percent)
+
+    # re-enable the Esc key menu
+    $ _game_menu_screen = 'save'
+
+    # avoid rolling back and entering the game again
+    $ renpy.block_rollback()
+
+    # restore rollback from this point on
+    $ renpy.checkpoint()
+
+    $ quick_menu = True
+
+    return
