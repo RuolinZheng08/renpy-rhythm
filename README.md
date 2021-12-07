@@ -20,7 +20,7 @@ Use the four arrow keys on your keyboard to play the game.
 
 ## Guide for Integrating into a Ren'Py Project
 
-All of the files essential to the chess engine are in `game/00-renpythm`. Therefore, you only need to copy the entire `00-renpythm`directory into your Ren'Py `game` directory.
+All of the files essential to the engine are in `game/00-renpythm`. Therefore, you only need to copy the entire `00-renpythm`directory into your Ren'Py `game` directory.
 
 ### Structure of `00-renpythm`
 
