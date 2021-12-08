@@ -313,6 +313,8 @@ screen navigation():
 
         textbutton _("Preferences") action ShowMenu("preferences")
 
+        textbutton _("Rhythm Game") action Start("rhythm_game_entry")
+
         if _in_replay:
 
             textbutton _("End Replay") action EndReplay(confirm=True)

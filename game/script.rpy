@@ -23,6 +23,13 @@ label start:
 
     e "Welcome to the Ren'Py Rhythm Game! Choose a lofi song you'd like to play."
 
+    call rhythm_game_entry
+
+    e "Nice work hitting those notes! Hope you enjoyed the game."
+
+    return
+
+label rhythm_game_entry:
     call screen choose_song_screen(songs)
     $ selected_song = _return
 
@@ -52,7 +59,5 @@ label start:
 
     # restore rollback from this point on
     $ renpy.checkpoint()
-
-    e "Nice work hitting those notes! Hope you enjoyed the game."
 
     return
