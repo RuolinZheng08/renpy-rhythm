@@ -16,9 +16,6 @@ define CHANNEL_RHYTHM_GAME = 'CHANNEL_RHYTHM_GAME'
 define SCORE_GOOD = 60
 define SCORE_PERFECT = 100
 
-# the song that the player chooses to play, set in `choose_song_screen` below
-default selected_song = None
-
 screen choose_song_screen(songs):
 
     # prevent the player from clicking on the textbox to proceed with the story without closing this screen first
@@ -39,20 +36,17 @@ screen choose_song_screen(songs):
                 hbox spacing 80:
                     label 'Song Name'
                     label 'Highest Score'
-                    label 'All Perfect Hits'
+                    label '% Perfect Hits'
 
                 grid 3 len(songs):
                     xspacing 100
                     for song in songs:
                         textbutton song.name action [
-                        SetVariable('selected_song', song),
-                        Call('rhythm_game_entry_label')
+                        Return(song)
                         ]
                         $ highest_score, highest_percent = persistent.rhythm_game_high_scores[song.name]
                         text str(highest_score)
                         text '([highest_percent]%)'
-
-            textbutton 'Close screen' action Hide('choose_song_screen') xalign 0.5
 
 screen rhythm_game(song):
 
@@ -466,33 +460,3 @@ init python:
                     break
 
             return active_notes
-
-label rhythm_game_entry_label:
-
-    # avoid rolling back and losing game state
-    $ renpy.block_rollback()
-
-    # disable Esc key menu to prevent the player from saving the game
-    $ _game_menu_screen = None
-
-    # the screen is responsible for writing data into selected_song
-    # XXX: for some reason, `call screen rhythm_game(song)` throws a syntax error
-    python:
-        new_score = renpy.call_screen(_screen_name='rhythm_game', song=selected_song)
-        old_score, _ = persistent.rhythm_game_high_scores[selected_song.name]
-        if new_score > old_score:
-            renpy.notify('New high score!')
-            # compute new percent
-            new_percent = selected_song.compute_percent(new_score)
-            persistent.rhythm_game_high_scores[selected_song.name] = (new_score, new_percent)
-
-    # re-enable the Esc key menu
-    $ _game_menu_screen = 'save'
-
-    # avoid rolling back and entering the game again
-    $ renpy.block_rollback()
-
-    # restore rollback from this point on
-    $ renpy.checkpoint()
-
-    return
