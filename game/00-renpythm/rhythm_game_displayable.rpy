@@ -16,7 +16,55 @@ define CHANNEL_RHYTHM_GAME = 'CHANNEL_RHYTHM_GAME'
 define SCORE_GOOD = 60
 define SCORE_PERFECT = 100
 
-screen choose_song_screen(songs):
+label rhythm_game_entry_label:
+    $ selected_song = renpy.call_screen(_screen_name='select_song_screen', songs=rhythm_game_songs)
+    # call screen select_song_screen(rhythm_game_songs)
+    # $ selected_song = _return
+
+    # the select_song_screen will show at the bottom of this loop
+    # if the player exits, selected_song becomes None and we exit out of the loop
+    while isinstance(selected_song, Song):
+
+        $ rhythm_game_displayable = RhythmGameDisplayable(selected_song)
+        
+        # avoid rolling back and losing game state
+        $ renpy.block_rollback()
+
+        # disable Esc key menu to prevent the player from saving the game
+        $ _game_menu_screen = None
+
+        $ renpy.notify('Use the arrow keys on your keyboard to hit the notes as they reach the end of the tracks. Good luck!')
+        # call screen rhythm_game(rhythm_game_displayable)
+        # $ new_score = _return
+        $ new_score = renpy.call_screen(_screen_name='rhythm_game', rhythm_game_displayable=rhythm_game_displayable)
+
+        # XXX: old_percent is not used, but doing `old_score, _` causes pickling error
+        $ old_score, old_percent = persistent.rhythm_game_high_scores[selected_song.name]
+        if new_score > old_score:
+
+            $ renpy.notify('New high score!')
+            # compute new percent
+            $ new_percent = selected_song.compute_percent(new_score)
+            $ persistent.rhythm_game_high_scores[selected_song.name] = (new_score, new_percent)
+
+        $ del rhythm_game_displayable
+
+        # re-enable the Esc key menu
+        $ _game_menu_screen = 'save'
+
+        # avoid rolling back and entering the game again
+        $ renpy.block_rollback()
+
+        # restore rollback from this point on
+        $ renpy.checkpoint()
+
+        # show high score only, not playable
+        $ selected_song = renpy.call_screen(_screen_name='select_song_screen', songs=rhythm_game_songs)
+        # $ selected_song = _return
+
+    return
+
+screen select_song_screen(songs):
 
     # prevent the player from clicking on the textbox to proceed with the story without closing this screen first
     modal True
@@ -33,7 +81,7 @@ screen choose_song_screen(songs):
             label "Click on a song to play" xalign 0.5
 
             vbox spacing 10:
-                hbox spacing 80:
+                hbox spacing 160:
                     label 'Song Name'
                     label 'Highest Score'
                     label '% Perfect Hits'
@@ -48,7 +96,11 @@ screen choose_song_screen(songs):
                         text str(highest_score)
                         text '([highest_percent]%)'
 
-screen rhythm_game(song):
+            textbutton _("Exit"):
+                xalign 0.5
+                action Return(None)
+
+screen rhythm_game(rhythm_game_displayable):
 
     zorder 100 # always on top, covering textbox, quick_menuR
 
@@ -58,8 +110,6 @@ screen rhythm_game(song):
     key 'K_UP' action NullAction()
     key 'K_DOWN' action NullAction()
     key 'K_RIGHT' action NullAction()
-
-    default rhythm_game_displayable = RhythmGameDisplayable(song)
 
     add Solid('#000')
     add rhythm_game_displayable
@@ -105,7 +155,6 @@ init python:
     renpy.music.register_channel(CHANNEL_RHYTHM_GAME)
 
     import os
-    import math
     import pygame
 
     # util func
@@ -130,7 +179,7 @@ init python:
             self.max_score = len(self.onset_times) * SCORE_PERFECT
 
         def compute_percent(self, score):
-            return math.ceil(score / float(self.max_score))
+            return round(score / float(self.max_score) * 100)
     
     class RhythmGameDisplayable(renpy.Displayable):
 
@@ -236,9 +285,9 @@ init python:
             }
 
             # define the drawables
-            self.miss_text_drawable = Text('Miss!', color='#fff', size=30)
-            self.good_text_drawable = Text('Good!', color='#fff', size=30)
-            self.perfect_text_drawable = Text('Perfect!', color='#fff', size=30)
+            self.miss_text_drawable = Text('Miss!', color='#fff', size=20) # small text
+            self.good_text_drawable = Text('Good!', color='#fff', size=30) # big text
+            self.perfect_text_drawable = Text('Perfect!', color='#fff', size=40) # bigger text
             self.track_bar_drawable = Solid('#fff', xsize=self.track_bar_width, ysize=self.track_bar_height)
             self.horizontal_bar_drawable = Solid('#fff', xsize=config.screen_width, ysize=self.horizontal_bar_height)
             # map track_idx to the note drawable
@@ -438,7 +487,6 @@ init python:
             # play slience first, followed by music
             renpy.music.queue([self.silence_start, self.audio_path], channel=CHANNEL_RHYTHM_GAME, loop=False)
             self.has_game_started = True
-            renpy.notify('Use the arrow keys on your keyboard to hit the notes as they reach the end of the tracks. Good luck!')
 
         def get_active_notes_per_track(self, current_time):
             active_notes = {
