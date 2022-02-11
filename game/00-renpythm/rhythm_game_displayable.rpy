@@ -78,7 +78,7 @@ screen select_song_screen(songs):
         vbox:
             spacing 20
 
-            label "Click on a song to play" xalign 0.5
+            label 'Click on a song to play' xalign 0.5
 
             vbox spacing 10:
                 hbox spacing 160:
@@ -102,7 +102,7 @@ screen select_song_screen(songs):
 
 screen rhythm_game(rhythm_game_displayable):
 
-    zorder 100 # always on top, covering textbox, quick_menuR
+    zorder 100 # always on top, covering textbox, quick_menu
 
     # disable the arrow keys from activating the Quit button
     # https://www.renpy.org/doc/html/screens.html#key
@@ -161,7 +161,7 @@ init python:
     def read_beatmap_file(beatmap_path):
         # read newline separated floats
         beatmap_path_full = os.path.join(config.gamedir, beatmap_path)
-        with open(beatmap_path_full, 'rt') as f:
+        with renpy.file(beatmap_path) as f:
             text = f.read()
         onset_times = [float(string) for string in text.split('\n') if string != '']
         return onset_times
