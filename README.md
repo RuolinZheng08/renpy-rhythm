@@ -12,6 +12,8 @@ You can use this project as a standalone playable or integrate it as a minigame 
 
 This project is built with **Ren'Py SDK >= 7.4.0** and is also compatible with **Ren'Py SDK <= 7.3.5**.
 
+If you are using Ren'Py 8, you need to add `define config.open_file_encoding = 'utf-8'` to your `options.rpy`.
+
 ## Gameplay Demo
 
 Use the four arrow keys on your keyboard to play the game. A `Good` hit scores 60, and a `Perfect` hit scores 100. Hitting the note too early results in a `Miss`.
@@ -40,6 +42,8 @@ To call the rhythm game displayable screen, all you need is a audio file and its
 
 Take for example a file in `game/audio` named `my_music.mp3`. Its full path is `audio/my_music.mp3`  which you need to pass to the `rhythm_game` screen. (Also see the `game/script.rpy` file in this repo for more examples.)
 
+See below for a simple example. See `script.rpy` and the `rhythm_game_entry_label` in `rhythm_game_displayable.rpy` for a more in-depth example.
+
 ```renpy
 window hide
 $ quick_menu = False
@@ -47,7 +51,9 @@ $ quick_menu = False
 # avoid rolling back and losing chess game state
 $ renpy.block_rollback()
 
-call screen rhythm_game('audio/my_music.mp3', 'audio/my_music.beatmap.txt', beatmap_stride=2)
+$ song = Song('My Music Title', 'audio/my_music.mp3', 'audio/my_music.beatmap.txt', beatmap_stride=2)
+$ rhythm_game_displayable = RhythmGameDisplayable(song)
+call screen rhythm_game(rhythm_game_displayable)
 
 # avoid rolling back and entering the chess game again
 $ renpy.block_rollback()
@@ -57,9 +63,6 @@ $ renpy.checkpoint()
 
 $ quick_menu = True
 window show
-
-$ num_hits, num_notes = _return
-"You hit [num_hits] notes out of [num_notes]. Good work!"
 ```
 
 ### Automatic Generation of Beat Map Files
