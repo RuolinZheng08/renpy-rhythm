@@ -26,19 +26,19 @@ The game also supports a high-score system stored in Ren'Py's `persistent` objec
 
 ## Guide for Integrating into a Ren'Py Project
 
-All of the files essential to the engine are in `game/00-renpythm`. Therefore, you only need to copy the entire `00-renpythm`directory into your Ren'Py `game` directory.
+All of the files essential to the engine are in `game/00-renpy-rhythm`. Therefore, you only need to copy the entire `00-renpy-rhythm`directory into your Ren'Py `game` directory.
 
-### Structure of `00-renpythm`
+### Structure of `00-renpy-rhythm`
 
 ```
-00-renpythm/
+00-renpy-rhythm/
     - images                        # music note images
     - rhythm_game_displayable.rpy   # core GUI class
 ```
 
 The core GUI class is a [Ren'Py Creator-Defined Displayable](https://www.renpy.org/doc/html/udd.html) named `RhythmGameDisplayable` inside `rhythm_game_displayable.rpy`.
 
-To call the rhythm game displayable screen, all you need is a audio file and its corresponding beat map text file. The utilities to automatically generate beat map files is included in `00-renpythm-utils` and the procedure is [described below in details](https://github.com/RuolinZheng08/renpy-rhythm#automatic-generation-of-beat-map-files).
+To call the rhythm game displayable screen, all you need is a audio file and its corresponding beat map text file. The utilities to automatically generate beat map files is included in `00-renpy-rhythm-utils` and the procedure is [described below in details](https://github.com/RuolinZheng08/renpy-rhythm#automatic-generation-of-beat-map-files).
 
 Take for example a file in `game/audio` named `my_music.mp3`. Its full path is `audio/my_music.mp3`  which you need to pass to the `rhythm_game` screen. (Also see the `game/script.rpy` file in this repo for more examples.)
 
@@ -67,7 +67,7 @@ window show
 
 ### Automatic Generation of Beat Map Files
 
-This project leverages the onset detection feature in [Aubio's Python module](https://github.com/aubio/aubio/tree/master/python) to automatically generate beat map for any audio file. The script to generate a beat map is `00-renpythm-utils/generate_beatmap.py`.
+This project leverages the onset detection feature in [Aubio's Python module](https://github.com/aubio/aubio/tree/master/python) to automatically generate beat map for any audio file. The script to generate a beat map is `00-renpy-rhythm-utils/generate_beatmap.py`.
 
 **You will need to have Python to run this script** instead of using the Python provided by Ren'Py. This script is developed using MacOS's default Python 2.7.16.
 

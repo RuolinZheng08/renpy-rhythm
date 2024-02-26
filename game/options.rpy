@@ -12,7 +12,7 @@
 ##
 ## The _() surrounding the string marks it as eligible for translation.
 
-define config.name = _("renpythm")
+define config.name = _("Renpy Rhythm")
 
 
 ## Determines if the title given above is shown on the main menu screen. Set
@@ -37,7 +37,7 @@ define gui.about = _p("""
 ## distribution. This must be ASCII-only, and must not contain spaces, colons,
 ## or semicolons.
 
-define build.name = "renpythm"
+define build.name = "renpyrhythm"
 
 
 ## Sounds and music ############################################################
@@ -142,7 +142,7 @@ default preferences.afm_time = 15
 ## This generally should not be changed, and if it is, should always be a
 ## literal string, not an expression.
 
-define config.save_directory = "renpythm-1614797453"
+define config.save_directory = "renpy-rhythm-1614797453"
 
 
 ## Icon ########################################################################
@@ -183,7 +183,7 @@ init python:
     build.classify('**/#**', None)
     build.classify('**/thumbs.db', None)
     build.classify('demo.gif', None)
-    build.classify('00-renpythm-utils', None)
+    build.classify('00-renpy-rhythm-utils', None)
 
     ## To archive files, classify them as 'archive'.
 

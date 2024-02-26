@@ -1,6 +1,6 @@
 # Note: the terms onset and beatmap are used interchangeably in this script
 
-define THIS_PATH = '00-renpythm/'
+define THIS_PATH = '00-renpy-rhythm/'
 
 # XXX: using os.path.join here will actually break because Ren'Py somehow doesn't recognize it
 define IMG_DIR = 'images/'
@@ -161,7 +161,7 @@ init python:
     def read_beatmap_file(beatmap_path):
         # read newline separated floats
         beatmap_path_full = os.path.join(config.gamedir, beatmap_path)
-        with renpy.file(beatmap_path) as f:
+        with renpy.file(beatmap_path, "utf-8") as f:
             text = f.read()
         onset_times = [float(string) for string in text.split('\n') if string != '']
         return onset_times
