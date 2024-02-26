@@ -96,7 +96,7 @@ screen select_song_screen(songs):
                         text str(highest_score)
                         text '([highest_percent]%)'
 
-            textbutton _("Exit"):
+            textbutton _('Exit'):
                 xalign 0.5
                 action Return(None)
 
@@ -161,7 +161,7 @@ init python:
     def read_beatmap_file(beatmap_path):
         # read newline separated floats
         beatmap_path_full = os.path.join(config.gamedir, beatmap_path)
-        with renpy.file(beatmap_path, "utf-8") as f:
+        with renpy.file(beatmap_path, 'utf-8') as f:
             text = f.read()
         onset_times = [float(string) for string in text.split('\n') if string != '']
         return onset_times
