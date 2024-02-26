@@ -10,9 +10,7 @@ You can use this project as a standalone playable or integrate it as a minigame 
 
 ## Compatibility
 
-This project is built with **Ren'Py SDK >= 7.4.0** and is also compatible with **Ren'Py SDK <= 7.3.5**.
-
-If you are using Ren'Py 8, you need to add `define config.open_file_encoding = 'utf-8'` to your `options.rpy`.
+This project is compatible with both **Ren'Py 7** and **Ren'Py 8**.
 
 ## Gameplay Demo
 
