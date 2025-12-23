@@ -280,3 +280,43 @@ Nice work hitting those notes! Hope you enjoyed the game.
 
 --- Tue Dec 23 12:45:44 2025
 
+score keys: ['Isolation', 'Positivity', 'Pearlescent', 'Pearlescent -
+trimmed', 'Thoughts', 'Think About Us', 'Wide Open']
+song names: ['Think About Us', 'Wide Open', 'Isolation', 'Positivity',
+'Pearlescent', 'Pearlescent - trimmed', 'Thoughts']
+--- Tue Dec 23 14:19:01 2025
+
+DJ Master
+Welcome to DJ Simulator!
+
+Selected: Wide Open -> video=None
+Selected: Wide Open -> video=None
+DJ Master
+Nice work hitting those notes! Hope you enjoyed the game.
+
+--- Tue Dec 23 14:23:49 2025
+
+DJ Master
+Welcome to DJ Simulator!
+
+Selected: Wide Open -> video=None
+DJ Master
+Nice work hitting those notes! Hope you enjoyed the game.
+
+--- Tue Dec 23 14:29:40 2025
+
+score keys: ['Isolation', 'Positivity', 'Pearlescent', 'Pearlescent -
+trimmed', 'Thoughts', 'Think About Us', 'Wide Open']
+song names: ['Think About Us', 'Wide Open', 'Isolation', 'Positivity',
+'Pearlescent', 'Pearlescent - trimmed', 'Thoughts']
+--- Tue Dec 23 14:30:09 2025
+
+DJ Master
+Welcome to DJ Simulator!
+
+Selected: Wide Open -> video=None
+DJ Master
+Nice work hitting those notes! Hope you enjoyed the game.
+
+--- Tue Dec 23 14:34:02 2025
+

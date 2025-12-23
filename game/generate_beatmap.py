@@ -5,7 +5,7 @@ import sys
 import_dir = os.path.abspath('python-packages')
 sys.path.append(import_dir)
 
-from audio import source, onset
+from aubio import source, onset
 
 # https://aubio.org/doc/latest/onset_2test-onset_8c-example.html
 # https://github.com/aubio/aubio/blob/master/python/demos/demo_onset.py

@@ -14,7 +14,7 @@ init python:
 
     rhythm_game_songs = [
     Song('Think About Us', 'audio/think_about_us.mp3', 'audio/think_about_us.beatmap.txt', beatmap_stride=2),
-    Song('Wide Open', 'audio/wide_open.mp3', 'audio/wide_open.beatmap.txt', beatmap_stride=3),
+    Song('Wide Open', 'audio/wide_open.mp3', 'audio/wide_open.beatmap.v2.txt', beatmap_stride=3),
     Song('Isolation', 'audio/Isolation.mp3', 'audio/Isolation.beatmap.txt'),
     Song('Positivity', 'audio/Positivity.mp3', 'audio/Positivity.beatmap.txt'),
     Song('Pearlescent', 'audio/Pearlescent.mp3', 'audio/Pearlescent.beatmap.txt'),
