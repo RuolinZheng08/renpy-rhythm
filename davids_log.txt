@@ -1,268 +1,91 @@
-﻿score keys: ['Isolation', 'Positivity', 'Pearlescent', 'Pearlescent -
-trimmed', 'Thoughts', 'Think About Us', 'Wide Open']
-song names: ['Think About Us', 'Wide Open', 'Isolation', 'Positivity',
-'Pearlescent', 'Pearlescent - trimmed', 'Thoughts']
---- Tue Nov 11 00:55:38 2025
-
-DJ Master
-Welcome to DJ Simulator!
-
-Selected: Wide Open -> video=None
-score keys: ['Isolation', 'Positivity', 'Pearlescent', 'Pearlescent -
-trimmed', 'Thoughts', 'Think About Us', 'Wide Open']
-song names: ['Think About Us', 'Wide Open', 'Isolation', 'Positivity',
-'Pearlescent', 'Pearlescent - trimmed', 'Thoughts']
---- Tue Nov 11 00:57:07 2025
-
-DJ Master
-Welcome to DJ Simulator!
-
-Selected: Wide Open -> video=None
-score keys: ['Isolation', 'Positivity', 'Pearlescent', 'Pearlescent -
-trimmed', 'Thoughts', 'Think About Us', 'Wide Open']
-song names: ['Think About Us', 'Wide Open', 'Isolation', 'Positivity',
-'Pearlescent', 'Pearlescent - trimmed', 'Thoughts']
---- Tue Nov 11 00:59:41 2025
-
-DJ Master
-Welcome to DJ Simulator!
-
-Selected: Wide Open -> video=None
+﻿Selected: Wide Open -> video=video/think_about_us_vid.webm
+The selected video file is video/think_about_us_vid.webm!
 DJ Master
 Nice work hitting those notes! Hope you enjoyed the game.
 
---- Tue Nov 11 01:00:53 2025
+--- Tue Dec 23 20:39:42 2025
 
 score keys: ['Isolation', 'Positivity', 'Pearlescent', 'Pearlescent -
 trimmed', 'Thoughts', 'Think About Us', 'Wide Open']
-song names: ['Think About Us', 'Wide Open', 'Isolation', 'Positivity',
-'Pearlescent', 'Pearlescent - trimmed', 'Thoughts']
---- Tue Nov 11 01:00:56 2025
+song names: ['Think About Us', 'Wide Open']
+--- Tue Dec 23 20:40:02 2025
+
+score keys: ['Isolation', 'Positivity', 'Pearlescent', 'Pearlescent -
+trimmed', 'Thoughts', 'Think About Us', 'Wide Open']
+song names: ['Think About Us', 'Wide Open']
+--- Tue Dec 23 20:40:07 2025
+
+score keys: ['Isolation', 'Positivity', 'Pearlescent', 'Pearlescent -
+trimmed', 'Thoughts', 'Think About Us', 'Wide Open']
+song names: ['Think About Us', 'Wide Open']
+--- Tue Dec 23 20:40:10 2025
+
+score keys: ['Isolation', 'Positivity', 'Pearlescent', 'Pearlescent -
+trimmed', 'Thoughts', 'Think About Us', 'Wide Open']
+song names: ['Think About Us', 'Wide Open']
+--- Tue Dec 23 20:40:15 2025
+
+score keys: ['Isolation', 'Positivity', 'Pearlescent', 'Pearlescent -
+trimmed', 'Thoughts', 'Think About Us', 'Wide Open']
+song names: ['Think About Us', 'Wide Open']
+--- Tue Dec 23 20:40:26 2025
+
+score keys: ['Isolation', 'Positivity', 'Pearlescent', 'Pearlescent -
+trimmed', 'Thoughts', 'Think About Us', 'Wide Open']
+song names: ['Think About Us', 'Wide Open']
+--- Tue Dec 23 20:40:27 2025
+
+score keys: ['Isolation', 'Positivity', 'Pearlescent', 'Pearlescent -
+trimmed', 'Thoughts', 'Think About Us', 'Wide Open']
+song names: ['Think About Us', 'Wide Open']
+--- Tue Dec 23 20:40:32 2025
+
+score keys: ['Isolation', 'Positivity', 'Pearlescent', 'Pearlescent -
+trimmed', 'Thoughts', 'Think About Us', 'Wide Open']
+song names: ['Think About Us', 'Wide Open']
+--- Tue Dec 23 20:40:35 2025
 
 DJ Master
 Welcome to DJ Simulator!
 
-Selected: Wide Open -> video=None
+Selected: Wide Open -> video=video/wide_open.webm
+The selected video file is video/wide_open.webm!
 DJ Master
 Nice work hitting those notes! Hope you enjoyed the game.
 
---- Tue Nov 11 01:02:16 2025
+--- Tue Dec 23 20:47:18 2025
 
 score keys: ['Isolation', 'Positivity', 'Pearlescent', 'Pearlescent -
 trimmed', 'Thoughts', 'Think About Us', 'Wide Open']
-song names: ['Think About Us', 'Wide Open', 'Isolation', 'Positivity',
-'Pearlescent', 'Pearlescent - trimmed', 'Thoughts']
---- Tue Nov 11 11:04:01 2025
+song names: ['Think About Us', 'Wide Open']
+--- Tue Dec 23 21:08:28 2025
 
 DJ Master
 Welcome to DJ Simulator!
 
-Selected: Think About Us -> video=None
-Selected: Wide Open -> video=None
-Selected: Think About Us -> video=None
+Selected: Wide Open -> video=video/wide_open.webm
+The selected video file is video/wide_open.webm!
 DJ Master
 Nice work hitting those notes! Hope you enjoyed the game.
 
---- Tue Nov 11 11:10:08 2025
-
-score keys: ['Isolation', 'Positivity', 'Pearlescent', 'Pearlescent -
-trimmed', 'Thoughts', 'Think About Us', 'Wide Open']
-song names: ['Think About Us', 'Wide Open', 'Isolation', 'Positivity',
-'Pearlescent', 'Pearlescent - trimmed', 'Thoughts']
---- Tue Nov 11 11:10:37 2025
+--- Tue Dec 23 21:08:52 2025
 
 DJ Master
 Welcome to DJ Simulator!
 
-Selected: Think About Us -> video=None
-score keys: ['Isolation', 'Positivity', 'Pearlescent', 'Pearlescent -
-trimmed', 'Thoughts', 'Think About Us', 'Wide Open']
-song names: ['Think About Us', 'Wide Open', 'Isolation', 'Positivity',
-'Pearlescent', 'Pearlescent - trimmed', 'Thoughts']
---- Tue Nov 11 11:12:36 2025
-
-DJ Master
-Welcome to DJ Simulator!
-
-Selected: Think About Us -> video=None
-score keys: ['Isolation', 'Positivity', 'Pearlescent', 'Pearlescent -
-trimmed', 'Thoughts', 'Think About Us', 'Wide Open']
-song names: ['Think About Us', 'Wide Open', 'Isolation', 'Positivity',
-'Pearlescent', 'Pearlescent - trimmed', 'Thoughts']
---- Tue Nov 11 11:16:42 2025
-
-DJ Master
-Welcome to DJ Simulator!
-
-Selected: Think About Us -> video=None
-Selected: Thoughts -> video=None
-Selected: Pearlescent - trimmed -> video=None
-Selected: Wide Open -> video=None
-score keys: ['Isolation', 'Positivity', 'Pearlescent', 'Pearlescent -
-trimmed', 'Thoughts', 'Think About Us', 'Wide Open']
-song names: ['Think About Us', 'Wide Open', 'Isolation', 'Positivity',
-'Pearlescent', 'Pearlescent - trimmed', 'Thoughts']
---- Wed Nov 12 18:04:43 2025
-
-DJ Master
-Welcome to DJ Simulator!
-
-Selected: Think About Us -> video=None
-Selected: Think About Us -> video=None
-score keys: ['Isolation', 'Positivity', 'Pearlescent', 'Pearlescent -
-trimmed', 'Thoughts', 'Think About Us', 'Wide Open']
-song names: ['Think About Us', 'Wide Open', 'Isolation', 'Positivity',
-'Pearlescent', 'Pearlescent - trimmed', 'Thoughts']
---- Tue Nov 18 10:15:23 2025
-
-DJ Master
-Welcome to DJ Simulator!
-
-Selected: Think About Us -> video=None
+Selected: Wide Open -> video=video/wide_open.webm
+The selected video file is video/wide_open.webm!
+Selected: Think About Us -> video=video/think_about_us_vid.webm
+The selected video file is video/think_about_us_vid.webm!
 DJ Master
 Nice work hitting those notes! Hope you enjoyed the game.
 
---- Tue Nov 18 10:15:43 2025
-
-DJ Master
-Welcome to DJ Simulator!
-
-Selected: Think About Us -> video=None
-Selected: Think About Us -> video=None
-Selected: Wide Open -> video=None
-Selected: Think About Us -> video=None
-DJ Master
-Nice work hitting those notes! Hope you enjoyed the game.
-
---- Tue Nov 18 10:32:34 2025
+--- Tue Dec 23 21:16:39 2025
 
 score keys: ['Isolation', 'Positivity', 'Pearlescent', 'Pearlescent -
 trimmed', 'Thoughts', 'Think About Us', 'Wide Open']
-song names: ['Think About Us', 'Wide Open', 'Isolation', 'Positivity',
-'Pearlescent', 'Pearlescent - trimmed', 'Thoughts']
---- Tue Nov 18 10:35:21 2025
-
-DJ Master
-Welcome to DJ Simulator!
-
-Selected: Think About Us -> video=None
-score keys: ['Isolation', 'Positivity', 'Pearlescent', 'Pearlescent -
-trimmed', 'Thoughts', 'Think About Us', 'Wide Open']
-song names: ['Think About Us', 'Wide Open', 'Isolation', 'Positivity',
-'Pearlescent', 'Pearlescent - trimmed', 'Thoughts']
---- Tue Nov 18 10:37:59 2025
-
-DJ Master
-Welcome to DJ Simulator!
-
-Selected: Think About Us -> video=None
-score keys: ['Isolation', 'Positivity', 'Pearlescent', 'Pearlescent -
-trimmed', 'Thoughts', 'Think About Us', 'Wide Open']
-song names: ['Think About Us', 'Wide Open', 'Isolation', 'Positivity',
-'Pearlescent', 'Pearlescent - trimmed', 'Thoughts']
---- Tue Nov 18 10:39:34 2025
-
-DJ Master
-Welcome to DJ Simulator!
-
-Selected: Think About Us -> video=None
-Selected: Think About Us -> video=None
-DJ Master
-Nice work hitting those notes! Hope you enjoyed the game.
-
---- Tue Nov 18 10:43:15 2025
-
-DJ Master
-Welcome to DJ Simulator!
-
-Selected: Wide Open -> video=None
-DJ Master
-Nice work hitting those notes! Hope you enjoyed the game.
-
---- Tue Nov 18 10:44:50 2025
-
-score keys: ['Isolation', 'Positivity', 'Pearlescent', 'Pearlescent -
-trimmed', 'Thoughts', 'Think About Us', 'Wide Open']
-song names: ['Think About Us', 'Wide Open', 'Isolation', 'Positivity',
-'Pearlescent', 'Pearlescent - trimmed', 'Thoughts']
---- Tue Nov 18 10:47:25 2025
-
-DJ Master
-Welcome to DJ Simulator!
-
-Selected: Wide Open -> video=None
-DJ Master
-Nice work hitting those notes! Hope you enjoyed the game.
-
---- Tue Nov 18 10:47:39 2025
-
-score keys: ['Isolation', 'Positivity', 'Pearlescent', 'Pearlescent -
-trimmed', 'Thoughts', 'Think About Us', 'Wide Open']
-song names: ['Think About Us', 'Wide Open', 'Isolation', 'Positivity',
-'Pearlescent', 'Pearlescent - trimmed', 'Thoughts']
---- Tue Nov 25 21:41:28 2025
-
-DJ Master
-Welcome to DJ Simulator!
-
-Selected: Think About Us -> video=None
-DJ Master
-Nice work hitting those notes! Hope you enjoyed the game.
-
---- Tue Nov 25 21:41:48 2025
-
-score keys: ['Isolation', 'Positivity', 'Pearlescent', 'Pearlescent -
-trimmed', 'Thoughts', 'Think About Us', 'Wide Open']
-song names: ['Think About Us', 'Wide Open', 'Isolation', 'Positivity',
-'Pearlescent', 'Pearlescent - trimmed', 'Thoughts']
---- Mon Dec  8 11:10:50 2025
-
-DJ Master
-Welcome to DJ Simulator!
-
-Selected: Think About Us -> video=None
-score keys: ['Isolation', 'Positivity', 'Pearlescent', 'Pearlescent -
-trimmed', 'Thoughts', 'Think About Us', 'Wide Open']
-song names: ['Think About Us', 'Wide Open', 'Isolation', 'Positivity',
-'Pearlescent', 'Pearlescent - trimmed', 'Thoughts']
---- Mon Dec 15 20:46:48 2025
-
-DJ Master
-Welcome to DJ Simulator!
-
-Selected: Think About Us -> video=None
-DJ Master
-Nice work hitting those notes! Hope you enjoyed the game.
-
---- Mon Dec 15 20:47:16 2025
-
-score keys: ['Isolation', 'Positivity', 'Pearlescent', 'Pearlescent -
-trimmed', 'Thoughts', 'Think About Us', 'Wide Open']
-song names: ['Think About Us', 'Wide Open', 'Isolation', 'Positivity',
-'Pearlescent', 'Pearlescent - trimmed', 'Thoughts']
---- Thu Dec 18 13:56:42 2025
-
-DJ Master
-Welcome to DJ Simulator!
-
-Selected: Think About Us -> video=None
-score keys: ['Isolation', 'Positivity', 'Pearlescent', 'Pearlescent -
-trimmed', 'Thoughts', 'Think About Us', 'Wide Open']
-song names: ['Think About Us', 'Wide Open', 'Isolation', 'Positivity',
-'Pearlescent', 'Pearlescent - trimmed', 'Thoughts']
---- Tue Dec 23 12:23:32 2025
-
-DJ Master
-Welcome to DJ Simulator!
-
-Selected: Think About Us -> video=None
-Selected: Think About Us -> video=None
-Selected: Think About Us -> video=None
-Selected: Wide Open -> video=None
-DJ Master
-Nice work hitting those notes! Hope you enjoyed the game.
-
---- Tue Dec 23 12:43:39 2025
+song names: ['Think About Us', 'Wide Open']
+--- Tue Dec 23 21:24:58 2025
 
 DJ Master
 Welcome to DJ Simulator!
@@ -270,53 +93,668 @@ Welcome to DJ Simulator!
 DJ Master
 Nice work hitting those notes! Hope you enjoyed the game.
 
---- Tue Dec 23 12:45:38 2025
-
-DJ Master
-Welcome to DJ Simulator!
-
-DJ Master
-Nice work hitting those notes! Hope you enjoyed the game.
-
---- Tue Dec 23 12:45:44 2025
+--- Tue Dec 23 21:25:10 2025
 
 score keys: ['Isolation', 'Positivity', 'Pearlescent', 'Pearlescent -
 trimmed', 'Thoughts', 'Think About Us', 'Wide Open']
-song names: ['Think About Us', 'Wide Open', 'Isolation', 'Positivity',
-'Pearlescent', 'Pearlescent - trimmed', 'Thoughts']
---- Tue Dec 23 14:19:01 2025
-
-DJ Master
-Welcome to DJ Simulator!
-
-Selected: Wide Open -> video=None
-Selected: Wide Open -> video=None
-DJ Master
-Nice work hitting those notes! Hope you enjoyed the game.
-
---- Tue Dec 23 14:23:49 2025
-
-DJ Master
-Welcome to DJ Simulator!
-
-Selected: Wide Open -> video=None
-DJ Master
-Nice work hitting those notes! Hope you enjoyed the game.
-
---- Tue Dec 23 14:29:40 2025
+song names: ['Think About Us', 'Wide Open']
+--- Tue Dec 23 21:27:34 2025
 
 score keys: ['Isolation', 'Positivity', 'Pearlescent', 'Pearlescent -
 trimmed', 'Thoughts', 'Think About Us', 'Wide Open']
-song names: ['Think About Us', 'Wide Open', 'Isolation', 'Positivity',
-'Pearlescent', 'Pearlescent - trimmed', 'Thoughts']
---- Tue Dec 23 14:30:09 2025
+song names: ['Think About Us', 'Wide Open']
+--- Tue Dec 23 21:28:03 2025
+
+score keys: ['Isolation', 'Positivity', 'Pearlescent', 'Pearlescent -
+trimmed', 'Thoughts', 'Think About Us', 'Wide Open']
+song names: ['Think About Us', 'Wide Open']
+--- Tue Dec 23 21:28:05 2025
+
+score keys: ['Isolation', 'Positivity', 'Pearlescent', 'Pearlescent -
+trimmed', 'Thoughts', 'Think About Us', 'Wide Open']
+song names: ['Think About Us', 'Wide Open']
+--- Tue Dec 23 21:28:09 2025
+
+score keys: ['Isolation', 'Positivity', 'Pearlescent', 'Pearlescent -
+trimmed', 'Thoughts', 'Think About Us', 'Wide Open']
+song names: ['Think About Us', 'Wide Open']
+--- Tue Dec 23 21:29:21 2025
+
+score keys: ['Isolation', 'Positivity', 'Pearlescent', 'Pearlescent -
+trimmed', 'Thoughts', 'Think About Us', 'Wide Open']
+song names: ['Think About Us', 'Wide Open']
+--- Tue Dec 23 21:29:25 2025
+
+score keys: ['Isolation', 'Positivity', 'Pearlescent', 'Pearlescent -
+trimmed', 'Thoughts', 'Think About Us', 'Wide Open']
+song names: ['Think About Us', 'Wide Open']
+--- Tue Dec 23 21:29:31 2025
+
+score keys: ['Isolation', 'Positivity', 'Pearlescent', 'Pearlescent -
+trimmed', 'Thoughts', 'Think About Us', 'Wide Open']
+song names: ['Think About Us', 'Wide Open']
+--- Tue Dec 23 21:29:33 2025
+
+score keys: ['Isolation', 'Positivity', 'Pearlescent', 'Pearlescent -
+trimmed', 'Thoughts', 'Think About Us', 'Wide Open']
+song names: ['Think About Us', 'Wide Open']
+--- Tue Dec 23 21:30:21 2025
+
+score keys: ['Isolation', 'Positivity', 'Pearlescent', 'Pearlescent -
+trimmed', 'Thoughts', 'Think About Us', 'Wide Open']
+song names: ['Think About Us', 'Wide Open']
+--- Tue Dec 23 21:30:47 2025
+
+score keys: ['Isolation', 'Positivity', 'Pearlescent', 'Pearlescent -
+trimmed', 'Thoughts', 'Think About Us', 'Wide Open']
+song names: ['Think About Us', 'Wide Open']
+--- Tue Dec 23 21:31:01 2025
+
+score keys: ['Isolation', 'Positivity', 'Pearlescent', 'Pearlescent -
+trimmed', 'Thoughts', 'Think About Us', 'Wide Open']
+song names: ['Think About Us', 'Wide Open']
+--- Tue Dec 23 21:32:51 2025
 
 DJ Master
 Welcome to DJ Simulator!
 
-Selected: Wide Open -> video=None
+Selected: Think About Us -> video=video/think_about_us_vid.webm
+The selected video file is video/think_about_us_vid.webm!
 DJ Master
 Nice work hitting those notes! Hope you enjoyed the game.
 
---- Tue Dec 23 14:34:02 2025
+--- Tue Dec 23 21:33:42 2025
 
+score keys: ['Isolation', 'Positivity', 'Pearlescent', 'Pearlescent -
+trimmed', 'Thoughts', 'Think About Us', 'Wide Open']
+song names: ['Think About Us', 'Wide Open']
+--- Tue Dec 23 21:37:00 2025
+
+DJ Master
+Welcome to DJ Simulator!
+
+DJ Master
+Nice work hitting those notes! Hope you enjoyed the game.
+
+--- Tue Dec 23 21:37:14 2025
+
+DJ Master
+Welcome to DJ Simulator!
+
+DJ Master
+Nice work hitting those notes! Hope you enjoyed the game.
+
+--- Tue Dec 23 21:37:22 2025
+
+DJ Master
+Welcome to DJ Simulator!
+
+Selected: Think About Us -> video=video/think_about_us_vid.webm
+The selected video file is video/think_about_us_vid.webm!
+DJ Master
+Nice work hitting those notes! Hope you enjoyed the game.
+
+--- Tue Dec 23 21:38:08 2025
+
+DJ Master
+Welcome to DJ Simulator!
+
+Selected: Think About Us -> video=video/think_about_us_vid.webm
+The selected video file is video/think_about_us_vid.webm!
+DJ Master
+Nice work hitting those notes! Hope you enjoyed the game.
+
+--- Tue Dec 23 21:40:41 2025
+
+score keys: ['Isolation', 'Positivity', 'Pearlescent', 'Pearlescent -
+trimmed', 'Thoughts', 'Think About Us', 'Wide Open']
+song names: ['Think About Us', 'Wide Open']
+--- Tue Dec 23 22:06:14 2025
+
+DJ Master
+Welcome to DJ Simulator!
+
+DJ Master
+Welcome to DJ Simulator!
+
+Selected: Wide Open -> video=video/wide_open.webm
+The selected video file is video/wide_open.webm!
+score keys: ['Isolation', 'Positivity', 'Pearlescent', 'Pearlescent -
+trimmed', 'Thoughts', 'Think About Us', 'Wide Open']
+song names: ['Think About Us', 'Wide Open']
+--- Wed Dec 24 01:19:16 2025
+
+DJ Master
+Welcome to DJ Simulator!
+
+Selected: Wide Open -> video=video/wide_open.webm
+score keys: ['Isolation', 'Positivity', 'Pearlescent', 'Pearlescent -
+trimmed', 'Thoughts', 'Think About Us', 'Wide Open']
+song names: ['Think About Us', 'Wide Open']
+--- Wed Dec 24 01:19:24 2025
+
+Selected: Wide Open -> video=video/wide_open.webm
+Selected: Think About Us -> video=video/think_about_us_vid.webm
+The selected video file is video/think_about_us_vid.webm!
+Selected: Wide Open -> video=video/wide_open.webm
+The selected video file is video/wide_open.webm!
+DJ Master
+Nice work hitting those notes! Hope you enjoyed the game.
+
+--- Wed Dec 24 01:21:09 2025
+
+score keys: ['Isolation', 'Positivity', 'Pearlescent', 'Pearlescent -
+trimmed', 'Thoughts', 'Think About Us', 'Wide Open']
+song names: ['Think About Us', 'Wide Open']
+--- Wed Dec 24 16:57:14 2025
+
+DJ Master
+Welcome to DJ Simulator!
+
+Selected: Wide Open -> video=video/wide_open.webm
+The selected video file is video/wide_open.webm!
+DJ Master
+Nice work hitting those notes! Hope you enjoyed the game.
+
+--- Wed Dec 24 17:01:07 2025
+
+DJ Master
+Welcome to DJ Simulator!
+
+score keys: ['Isolation', 'Positivity', 'Pearlescent', 'Pearlescent -
+trimmed', 'Thoughts', 'Think About Us', 'Wide Open']
+song names: ['Think About Us', 'Wide Open']
+--- Wed Dec 24 22:25:25 2025
+
+DJ Master
+Welcome to DJ Simulator!
+
+Selected: Think About Us -> video=video/think_about_us_vid.webm
+The selected video file is video/think_about_us_vid.webm!
+score keys: ['Isolation', 'Positivity', 'Pearlescent', 'Pearlescent -
+trimmed', 'Thoughts', 'Think About Us', 'Wide Open']
+song names: ['Think About Us', 'Wide Open']
+--- Wed Dec 24 22:26:52 2025
+
+DJ Master
+Nice work hitting those notes! Hope you enjoyed the game.
+
+--- Wed Dec 24 22:26:52 2025
+
+DJ Master
+Welcome to DJ Simulator!
+
+Selected: Think About Us -> video=video/think_about_us_vid.webm
+The selected video file is video/think_about_us_vid.webm!
+DJ Master
+Nice work hitting those notes! Hope you enjoyed the game.
+
+--- Wed Dec 24 22:27:06 2025
+
+DJ Master
+Welcome to DJ Simulator!
+
+Selected: Think About Us -> video=video/think_about_us_vid.webm
+The selected video file is video/think_about_us_vid.webm!
+score keys: ['Isolation', 'Positivity', 'Pearlescent', 'Pearlescent -
+trimmed', 'Thoughts', 'Think About Us', 'Wide Open']
+song names: ['Think About Us', 'Wide Open']
+--- Wed Dec 24 22:36:55 2025
+
+score keys: ['Isolation', 'Positivity', 'Pearlescent', 'Pearlescent -
+trimmed', 'Thoughts', 'Think About Us', 'Wide Open']
+song names: ['Think About Us', 'Wide Open']
+--- Wed Dec 24 22:37:32 2025
+
+DJ Master
+Nice work hitting those notes! Hope you enjoyed the game.
+
+--- Wed Dec 24 22:37:42 2025
+
+DJ Master
+Welcome to DJ Simulator!
+
+Selected: Think About Us -> video=video/think_about_us_vid.webm
+The selected video file is video/think_about_us_vid.webm!
+score keys: ['Isolation', 'Positivity', 'Pearlescent', 'Pearlescent -
+trimmed', 'Thoughts', 'Think About Us', 'Wide Open']
+song names: ['Think About Us', 'Wide Open']
+--- Wed Dec 24 22:38:07 2025
+
+score keys: ['Isolation', 'Positivity', 'Pearlescent', 'Pearlescent -
+trimmed', 'Thoughts', 'Think About Us', 'Wide Open']
+song names: ['Think About Us', 'Wide Open']
+--- Wed Dec 24 22:38:10 2025
+
+score keys: ['Isolation', 'Positivity', 'Pearlescent', 'Pearlescent -
+trimmed', 'Thoughts', 'Think About Us', 'Wide Open']
+song names: ['Think About Us', 'Wide Open']
+--- Wed Dec 24 22:38:21 2025
+
+score keys: ['Isolation', 'Positivity', 'Pearlescent', 'Pearlescent -
+trimmed', 'Thoughts', 'Think About Us', 'Wide Open']
+song names: ['Think About Us', 'Wide Open']
+--- Wed Dec 24 22:40:09 2025
+
+score keys: ['Isolation', 'Positivity', 'Pearlescent', 'Pearlescent -
+trimmed', 'Thoughts', 'Think About Us', 'Wide Open']
+song names: ['Think About Us', 'Wide Open']
+--- Wed Dec 24 22:40:43 2025
+
+score keys: ['Isolation', 'Positivity', 'Pearlescent', 'Pearlescent -
+trimmed', 'Thoughts', 'Think About Us', 'Wide Open']
+song names: ['Think About Us', 'Wide Open']
+--- Wed Dec 24 22:41:43 2025
+
+score keys: ['Isolation', 'Positivity', 'Pearlescent', 'Pearlescent -
+trimmed', 'Thoughts', 'Think About Us', 'Wide Open']
+song names: ['Think About Us', 'Wide Open']
+--- Wed Dec 24 22:43:11 2025
+
+score keys: ['Isolation', 'Positivity', 'Pearlescent', 'Pearlescent -
+trimmed', 'Thoughts', 'Think About Us', 'Wide Open']
+song names: ['Think About Us', 'Wide Open']
+--- Wed Dec 24 22:43:23 2025
+
+score keys: ['Isolation', 'Positivity', 'Pearlescent', 'Pearlescent -
+trimmed', 'Thoughts', 'Think About Us', 'Wide Open']
+song names: ['Think About Us', 'Wide Open']
+--- Wed Dec 24 22:43:27 2025
+
+score keys: ['Isolation', 'Positivity', 'Pearlescent', 'Pearlescent -
+trimmed', 'Thoughts', 'Think About Us', 'Wide Open']
+song names: ['Think About Us', 'Wide Open']
+--- Wed Dec 24 22:43:37 2025
+
+score keys: ['Isolation', 'Positivity', 'Pearlescent', 'Pearlescent -
+trimmed', 'Thoughts', 'Think About Us', 'Wide Open']
+song names: ['Think About Us', 'Wide Open']
+--- Wed Dec 24 22:45:17 2025
+
+score keys: ['Isolation', 'Positivity', 'Pearlescent', 'Pearlescent -
+trimmed', 'Thoughts', 'Think About Us', 'Wide Open']
+song names: ['Think About Us', 'Wide Open']
+--- Wed Dec 24 22:50:35 2025
+
+score keys: ['Isolation', 'Positivity', 'Pearlescent', 'Pearlescent -
+trimmed', 'Thoughts', 'Think About Us', 'Wide Open']
+song names: ['Think About Us', 'Wide Open']
+--- Wed Dec 24 22:51:20 2025
+
+DJ Master
+Nice work hitting those notes! Hope you enjoyed the game.
+
+--- Wed Dec 24 22:51:21 2025
+
+DJ Master
+Welcome to DJ Simulator!
+
+Selected: Think About Us -> video=video/think_about_us_vid.webm
+score keys: ['Isolation', 'Positivity', 'Pearlescent', 'Pearlescent -
+trimmed', 'Thoughts', 'Think About Us', 'Wide Open']
+song names: ['Think About Us', 'Wide Open']
+--- Wed Dec 24 22:51:31 2025
+
+Selected: Think About Us -> video=video/think_about_us_vid.webm
+Selected: Think About Us -> video=video/think_about_us_vid.webm
+The selected video file is video/think_about_us_vid.webm!
+score keys: ['Isolation', 'Positivity', 'Pearlescent', 'Pearlescent -
+trimmed', 'Thoughts', 'Think About Us', 'Wide Open']
+song names: ['Think About Us', 'Wide Open']
+--- Wed Dec 24 22:54:36 2025
+
+DJ Master
+Welcome to DJ Simulator!
+
+Selected: Think About Us -> video=video/think_about_us_vid.webm
+The selected video file is video/think_about_us_vid.webm!
+DJ Master
+Nice work hitting those notes! Hope you enjoyed the game.
+
+--- Wed Dec 24 22:56:56 2025
+
+DJ Master
+Welcome to DJ Simulator!
+
+Selected: Think About Us -> video=video/think_about_us_vid.webm
+The selected video file is video/think_about_us_vid.webm!
+score keys: ['Isolation', 'Positivity', 'Pearlescent', 'Pearlescent -
+trimmed', 'Thoughts', 'Think About Us', 'Wide Open']
+song names: ['Think About Us', 'Wide Open']
+--- Wed Dec 24 22:57:04 2025
+
+Selected: Think About Us -> video=video/think_about_us_vid.webm
+Selected: Think About Us -> video=video/think_about_us_vid.webm
+The selected video file is video/think_about_us_vid.webm!
+score keys: ['Isolation', 'Positivity', 'Pearlescent', 'Pearlescent -
+trimmed', 'Thoughts', 'Think About Us', 'Wide Open']
+song names: ['Think About Us', 'Wide Open']
+--- Wed Dec 24 22:57:21 2025
+
+DJ Master
+Nice work hitting those notes! Hope you enjoyed the game.
+
+--- Wed Dec 24 22:57:22 2025
+
+DJ Master
+Welcome to DJ Simulator!
+
+Selected: Think About Us -> video=video/think_about_us_vid.webm
+The selected video file is video/think_about_us_vid.webm!
+score keys: ['Isolation', 'Positivity', 'Pearlescent', 'Pearlescent -
+trimmed', 'Thoughts', 'Think About Us', 'Wide Open']
+song names: ['Think About Us', 'Wide Open']
+--- Wed Dec 24 23:02:01 2025
+
+score keys: ['Isolation', 'Positivity', 'Pearlescent', 'Pearlescent -
+trimmed', 'Thoughts', 'Think About Us', 'Wide Open']
+song names: ['Think About Us', 'Wide Open']
+--- Wed Dec 24 23:02:06 2025
+
+score keys: ['Isolation', 'Positivity', 'Pearlescent', 'Pearlescent -
+trimmed', 'Thoughts', 'Think About Us', 'Wide Open']
+song names: ['Think About Us', 'Wide Open']
+--- Wed Dec 24 23:02:08 2025
+
+DJ Master
+Nice work hitting those notes! Hope you enjoyed the game.
+
+--- Wed Dec 24 23:02:09 2025
+
+DJ Master
+Welcome to DJ Simulator!
+
+Selected: Think About Us -> video=video/think_about_us_vid.webm
+score keys: ['Isolation', 'Positivity', 'Pearlescent', 'Pearlescent -
+trimmed', 'Thoughts', 'Think About Us', 'Wide Open']
+song names: ['Think About Us', 'Wide Open']
+--- Wed Dec 24 23:05:00 2025
+
+DJ Master
+Welcome to DJ Simulator!
+
+Selected: Think About Us -> video=video/think_about_us_vid.webm
+score keys: ['Isolation', 'Positivity', 'Pearlescent', 'Pearlescent -
+trimmed', 'Thoughts', 'Think About Us', 'Wide Open']
+song names: ['Think About Us', 'Wide Open']
+--- Wed Dec 24 23:06:55 2025
+
+DJ Master
+Welcome to DJ Simulator!
+
+Selected: Think About Us -> video=video/think_about_us_vid.webm
+score keys: ['Isolation', 'Positivity', 'Pearlescent', 'Pearlescent -
+trimmed', 'Thoughts', 'Think About Us', 'Wide Open']
+song names: ['Think About Us', 'Wide Open']
+--- Wed Dec 24 23:15:44 2025
+
+DJ Master
+Welcome to DJ Simulator!
+
+Selected: Think About Us -> video=video/think_about_us_vid.webm
+score keys: ['Isolation', 'Positivity', 'Pearlescent', 'Pearlescent -
+trimmed', 'Thoughts', 'Think About Us', 'Wide Open']
+song names: ['Think About Us', 'Wide Open']
+--- Wed Dec 24 23:15:52 2025
+
+Selected: Think About Us -> video=video/think_about_us_vid.webm
+score keys: ['Isolation', 'Positivity', 'Pearlescent', 'Pearlescent -
+trimmed', 'Thoughts', 'Think About Us', 'Wide Open']
+song names: ['Think About Us', 'Wide Open']
+--- Wed Dec 24 23:37:23 2025
+
+DJ Master
+Welcome to DJ Simulator!
+
+Selected: Think About Us -> video=video/think_about_us_vid.webm
+The selected video file is video/think_about_us_vid.webm!
+score keys: ['Isolation', 'Positivity', 'Pearlescent', 'Pearlescent -
+trimmed', 'Thoughts', 'Think About Us', 'Wide Open']
+song names: ['Think About Us', 'Wide Open']
+--- Thu Dec 25 13:43:35 2025
+
+DJ Master
+Welcome to DJ Simulator!
+
+Selected: Think About Us -> video=video/think_about_us_vid.webm
+The selected video file is video/think_about_us_vid.webm!
+score keys: ['Isolation', 'Positivity', 'Pearlescent', 'Pearlescent -
+trimmed', 'Thoughts', 'Think About Us', 'Wide Open']
+song names: ['Think About Us', 'Wide Open']
+--- Thu Dec 25 13:44:12 2025
+
+Selected: Think About Us -> video=video/think_about_us_vid.webm
+The selected video file is video/think_about_us_vid.webm!
+Selected: Think About Us -> video=video/think_about_us_vid.webm
+The selected video file is video/think_about_us_vid.webm!
+Selected: Think About Us -> video=video/think_about_us_vid.webm
+score keys: ['Isolation', 'Positivity', 'Pearlescent', 'Pearlescent -
+trimmed', 'Thoughts', 'Think About Us', 'Wide Open']
+song names: ['Think About Us', 'Wide Open']
+--- Thu Dec 25 13:50:35 2025
+
+Selected: Think About Us -> video=video/think_about_us_vid.webm
+Selected: Think About Us -> video=video/think_about_us_vid.webm
+The selected video file is video/think_about_us_vid.webm!
+score keys: ['Isolation', 'Positivity', 'Pearlescent', 'Pearlescent -
+trimmed', 'Thoughts', 'Think About Us', 'Wide Open']
+song names: ['Think About Us', 'Wide Open']
+--- Thu Dec 25 13:51:13 2025
+
+score keys: ['Isolation', 'Positivity', 'Pearlescent', 'Pearlescent -
+trimmed', 'Thoughts', 'Think About Us', 'Wide Open']
+song names: ['Think About Us', 'Wide Open']
+--- Thu Dec 25 13:51:24 2025
+
+score keys: ['Isolation', 'Positivity', 'Pearlescent', 'Pearlescent -
+trimmed', 'Thoughts', 'Think About Us', 'Wide Open']
+song names: ['Think About Us', 'Wide Open']
+--- Thu Dec 25 13:51:25 2025
+
+DJ Master
+Welcome to DJ Simulator!
+
+Selected: Think About Us -> video=video/think_about_us_vid.webm
+The selected video file is video/think_about_us_vid.webm!
+score keys: ['Isolation', 'Positivity', 'Pearlescent', 'Pearlescent -
+trimmed', 'Thoughts', 'Think About Us', 'Wide Open']
+song names: ['Think About Us', 'Wide Open']
+--- Thu Dec 25 13:51:47 2025
+
+Selected: Think About Us -> video=video/think_about_us_vid.webm
+The selected video file is video/think_about_us_vid.webm!
+score keys: ['Isolation', 'Positivity', 'Pearlescent', 'Pearlescent -
+trimmed', 'Thoughts', 'Think About Us', 'Wide Open']
+song names: ['Think About Us', 'Wide Open']
+--- Thu Dec 25 13:52:37 2025
+
+score keys: ['Isolation', 'Positivity', 'Pearlescent', 'Pearlescent -
+trimmed', 'Thoughts', 'Think About Us', 'Wide Open']
+song names: ['Think About Us', 'Wide Open']
+--- Thu Dec 25 13:52:55 2025
+
+score keys: ['Isolation', 'Positivity', 'Pearlescent', 'Pearlescent -
+trimmed', 'Thoughts', 'Think About Us', 'Wide Open']
+song names: ['Think About Us', 'Wide Open']
+--- Thu Dec 25 13:52:58 2025
+
+score keys: ['Isolation', 'Positivity', 'Pearlescent', 'Pearlescent -
+trimmed', 'Thoughts', 'Think About Us', 'Wide Open']
+song names: ['Think About Us', 'Wide Open']
+--- Thu Dec 25 13:53:18 2025
+
+score keys: ['Isolation', 'Positivity', 'Pearlescent', 'Pearlescent -
+trimmed', 'Thoughts', 'Think About Us', 'Wide Open']
+song names: ['Think About Us', 'Wide Open']
+--- Thu Dec 25 13:53:26 2025
+
+score keys: ['Isolation', 'Positivity', 'Pearlescent', 'Pearlescent -
+trimmed', 'Thoughts', 'Think About Us', 'Wide Open']
+song names: ['Think About Us', 'Wide Open']
+--- Thu Dec 25 13:53:31 2025
+
+score keys: ['Isolation', 'Positivity', 'Pearlescent', 'Pearlescent -
+trimmed', 'Thoughts', 'Think About Us', 'Wide Open']
+song names: ['Think About Us', 'Wide Open']
+--- Thu Dec 25 13:59:32 2025
+
+Selected: Think About Us -> video=video/think_about_us_vid.webm
+score keys: ['Isolation', 'Positivity', 'Pearlescent', 'Pearlescent -
+trimmed', 'Thoughts', 'Think About Us', 'Wide Open']
+song names: ['Think About Us', 'Wide Open']
+--- Thu Dec 25 14:20:35 2025
+
+DJ Master
+Welcome to DJ Simulator!
+
+Selected: Think About Us -> video=video/think_about_us_vid.webm
+The selected video file is video/think_about_us_vid.webm!
+DJ Master
+Nice work hitting those notes! Hope you enjoyed the game.
+
+--- Thu Dec 25 14:21:34 2025
+
+DJ Master
+Welcome to DJ Simulator!
+
+Selected: Think About Us -> video=video/think_about_us_vid.webm
+The selected video file is video/think_about_us_vid.webm!
+DJ Master
+Nice work hitting those notes! Hope you enjoyed the game.
+
+--- Thu Dec 25 14:24:34 2025
+
+DJ Master
+Welcome to DJ Simulator!
+
+Selected: Think About Us -> video=video/think_about_us_vid.webm
+The selected video file is video/think_about_us_vid.webm!
+Selected: Wide Open -> video=video/wide_open.webm
+The selected video file is video/wide_open.webm!
+score keys: ['Isolation', 'Positivity', 'Pearlescent', 'Pearlescent -
+trimmed', 'Thoughts', 'Think About Us', 'Wide Open']
+song names: ['Think About Us', 'Wide Open']
+--- Thu Dec 25 14:26:05 2025
+
+Selected: Wide Open -> video=video/wide_open.webm
+Selected: Wide Open -> video=video/wide_open.webm
+The selected video file is video/wide_open.webm!
+score keys: ['Isolation', 'Positivity', 'Pearlescent', 'Pearlescent -
+trimmed', 'Thoughts', 'Think About Us', 'Wide Open']
+song names: ['Think About Us', 'Wide Open']
+--- Thu Dec 25 14:28:20 2025
+
+score keys: ['Isolation', 'Positivity', 'Pearlescent', 'Pearlescent -
+trimmed', 'Thoughts', 'Think About Us', 'Wide Open']
+song names: ['Think About Us', 'Wide Open']
+--- Thu Dec 25 14:28:33 2025
+
+score keys: ['Isolation', 'Positivity', 'Pearlescent', 'Pearlescent -
+trimmed', 'Thoughts', 'Think About Us', 'Wide Open']
+song names: ['Think About Us', 'Wide Open']
+--- Thu Dec 25 14:28:38 2025
+
+score keys: ['Isolation', 'Positivity', 'Pearlescent', 'Pearlescent -
+trimmed', 'Thoughts', 'Think About Us', 'Wide Open']
+song names: ['Think About Us', 'Wide Open']
+--- Thu Dec 25 14:28:48 2025
+
+score keys: ['Isolation', 'Positivity', 'Pearlescent', 'Pearlescent -
+trimmed', 'Thoughts', 'Think About Us', 'Wide Open']
+song names: ['Think About Us', 'Wide Open']
+--- Thu Dec 25 14:28:55 2025
+
+score keys: ['Isolation', 'Positivity', 'Pearlescent', 'Pearlescent -
+trimmed', 'Thoughts', 'Think About Us', 'Wide Open']
+song names: ['Think About Us', 'Wide Open']
+--- Thu Dec 25 14:28:59 2025
+
+Selected: Think About Us -> video=video/think_about_us_vid.webm
+Selected: Wide Open -> video=video/wide_open.webm
+The selected video file is video/wide_open.webm!
+Selected: Wide Open -> video=video/wide_open.webm
+The selected video file is video/wide_open.webm!
+score keys: ['Isolation', 'Positivity', 'Pearlescent', 'Pearlescent -
+trimmed', 'Thoughts', 'Think About Us', 'Wide Open']
+song names: ['Think About Us', 'Wide Open']
+--- Thu Dec 25 14:33:45 2025
+
+Selected: Wide Open -> video=video/wide_open.webm
+The selected video file is video/wide_open.webm!
+DJ Master
+Nice work hitting those notes! Hope you enjoyed the game.
+
+--- Thu Dec 25 14:37:33 2025
+
+score keys: ['Isolation', 'Positivity', 'Pearlescent', 'Pearlescent -
+trimmed', 'Thoughts', 'Think About Us', 'Wide Open']
+song names: ['Think About Us', 'Wide Open']
+--- Thu Dec 25 14:42:28 2025
+
+DJ Master
+Welcome to DJ Simulator!
+
+Selected: Wide Open -> video=video/wide_open.webm
+The selected video file is video/wide_open.webm!
+Selected: Wide Open -> video=video/wide_open.webm
+The selected video file is video/wide_open.webm!
+score keys: ['Isolation', 'Positivity', 'Pearlescent', 'Pearlescent -
+trimmed', 'Thoughts', 'Think About Us', 'Wide Open']
+song names: ['Think About Us', 'Wide Open']
+--- Thu Dec 25 15:14:15 2025
+
+DJ Master
+Welcome to DJ Simulator!
+
+Selected: Think About Us -> video=video/think_about_us_vid.webm
+The selected video file is video/think_about_us_vid.webm!
+DJ Master
+Nice work hitting those notes! Hope you enjoyed the game.
+
+--- Thu Dec 25 15:17:29 2025
+
+score keys: ['Isolation', 'Positivity', 'Pearlescent', 'Pearlescent -
+trimmed', 'Thoughts', 'Think About Us', 'Wide Open']
+song names: ['Think About Us', 'Wide Open']
+--- Thu Dec 25 22:55:58 2025
+
+DJ Master
+Welcome to DJ Simulator!
+
+Selected: Wide Open -> video=video/wide_open.webm
+The selected video file is video/wide_open.webm!
+DJ Master
+Nice work hitting those notes! Hope you enjoyed the game.
+
+--- Thu Dec 25 22:56:13 2025
+
+score keys: ['Isolation', 'Positivity', 'Pearlescent', 'Pearlescent -
+trimmed', 'Thoughts', 'Think About Us', 'Wide Open', 'Feisty']
+song names: ['Think About Us', 'Wide Open', 'Feisty']
+--- Thu Dec 25 23:16:13 2025
+
+DJ Master
+Welcome to DJ Simulator!
+
+Selected: Feisty -> video=video/feisty.webm
+The selected video file is video/feisty.webm!
+Selected: Feisty -> video=video/feisty.webm
+The selected video file is video/feisty.webm!
+Selected: Feisty -> video=video/feisty.webm
+The selected video file is video/feisty.webm!
+DJ Master
+Nice work hitting those notes! Hope you enjoyed the game.
+
+--- Thu Dec 25 23:22:55 2025
+
+DJ Master
+Welcome to DJ Simulator!
+
+Selected: Wide Open -> video=video/wide_open.webm
+The selected video file is video/wide_open.webm!
+Selected: Feisty -> video=video/feisty.webm
+The selected video file is video/feisty.webm!
+Selected: Feisty -> video=video/feisty.webm
+The selected video file is video/feisty.webm!
+Selected: Think About Us -> video=video/think_about_us_vid.webm
+The selected video file is video/think_about_us_vid.webm!

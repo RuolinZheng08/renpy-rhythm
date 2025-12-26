@@ -313,7 +313,7 @@ screen navigation():
 
         textbutton _("Preferences") action ShowMenu("preferences")
 
-        textbutton _("Rhythm Game") action Start("rhythm_game_entry")
+        # textbutton _("Rhythm Game") action Start("rhythm_game_entry")
 
         if _in_replay:
 
@@ -358,6 +358,14 @@ screen main_menu():
 
     ## This ensures that any other menu screen is replaced.
     tag menu
+
+    # configure background to fill screen
+    add im.Scale(
+        gui.main_menu_background,
+        config.screen_width,
+        config.screen_height
+    )
+
 
     style_prefix "main_menu"
 

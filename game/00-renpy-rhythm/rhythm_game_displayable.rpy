@@ -32,13 +32,10 @@ init python:
         return os.path.splitext(os.path.basename(s.music_file))[0].lower()
 
     VIDEO_BY_KEY = {
-        "think_about_us": "video/think_about_us_vid.webm",
+        "Think About Us": "video/think_about_us_vid.webm",
         "Wide Open":"video/wide_open.webm",
-        "isolation":     None,
-        "positivity":    None,
-        "pearlescent":   None,
-        "pearlescent_-_trimmed": None,
-        "thoughts":      None,
+        "Feisty":"video/feisty.webm"
+
     }
 
 label rhythm_game_entry_label:
@@ -64,14 +61,14 @@ label rhythm_game_entry_label:
 
         # find the video for this song
         # $ key = song_key(selected_song)
-        $ video_file = VIDEO_BY_KEY.get(selected_song)
+        $ video_file = VIDEO_BY_KEY.get(selected_song.name)
 
         # (optional) log to verify
         $ renpy.log(f"Selected: {selected_song.name} -> video={video_file}")
 
         # call the game screen with the video file
         $ new_score = renpy.call_screen(
-            _screen_name='rhythm_game',
+            _screen_name='rhythm_game', 
             rhythm_game_displayable=rhythm_game_displayable,
             video_file=video_file
         )
@@ -158,7 +155,8 @@ screen rhythm_game(rhythm_game_displayable, video_file=None):
             add Null()               # wait 1s for video to match music
         else:
             if bg_movie is None:
-                $ bg_movie = Movie(play=(video_file or "video/think_about_us_vid.webm"), loop=False)
+                $ bg_movie = Movie(play=(video_file), loop=False)
+                $ renpy.log(f"The selected video file is {video_file}!")
             add bg_movie
 
 
@@ -373,6 +371,45 @@ init python:
             3: Transform(self.note_drawables[3], zoom=self.zoom_scale),
             }
 
+            # --- key-press visual feedback (track buttons) ---
+            BUTTON_SIZE = (90, 90)  # tweak
+            self.button_zoom_scale = 1.25
+            self.button_hold_time = 0.1  # seconds
+
+            # image for the button indicator (example path)
+            TRACK0_BUTTON_IMG = THIS_PATH + IMG_DIR + "track_0_button_press.png"
+            TRACK1_BUTTON_IMG = THIS_PATH + IMG_DIR + "track_1_button_press.png"
+            TRACK2_BUTTON_IMG = THIS_PATH + IMG_DIR + "track_2_button_press.png"
+            TRACK3_BUTTON_IMG = THIS_PATH + IMG_DIR + "track_3_button_press.png"
+
+            self.track_button_drawables = {
+                0: Transform(Image(TRACK0_BUTTON_IMG), xysize=BUTTON_SIZE),
+                1: Transform(Image(TRACK1_BUTTON_IMG), xysize=BUTTON_SIZE),
+                2: Transform(Image(TRACK2_BUTTON_IMG), xysize=BUTTON_SIZE),
+                3: Transform(Image(TRACK3_BUTTON_IMG), xysize=BUTTON_SIZE),
+            }
+
+            # create 4 more displayables that are zoomed versions of the same pngs as above
+            self.track_button_drawables_zoom = {
+                track_idx: Transform(
+                    self.track_button_drawables[track_idx],
+                    zoom=self.button_zoom_scale
+                )
+                for track_idx in self.track_button_drawables
+            }
+
+            # when should the button stay "zoomed" until? (use song-time)
+            self.track_pressed_until = {0: -1.0,
+                                        1: -1.0,
+                                        2: -1.0,
+                                        3: -1.0}
+
+            # offset the track button a smidge:
+            self.track_button_y = self.track_bar_height  # below hit line
+            self.track_button_x_center_offset = (self.track_bar_width - BUTTON_SIZE[0]) / 2 + 10 # the + 10 here seems to center to the images I chose
+            self.track_button_x_center_offset_zoom = (self.track_bar_width - BUTTON_SIZE[0] * self.button_zoom_scale) / 2 + 10
+
+
             # record all the drawables for self.visit
             self.drawables = [
             self.miss_text_drawable,
@@ -383,6 +420,10 @@ init python:
             ]
             self.drawables.extend(list(self.note_drawables.values()))
             self.drawables.extend(list(self.note_drawables_large.values()))
+
+            # define the track button drawables as well:
+            self.drawables.extend(list(self.track_button_drawables.values()))
+            self.drawables.extend(list(self.track_button_drawables_zoom.values()))
 
             ## after all intializations are done, start playing music
             self.play_music()
@@ -429,6 +470,26 @@ init python:
             # draw the horizontal bar to indicate where the track ends
             # x = 0 starts from the left
             render.place(self.horizontal_bar_drawable, x=0, y=self.track_bar_height)
+
+            # --- draw all track button indicators ---
+            for track_idx in range(self.num_track_bars):
+
+                x_track = self.track_xoffsets[track_idx]
+
+                now = 0.0 if self.time_offset is None else st - self.time_offset
+
+                pressed = now < self.track_pressed_until.get(track_idx, -1.0)
+
+                if pressed:
+                    btn = self.track_button_drawables_zoom[track_idx]
+                    x_btn = x_track + self.track_button_x_center_offset_zoom
+                else:
+                    btn = self.track_button_drawables[track_idx]
+                    x_btn = x_track + self.track_button_x_center_offset
+
+                render.place(btn, x=x_btn, y=self.track_button_y) 
+
+            
 
             # draw the notes
             if self.has_game_started:
@@ -504,6 +565,10 @@ init python:
 
                 # loop over active notes to check if one is hit
                 for onset, _ in active_notes_on_track:
+                    
+                    # set the key pressed drawable to zoomed or not based on the current time + current track 
+                    self.track_pressed_until[track_idx] = curr_time + self.button_hold_time
+
                     if self.onset_hits[onset] is not None: # status already determined, one of miss, good, perfect
                         continue
 

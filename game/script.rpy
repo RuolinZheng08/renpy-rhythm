@@ -1,6 +1,6 @@
 ﻿define e = Character("DJ Master")
 
-define video_bg = "video/think_about_us_vid.webm"
+# define video_bg = "video/think_about_us_vid.webm"
 
 init python early:
     import os
@@ -15,11 +15,12 @@ init python:
     rhythm_game_songs = [
     Song('Think About Us', 'audio/think_about_us.mp3', 'audio/think_about_us.beatmap.txt', beatmap_stride=2),
     Song('Wide Open', 'audio/wide_open.mp3', 'audio/wide_open.beatmap.v2.txt', beatmap_stride=3),
-    Song('Isolation', 'audio/Isolation.mp3', 'audio/Isolation.beatmap.txt'),
-    Song('Positivity', 'audio/Positivity.mp3', 'audio/Positivity.beatmap.txt'),
-    Song('Pearlescent', 'audio/Pearlescent.mp3', 'audio/Pearlescent.beatmap.txt'),
-    Song('Pearlescent - trimmed', 'audio/Pearlescent - trimmed.mp3', 'audio/Pearlescent - trimmed.beatmap.txt'), # 22 sec, easy to test 
-    Song('Thoughts', 'audio/Thoughts.mp3', 'audio/Thoughts.beatmap.txt')
+    Song('Feisty', 'audio/feisty.mp3','audio/feisty_labelsv3.txt',beatmap_stride=2)
+    # Song('Isolation', 'audio/Isolation.mp3', 'audio/Isolation.beatmap.txt')
+    # Song('Positivity', 'audio/Positivity.mp3', 'audio/Positivity.beatmap.txt'),
+    # Song('Pearlescent', 'audio/Pearlescent.mp3', 'audio/Pearlescent.beatmap.txt'),
+    # Song('Pearlescent - trimmed', 'audio/Pearlescent - trimmed.mp3', 'audio/Pearlescent - trimmed.beatmap.txt'), # 22 sec, easy to test 
+    # Song('Thoughts', 'audio/Thoughts.mp3', 'audio/Thoughts.beatmap.txt')
     ]
 
     # # init
