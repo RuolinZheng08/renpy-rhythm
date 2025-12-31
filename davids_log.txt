@@ -758,3 +758,222 @@ Selected: Feisty -> video=video/feisty.webm
 The selected video file is video/feisty.webm!
 Selected: Think About Us -> video=video/think_about_us_vid.webm
 The selected video file is video/think_about_us_vid.webm!
+score keys: ['Isolation', 'Positivity', 'Pearlescent', 'Pearlescent -
+trimmed', 'Thoughts', 'Think About Us', 'Wide Open', 'Feisty']
+song names: ['Think About Us', 'Wide Open', 'Feisty']
+--- Tue Dec 30 16:48:00 2025
+
+DJ Master
+Welcome to DJ Simulator!
+
+Selected: Wide Open -> video=video/wide_open.webm
+The selected video file is video/wide_open.webm!
+Selected: Feisty -> video=video/feisty.webm
+The selected video file is video/feisty.webm!
+Selected: Feisty -> video=video/feisty.webm
+The selected video file is video/feisty.webm!
+Selected: Think About Us -> video=video/think_about_us_vid.webm
+The selected video file is video/think_about_us_vid.webm!
+score keys: ['Isolation', 'Positivity', 'Pearlescent', 'Pearlescent -
+trimmed', 'Thoughts', 'Think About Us', 'Wide Open', 'Feisty']
+song names: ['Think About Us', 'Wide Open', 'Feisty']
+--- Wed Dec 31 10:32:32 2025
+
+DJ Master
+Welcome to DJ Simulator!
+
+--- Wed Dec 31 10:33:06 2025
+
+DJ Master
+Welcome to DJ Simulator!
+
+DJ Master
+Nice work hitting those notes! Hope you enjoyed the game.
+
+--- Wed Dec 31 10:33:11 2025
+
+score keys: ['Isolation', 'Positivity', 'Pearlescent', 'Pearlescent -
+trimmed', 'Thoughts', 'Think About Us', 'Wide Open', 'Feisty']
+song names: ['Think About Us', 'Wide Open', 'Feisty']
+--- Wed Dec 31 10:42:31 2025
+
+score keys: ['Think About Us', 'Wide Open', 'Feisty']
+song names: ['Think About Us', 'Wide Open', 'Feisty']
+--- Wed Dec 31 10:55:00 2025
+
+--- Wed Dec 31 11:06:32 2025
+
+DJ Master
+Welcome to DJ Simulator!
+
+Selected: Think About Us -> video=video/think_about_us_vid.webm
+The selected video file is video/think_about_us_vid.webm!
+--- Wed Dec 31 11:08:55 2025
+
+DJ Master
+Welcome to DJ Simulator!
+
+--- Wed Dec 31 11:14:15 2025
+
+DJ Master
+Welcome to DJ Simulator!
+
+Selected: Think About Us -> video=video/think_about_us_vid.webm
+The selected video file is video/think_about_us_vid.webm!
+Selected: Think About Us -> video=video/think_about_us_vid.webm
+The selected video file is video/think_about_us_vid.webm!
+DJ Master
+Nice work hitting those notes! Hope you enjoyed the game.
+
+--- Wed Dec 31 11:14:54 2025
+
+DJ Master
+Welcome to DJ Simulator!
+
+--- Wed Dec 31 11:18:11 2025
+
+DJ Master
+Nice work hitting those notes! Hope you enjoyed the game.
+
+--- Wed Dec 31 11:18:12 2025
+
+DJ Master
+Welcome to DJ Simulator!
+
+Selected: Think About Us -> video=video/think_about_us_vid.webm
+The selected video file is video/think_about_us_vid.webm!
+DJ Master
+Nice work hitting those notes! Hope you enjoyed the game.
+
+--- Wed Dec 31 11:18:28 2025
+
+DJ Master
+Welcome to DJ Simulator!
+
+Selected: Wide Open -> video=video/wide_open.webm
+The selected video file is video/wide_open.webm!
+--- Wed Dec 31 11:19:03 2025
+
+DJ Master
+Welcome to DJ Simulator!
+
+--- Wed Dec 31 11:19:34 2025
+
+DJ Master
+Nice work hitting those notes! Hope you enjoyed the game.
+
+--- Wed Dec 31 11:19:36 2025
+
+DJ Master
+Welcome to DJ Simulator!
+
+Selected: Feisty -> video=video/feisty.webm
+The selected video file is video/feisty.webm!
+--- Wed Dec 31 11:24:02 2025
+
+DJ Master
+Welcome to DJ Simulator!
+
+Selected: Feisty -> video=video/feisty.webm
+The selected video file is video/feisty.webm!
+DJ Master
+Nice work hitting those notes! Hope you enjoyed the game.
+
+--- Wed Dec 31 11:24:25 2025
+
+DJ Master
+Welcome to DJ Simulator!
+
+--- Wed Dec 31 11:24:59 2025
+
+Selected: Feisty -> video=video/feisty.webm
+The selected video file is video/feisty.webm!
+DJ Master
+Nice work hitting those notes! Hope you enjoyed the game.
+
+--- Wed Dec 31 11:25:14 2025
+
+DJ Master
+Welcome to DJ Simulator!
+
+--- Wed Dec 31 11:25:52 2025
+
+--- Wed Dec 31 11:25:58 2025
+
+--- Wed Dec 31 11:26:08 2025
+
+--- Wed Dec 31 11:26:23 2025
+
+--- Wed Dec 31 11:28:55 2025
+
+--- Wed Dec 31 11:29:00 2025
+
+--- Wed Dec 31 11:29:03 2025
+
+--- Wed Dec 31 11:29:08 2025
+
+--- Wed Dec 31 11:29:20 2025
+
+--- Wed Dec 31 11:30:00 2025
+
+Selected: Think About Us -> video=video/think_about_us_vid.webm
+The selected video file is video/think_about_us_vid.webm!
+DJ Master
+Nice work hitting those notes! Hope you enjoyed the game.
+
+--- Wed Dec 31 11:30:29 2025
+
+DJ Master
+Welcome to DJ Simulator!
+
+--- Wed Dec 31 11:30:42 2025
+
+Selected: Think About Us -> video=video/think_about_us_vid.webm
+The selected video file is video/think_about_us_vid.webm!
+DJ Master
+Nice work hitting those notes! Hope you enjoyed the game.
+
+--- Wed Dec 31 11:30:54 2025
+
+DJ Master
+Welcome to DJ Simulator!
+
+Selected: Think About Us -> video=video/think_about_us_vid.webm
+The selected video file is video/think_about_us_vid.webm!
+DJ Master
+Nice work hitting those notes! Hope you enjoyed the game.
+
+--- Wed Dec 31 11:32:18 2025
+
+--- Wed Dec 31 11:32:22 2025
+
+DJ Master
+Welcome to DJ Simulator!
+
+Selected: Feisty -> video=video/feisty.webm
+The selected video file is video/feisty.webm!
+--- Wed Dec 31 11:32:45 2025
+
+DJ Master
+Welcome to DJ Simulator!
+
+--- Wed Dec 31 11:34:28 2025
+
+Selected: Wide Open -> video=video/wide_open.webm
+The selected video file is video/wide_open.webm!
+DJ Master
+Nice work hitting those notes! Hope you enjoyed the game.
+
+--- Wed Dec 31 11:34:42 2025
+
+--- Wed Dec 31 11:34:50 2025
+
+DJ Master
+Welcome to DJ Simulator!
+
+Selected: Think About Us -> video=video/think_about_us_vid.webm
+The selected video file is video/think_about_us_vid.webm!
+Selected: Feisty -> video=video/feisty.webm
+The selected video file is video/feisty.webm!
+Selected: Wide Open -> video=video/wide_open.webm
+The selected video file is video/wide_open.webm!

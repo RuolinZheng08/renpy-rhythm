@@ -23,31 +23,26 @@ init python:
     # Song('Thoughts', 'audio/Thoughts.mp3', 'audio/Thoughts.beatmap.txt')
     ]
 
-    # # init
-    # if persistent.rhythm_game_high_scores:
-    #     for song in songs:
-    #         if not song in persistent.rhythm_game_high_scores:
-    #             persistent.rhythm_game_high_scores[song] = (0, 0)
-
-
-# the dictionary was having trouble adding new songs to its persistent dictionary, so here's some code to help with that:
 init python:
-    # ensure dict exists
+    # Ensure the dict exists
     if not isinstance(getattr(persistent, "rhythm_game_high_scores", None), dict):
         persistent.rhythm_game_high_scores = {}
 
-    # seed any missing songs
-    for s in rhythm_game_songs:
-        persistent.rhythm_game_high_scores.setdefault(s.name, (0, 0.0))
+    def reset_persistent(do_reset=False):
+        if do_reset:
+            persistent.rhythm_game_high_scores = {}
 
-    # optional: log to catch casing/space issues
-    renpy.log(f"score keys: {list(persistent.rhythm_game_high_scores.keys())}")
-    renpy.log(f"song names: {[s.name for s in rhythm_game_songs]}")
+        # Seed missing songs safely
+        for s in rhythm_game_songs:
+            persistent.rhythm_game_high_scores.setdefault(s.name, (0, 0.0))
+        
+        renpy.save_persistent()
 
-# map song name to high scores
-default persistent.rhythm_game_high_scores = {
-    song.name: (0, 0) for song in rhythm_game_songs
-}
+    
+    
+    # Run once on startup (no reset)
+    reset_persistent(False)
+
 
 $ renpy.log(f"score keys: {list(persistent.rhythm_game_high_scores.keys())}")
 $ renpy.log(f"song names: {[s.name for s in rhythm_game_songs]}")            

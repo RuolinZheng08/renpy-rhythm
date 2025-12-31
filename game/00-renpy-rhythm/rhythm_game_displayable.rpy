@@ -83,6 +83,7 @@ label rhythm_game_entry_label:
             # compute new percent
             $ new_percent = selected_song.compute_percent(new_score)
             $ persistent.rhythm_game_high_scores[selected_song.name] = (new_score, new_percent)
+            $ renpy.save_persistent()
 
         $ del rhythm_game_displayable
 
@@ -132,6 +133,14 @@ screen select_song_screen(songs):
                         $ highest_score, highest_percent = persistent.rhythm_game_high_scores[song.name]
                         text str(highest_score)
                         text '([highest_percent]%)'
+            
+            textbutton _("Reset Highscores"):
+                action Confirm(
+                    _("Are you sure you want to reset all highscores?\nThis cannot be undone."),
+                    Function(reset_persistent, True)
+                )
+
+                 
 
             textbutton _('Exit'):
                 xalign 0.5
