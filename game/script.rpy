@@ -50,9 +50,11 @@ $ renpy.log(f"song names: {[s.name for s in rhythm_game_songs]}")
 
 # the song that the player chooses to play, set in `choose_song_screen` below
 default selected_song = None
+image bg room2 = im.Scale("images/bgroom2.png", config.screen_width, config.screen_height)
+
 
 label start:
-    scene bg room
+    scene bg room2
 
     e "Welcome to DJ Simulator!"
 

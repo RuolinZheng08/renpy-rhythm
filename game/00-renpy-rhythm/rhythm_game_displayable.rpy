@@ -125,7 +125,7 @@ screen select_song_screen(songs):
                     label '% Perfect Hits'
 
                 grid 3 len(songs):
-                    xspacing 100
+                    xspacing 175
                     for song in songs:
                         textbutton song.name action [
                         Return(song)
@@ -386,16 +386,16 @@ init python:
             self.button_hold_time = 0.1  # seconds
 
             # image for the button indicator (example path)
-            TRACK0_BUTTON_IMG = THIS_PATH + IMG_DIR + "track_0_button_press.png"
+            TRACK0_BUTTON_IMG = THIS_PATH + IMG_DIR + "track_0_v1.png"
             TRACK1_BUTTON_IMG = THIS_PATH + IMG_DIR + "track_1_button_press.png"
             TRACK2_BUTTON_IMG = THIS_PATH + IMG_DIR + "track_2_button_press.png"
-            TRACK3_BUTTON_IMG = THIS_PATH + IMG_DIR + "track_3_button_press.png"
+            TRACK3_BUTTON_IMG = THIS_PATH + IMG_DIR + "track_3_v1.png"
 
             self.track_button_drawables = {
-                0: Transform(Image(TRACK0_BUTTON_IMG), xysize=BUTTON_SIZE),
+                0: Transform(Image(TRACK0_BUTTON_IMG), xysize=(120,120)),
                 1: Transform(Image(TRACK1_BUTTON_IMG), xysize=BUTTON_SIZE),
                 2: Transform(Image(TRACK2_BUTTON_IMG), xysize=BUTTON_SIZE),
-                3: Transform(Image(TRACK3_BUTTON_IMG), xysize=BUTTON_SIZE),
+                3: Transform(Image(TRACK3_BUTTON_IMG), xysize=(120,120)),
             }
 
             # create 4 more displayables that are zoomed versions of the same pngs as above
