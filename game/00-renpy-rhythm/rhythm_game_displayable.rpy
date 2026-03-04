@@ -110,7 +110,14 @@ screen rhythm_game(rhythm_game_displayable):
     key 'K_UP' action NullAction()
     key 'K_DOWN' action NullAction()
     key 'K_RIGHT' action NullAction()
-
+    key 'K_ESCAPE' action If(
+        rhythm_game_displayable.actual_song_started,
+        true=[
+            Function(rhythm_game_displayable.pause),
+            Show('rhythm_pause_screen', rhythm_game_displayable=rhythm_game_displayable)
+        ],
+        false=NullAction()
+    )
     add Solid('#000')
     add rhythm_game_displayable
 
@@ -118,16 +125,7 @@ screen rhythm_game(rhythm_game_displayable):
         xpos 50
         ypos 50
         spacing 20
-
-        textbutton 'Quit' action [
-        Confirm('Would you like to quit the rhythm game?',
-            yes=[
-            Stop(CHANNEL_RHYTHM_GAME), # stop the music on this channel
-            Return(rhythm_game_displayable.score)
-            ])]:
-            # force the button text to be white when hovered
-            text_hover_color '#fff'
-
+        
         # can also use has_music_started so this won't show during the silence
         showif rhythm_game_displayable.has_game_started:
             text 'Score: ' + str(rhythm_game_displayable.score):
@@ -147,7 +145,50 @@ screen rhythm_game(rhythm_game_displayable):
         # use a timer so the player can see the screen before it returns
         timer 2.0 action Return(rhythm_game_displayable.score)
 
-## end screen definition
+screen rhythm_pause_screen(rhythm_game_displayable):
+    zorder 200
+    modal True
+
+    key 'K_ESCAPE' action [
+        Hide('rhythm_pause_screen'),
+        Function(rhythm_game_displayable.resume)
+    ]
+
+    # semi-transparent dark overlay
+    add Solid('#000000bb')
+
+    frame:
+        xalign 0.5
+        yalign 0.5
+        xpadding 50
+        ypadding 40
+
+        vbox:
+            spacing 25
+            xalign 0.5
+
+            label 'Paused' xalign 0.5
+
+
+            textbutton 'Resume' action [
+                Hide('rhythm_pause_screen'),
+                Function(rhythm_game_displayable.resume)
+            ]
+
+            textbutton 'Restart' action [
+                Hide('rhythm_pause_screen'),
+                Function(rhythm_game_displayable.restart)
+            ]
+            
+            # textbutton 'Save Game' action ShowMenu('save') # Disable saving during the game to prevent a bad game state upon reloading the save file
+
+            textbutton 'Quit Game' action [
+                Hide('rhythm_pause_screen'),
+                Stop(CHANNEL_RHYTHM_GAME),
+                Return(rhythm_game_displayable.score)
+            ]
+
+## end screen definitions
 
 init python:
 
@@ -156,6 +197,7 @@ init python:
 
     import os
     import pygame
+    import time
 
     # util func
     def read_beatmap_file(beatmap_path):
@@ -200,6 +242,9 @@ init python:
             # seconds, same unit as st, shown time
             self.time_offset = None
 
+            # set the default st_at_start to 0
+            self.st_at_start = 0.0
+            
             # silence before the music plays, in seconds
             self.silence_offset_start = 4.5
             self.silence_start = '<silence %s>' % str(self.silence_offset_start)
@@ -263,6 +308,13 @@ init python:
             onset: None for onset in self.onset_times
             }
             self.score = 0
+            self.actual_song_started = False # True only when the real audio file is playing
+
+            # --- pause state ---
+            self.is_paused = False
+            self.pause_real_time = None   # wall-clock time at moment of pause
+            self.paused_music_pos = 0.0   # position in the song file when paused
+
             # if the note is hit within 0.3 seconds of its actual onset time
             # we consider it a hit
             # can set different threshold for Good, Great hit scoring
@@ -327,14 +379,19 @@ init python:
             # this allows us to compute subsequent times when the notes should appear
             if self.has_game_started and self.time_offset is None:
                 self.time_offset = self.silence_offset_start + st
+                self.st_at_start = st # Record st at this moment
 
             render = renpy.Render(width, height)
+
+            # Freeze rendering while paused (also stops the redraw loop)
+            if self.is_paused:
+                return render
 
             # draw the countdown if we are still in the silent phase before the music starts
             # count down silence_offset_start, 3 seconds, while silence
             if not self.has_music_started:
                 countdown_text = None
-                time_before_music = self.countdown - st
+                time_before_music = self.countdown - (st - self.st_at_start)
                 if time_before_music > 2.0:
                     countdown_text = '3'
                 elif time_before_music > 1.0:
@@ -363,16 +420,21 @@ init python:
 
             # draw the notes
             if self.has_game_started:
-                # self.time_offset cannot be None down here b/c it has been set above
-                # check if the song has ended
-                if renpy.music.get_playing(channel=CHANNEL_RHYTHM_GAME) is None:
-                    self.has_ended = True
-                    renpy.timeout(0) # raise an event
-                    return render
-
                 # the number of seconds the song has been playing
                 # is the difference between the current shown time and the cached first st
                 curr_time = st - self.time_offset
+
+                # Mark when the actual song audio has begun
+                if curr_time >= 0 and not self.actual_song_started:
+                    self.actual_song_started = True
+                    renpy.restart_interaction()
+
+                # self.time_offset cannot be None down here b/c it has been set above
+                # check if the song has ended
+                if renpy.music.get_playing(channel=CHANNEL_RHYTHM_GAME) is None and not self.is_paused:
+                    self.has_ended = True
+                    renpy.timeout(0) # raise an event
+                    return render
 
                 # update self.active_notes_per_track
                 self.active_notes_per_track = self.get_active_notes_per_track(curr_time)
@@ -508,3 +570,70 @@ init python:
                     break
 
             return active_notes
+
+        def pause(self):
+            """Pause the game and stop the music, saving playback position."""
+            if self.is_paused or not self.actual_song_started:
+                return
+            self.is_paused = True
+            self.pause_real_time = time.time()
+
+            if self.has_music_started:
+                # get_pos returns seconds into the *current* audio file
+                self.paused_music_pos = renpy.music.get_pos(channel=CHANNEL_RHYTHM_GAME) or 0.0
+
+            renpy.music.stop(channel=CHANNEL_RHYTHM_GAME)
+
+        def resume(self):
+            """Resume the game, adjusting time_offset for the duration of the pause."""
+            if not self.is_paused:
+                return
+
+            # Add pause wall-clock duration to time_offset so curr_time stays correct
+            elapsed_pause = time.time() - self.pause_real_time
+            self.time_offset += elapsed_pause
+
+            self.is_paused = False
+            self.pause_real_time = None
+
+            if self.has_music_started:
+                # Resume song from the exact second it was paused
+                resume_path = '<from %.3f>%s' % (max(0.0, self.paused_music_pos), self.audio_path)
+                renpy.music.play(resume_path, channel=CHANNEL_RHYTHM_GAME, loop=False)
+
+            renpy.redraw(self, 0)
+
+        def restart(self):
+            """Restart the song and reset all game state from the beginning."""
+            renpy.music.stop(channel=CHANNEL_RHYTHM_GAME)
+
+            # reset score and note hit states
+            self.score = 0
+            self.onset_hits = {onset: None for onset in self.onset_times}
+
+            # reset st_at_start so that the countdown starts from the moment we restart
+            self.st_at_start = 0.0
+
+            # re-randomize which track each note appears on
+            self.random_track_indices = [
+                renpy.random.randint(0, self.num_track_bars - 1) for _ in range(len(self.onset_times))
+            ]
+            self.active_notes_per_track = {
+                track_idx: [] for track_idx in range(self.num_track_bars)
+            }
+
+            # reset timing state
+            self.time_offset = None
+            self.has_music_started = False
+            self.actual_song_started = False
+            self.has_ended = False
+
+            # reset pause state
+            self.is_paused = False
+            self.pause_real_time = None
+            self.paused_music_pos = 0.0
+
+            # restart music from the beginning with silence/countdown
+            self.play_music()
+            renpy.restart_interaction()
+            renpy.redraw(self, 0)
