@@ -67,15 +67,21 @@ window show
 
 This project leverages the onset detection feature in [Aubio's Python module](https://github.com/aubio/aubio/tree/master/python) to automatically generate beat map for any audio file. The script to generate a beat map is `00-renpy-rhythm-utils/generate_beatmap.py`.
 
-**You will need to have Python to run this script** instead of using the Python provided by Ren'Py. This script is developed using MacOS's default Python 2.7.16.
+**You will need to have Python 3 to run this script** instead of using the Python provided by Ren'Py. The script requires the [`aubio`](https://pypi.org/project/aubio/) package, which you can install with `pip install aubio`.
+
+On recent Python and NumPy versions (e.g. Python 3.14 with NumPy 2), building `aubio` 0.4.9 fails with an `incompatible function pointer types` error. Downgrade that error to a warning when installing:
 
 ```bash
-Usage: python generate_beatmap.py [input]
+CFLAGS="-Wno-error=incompatible-function-pointer-types" pip install aubio
 ```
 
-As an example, `python generate_beatmap.py audio/my_music.mp3` will generate `audio/my_music.beatmap.txt`.
+```bash
+Usage: python3 generate_beatmap.py [input]
+```
 
-The script can also be run on an entire directory, `python generate_beatmap.py audio/` will take all valid audio files and generate their beat maps.
+As an example, `python3 generate_beatmap.py audio/my_music.mp3` will generate `audio/my_music.beatmap.txt`.
+
+The script can also be run on an entire directory, `python3 generate_beatmap.py audio/` will take all valid audio files and generate their beat maps.
 
 `beatmap.txt` is really just a text file with floating point numbers separated by newlines, each denoting when a note should appear. It's usually a couple hundred lines long, meaning that the song has a couple hundred notes. It may look like below, where the first note appears `0.0259` second into the song and the last note shown appears `2.7948` seconds into the song. See those `game/audio/*.beatmap.txt` for more information.
 

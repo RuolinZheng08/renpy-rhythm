@@ -1,10 +1,6 @@
 import os
 import sys
 
-# python-packages directory
-import_dir = os.path.abspath('python-packages')
-sys.path.append(import_dir)
-
 from aubio import source, onset
 
 # https://aubio.org/doc/latest/onset_2test-onset_8c-example.html
@@ -37,7 +33,8 @@ def get_onset_times(file_path):
 
 def main():
     if len(sys.argv) < 2:
-        print('Usage: python generate_beatmap.py [input]\nGenerate my_music.beatmap.txt form my_music.mp3\n[input] could be a file or directory containing audio files')
+        print('Usage: python3 generate_beatmap.py [input]\nGenerate my_music.beatmap.txt from my_music.mp3\n[input] could be a file or directory containing audio files')
+        sys.exit(1)
     path = sys.argv[1]
     if os.path.isdir(path):
         files = [os.path.join(path, file) for file in os.listdir(path) if not file.startswith('.')]

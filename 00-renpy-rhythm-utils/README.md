@@ -103,7 +103,8 @@ One timestamp per line in seconds
 
 - Python 3.6 or higher
 - Audacity (free audio editor)
-- No additional Python packages required (uses only standard library)
+- No additional Python packages required for `audacity_to_beatmap.py` and `beatmap_to_audacity.py` (standard library only)
+- `generate_beatmap.py` requires `aubio` (`pip install aubio`; see the main README if the build fails)
 
 ## Troubleshooting
 
